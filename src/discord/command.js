@@ -75,10 +75,13 @@ function addCommand(command, callback, role = null, prefix = '!') {
 async function tryExecuteCommand(discordMessage) {
     const firstSpace = discordMessage.content.indexOf(' ');
     const existing = commands.find(c => {
-       const prefix = discordMessage.content.slice(0, c.prefix.length);
-       const text = discordMessage.content.slice(c.prefix.length, firstSpace > 0 ? firstSpace : null);
+        const prefix = discordMessage.content.slice(0, c.prefix.length);
+    //    const text = discordMessage.content.slice(c.prefix.length, firstSpace > 0 ? firstSpace : null);
+        const text = firstSpace > 0 ?
+            discordMessage.content.slice(c.prefix.length, firstSpace) :
+            discordMessage.content.slice(c.prefix.length);
 
-       return c.prefix === prefix && c.command === text && (c.role === null || discordMessage.member.roles.cache.has(c.role));
+        return c.prefix === prefix && c.command === text && (c.role === null || discordMessage.member.roles.cache.has(c.role));
     });
 
     if (!existing) return false;
