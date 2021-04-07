@@ -68,5 +68,23 @@ module.exports = {
         });
         spawn('taskkill', [ '/IM', config.serverExecutable ]);
         // callback();
+    },
+
+    /**
+     * @returns {Promise<void>}
+     */
+    stopAsync: function () {
+        return new Promise(resolve => {
+            if (!this.isRunning()) {
+                resolve();
+                return;
+            }
+
+            serverProc.on('close', (code, signal) => {
+                console.log(`Valheim server child process exited with code ${code} (${signal})`);
+                resolve();
+            });
+            spawn('taskkill', [ '/IM', config.serverExecutable ]);
+        });
     }
 };

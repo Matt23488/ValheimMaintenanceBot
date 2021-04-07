@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { spawn } = require('child_process');
 const roles = require('./discord/roles');
 
 const config = require('./config');
@@ -60,6 +61,18 @@ commands.addCommand('stop', async (rest, discordMessage) => {
             discordMessage.channel.send('Server stopped.');
         });
     }
+}, roles.Admin);
+
+commands.addCommand('reboot', async (rest, discordMessage) => {
+    const stopServer = valheimServer.isRunning();
+    if (stopServer) discordMessage.channel.send('Stopping server...');
+    await valheimServer.stopAsync();
+    if (stopServer) await discordMessage.channel.send('Server stopped.');
+
+    await discordMessage.channel.send('Rebooting VM. See you folks on the other side.');
+    spawn('shutdown', [ '/r' ], { detached: true });
+    client.destroy();
+
 }, roles.Admin);
 
 const client = new Discord.Client();

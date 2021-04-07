@@ -76,7 +76,6 @@ async function tryExecuteCommand(discordMessage) {
     const firstSpace = discordMessage.content.indexOf(' ');
     const existing = commands.find(c => {
         const prefix = discordMessage.content.slice(0, c.prefix.length);
-    //    const text = discordMessage.content.slice(c.prefix.length, firstSpace > 0 ? firstSpace : null);
         const text = firstSpace > 0 ?
             discordMessage.content.slice(c.prefix.length, firstSpace) :
             discordMessage.content.slice(c.prefix.length);
@@ -86,6 +85,7 @@ async function tryExecuteCommand(discordMessage) {
 
     if (!existing) return false;
 
+    console.log(`${existing.command} issued by ${discordMessage.author.tag}`);
     await existing.execute(firstSpace > 0 ? discordMessage.content.slice(firstSpace) : '', discordMessage);
 
     return true;
