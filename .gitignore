@@ -1,3 +1,4 @@
 node_modules/
 appsecrets.json
 token.txt
+logs/
