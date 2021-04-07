@@ -66,6 +66,12 @@ const client = new Discord.Client();
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+
+    const channel = client.channels.cache.get(config.defaultChannel);
+    channel.send('I live. Starting server...');
+    valheimServer.start(() => {
+        channel.send(`Server started at \`${ipAddress}:2456\`.`);
+    });
 });
 
 client.on('message', async msg => {
