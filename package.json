@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.3",
+    "lodash": "^4.17.21",
     "public-ip": "^4.0.3"
   }
 }
