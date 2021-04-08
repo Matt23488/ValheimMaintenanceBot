@@ -16,7 +16,22 @@ const steamAppId = batchFileText.slice(steamAppIdRef + steamAppIdRefText.length,
  */
 let serverProc;
 
+/**
+ * @type {Array<({ id: string, name: string }) => void>}
+ */
+const playerConnectedListeners = [];
+
+/**
+ * @type {Array<({ id: string, name: string }) => void>}
+ */
+const playerDisconnectedListeners = [];
+
 module.exports = {
+    /**
+     * @type {{ id: string, name: string }[]}
+     */
+    connectedPlayers: [],
+
     isRunning: () => serverProc && serverProc.exitCode === null,
 
     /**
@@ -43,13 +58,36 @@ module.exports = {
                 }
             );
 
+            this.connectedPlayers = [];
             let startEventSent = false;
             serverProc.stdout.on('data', data => {
                 fs.appendFileSync(path.join(__dirname, config.valheim.stdout), `${data.toString()}`);
 
-                if (data instanceof Buffer && data.toString().indexOf('Game server connected') > 0 && !startEventSent) {
-                    startEventSent = true;
-                    resolve();
+                if (data instanceof Buffer) {
+                    const dataString = data.toString();
+                    if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
+                        startEventSent = true;
+                        resolve();
+                    } else if (dataString.indexOf('Got character ZDOID from ') > 0) {
+                        const prefix = dataString.indexOf('Got character ZDOID from ');
+                        const firstColon = dataString.indexOf(':', prefix + prefix.length);
+                        const secondColon = dataString.indexOf(':', firstColon + 1);
+                        const newPlayer = {
+                            id: dataString.slice(firstColon + 1, secondColon).trim(),
+                            name: dataString.slice(prefix + prefix.length, firstColon).trim()
+                        };
+                        this.connectedPlayers.push(newPlayer);
+                        playerConnectedListeners.forEach(l => l(newPlayer));
+                    } else if (dataString.indexOf('Destroying abandoned non persistent zdo ') > 0) {
+                        const prefix = dataString.indexOf('Destroying abandoned non persistent zdo ');
+                        const colon = dataString.indexOf(':', prefix + prefix.length);
+                        const id = dataString.slice(prefix + prefix.length, colon).trim();
+                        const player = this.connectedPlayers.find(p => p.id === id);
+                        if (player) {
+                            this.connectedPlayers = this.connectedPlayers.filter(p => p.id !== id);
+                            playerDisconnectedListeners.foreach(l => l(player));
+                        }
+                    }
                 }
 
             });
@@ -72,5 +110,37 @@ module.exports = {
             });
             spawn('taskkill', [ '/IM', config.serverExecutable ]);
         });
+    },
+
+    /**
+     * 
+     * @param {({ id: string, name: string }) => void} callback 
+     */
+    addPlayerConnectedListener: function (callback) {
+        playerConnectedListeners.push(callback);
+    },
+
+    /**
+     * 
+     * @param {({ id: string, name: string }) => void} callback 
+     */
+    removePlayerConnectedListener: function (callback) {
+        playerConnectedListeners = playerConnectedListeners.filter(l => l !== callback);
+    },
+
+    /**
+     * 
+     * @param {({ id: string, name: string }) => void} callback 
+     */
+    addPlayerDisconnectedListener: function (callback) {
+        playerDisconnectedListeners.push(callback);
+    },
+
+    /**
+     * 
+     * @param {({ id: string, name: string }) => void} callback 
+     */
+    removePlayerDisconnectedListener: function (callback) {
+        playerDisconnectedListeners = playerDisconnectedListeners.filter(l => l !== callback);
     }
 };

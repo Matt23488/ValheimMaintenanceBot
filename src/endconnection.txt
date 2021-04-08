@@ -1,0 +1,52 @@
+04/08/2021 17:20:38: RPC_Disconnect 
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Destroying abandoned non persistent zdo -133112343:211 owner -133112343
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Destroying abandoned non persistent zdo -133112343:212 owner -133112343
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Destroying abandoned non persistent zdo -133112343:1 owner -133112343
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Destroying abandoned non persistent zdo -133112343:213 owner -133112343
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Destroying abandoned non persistent zdo -133112343:214 owner -133112343
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Disposing socket
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Closing socket 76561197999234871
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38:   send queue size:0
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Disposing socket
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Got status changed msg k_ESteamNetworkingConnectionState_ClosedByPeer
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Socket closed by peer Steamworks.SteamNetConnectionStatusChangedCallback_t
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
+04/08/2021 17:20:38: Got status changed msg k_ESteamNetworkingConnectionState_None
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 35)
+
