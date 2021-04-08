@@ -78,7 +78,7 @@ module.exports = {
                             name: dataString.slice(prefixIndex + prefix.length, firstColon).trim()
                         };
 
-                        const existingPlayer = this.connectedPlayers.find(p => p.id === id);
+                        const existingPlayer = this.connectedPlayers.find(p => p.id === newPlayer.id);
                         if (!existingPlayer) {
                             this.connectedPlayers.push(newPlayer);
                             playerConnectedListeners.forEach(l => l(newPlayer));

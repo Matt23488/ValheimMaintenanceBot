@@ -13,7 +13,6 @@ const { getServerIpAddress } = require('./ip');
 // Separate log files for server instances, delete after so many, etc
 // Send errors to channel with the formatting thingy
 // Keep track of connected players using the server logs
-// Add player list to !status command
 // Random event set:foresttrolls (detect these)
 // Fix issue with players dying and being re-added to the server.
 
