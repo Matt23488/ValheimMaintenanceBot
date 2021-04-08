@@ -19,6 +19,11 @@ let serverProc;
 module.exports = {
     isRunning: () => serverProc && serverProc.exitCode === null,
 
+    // upTime: function () {
+    //     if (!this.isRunning()) return null;
+    //     else return serverProc.runtim
+    // },
+
     /**
      * 
      * @param {() => void} callback

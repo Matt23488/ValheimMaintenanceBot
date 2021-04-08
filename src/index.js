@@ -16,64 +16,74 @@ getExternalIPv4().then(ip => {
     ipAddress = ip;
 });
 
-const commands = require('./discord/command');
-commands.addCommand('kill', async (rest, discordMessage) => {
-    async function exit() {
-        await discordMessage.channel.send('bye');
-        client.destroy();
-    }
+// TODO:
+// !uptime
+// !ip or something of the sort
+// !backup world
+// !change world
+// !help
+// Look into formatting of posts
+// Only allow commands from #fortbadass
+// more stuff that would be generally useful
 
-    if (valheimServer.isRunning()) {
-        discordMessage.channel.send('Stopping server...');
-        valheimServer.stop(async () => {
-            await discordMessage.channel.send('Server stopped.');
-            await exit();
-        });
-    } else await exit();
-}, roles.Admin);
+// const commands = require('./discord/command');
+// commands.addCommand('kill', async (rest, discordMessage) => {
+//     async function exit() {
+//         await discordMessage.channel.send('bye');
+//         client.destroy();
+//     }
 
-commands.addCommand('poop', async (rest, discordMessage) => {
-    await discordMessage.reply('you\'re 12');
-});
+//     if (valheimServer.isRunning()) {
+//         discordMessage.channel.send('Stopping server...');
+//         valheimServer.stop(async () => {
+//             await discordMessage.channel.send('Server stopped.');
+//             await exit();
+//         });
+//     } else await exit();
+// }, roles.Admin);
 
-commands.addCommand('status', (rest, discordMessage) => {
-    if (!valheimServer.isRunning()) discordMessage.channel.send('The server is not currently started. Use `!start` to start the server.');
-    else discordMessage.channel.send(`The server is currently running at \`${ipAddress}:2456\`.`);
-});
+// commands.addCommand('poop', async (rest, discordMessage) => {
+//     await discordMessage.reply('you\'re 12');
+// });
 
-commands.addCommand('start', (rest, discordMessage) => {
-    if (valheimServer.isRunning()) {
-        discordMessage.channel.send(`The server is already running at \`${ipAddress}:2456\`.`);
-    } else {
-        discordMessage.channel.send('Starting server...');
-        valheimServer.start(() => {
-            discordMessage.channel.send(`Server started at \`${ipAddress}:2456\`.`);
-        });
-    }
-});
+// commands.addCommand('status', (rest, discordMessage) => {
+//     if (!valheimServer.isRunning()) discordMessage.channel.send('The server is not currently started. Use `!start` to start the server.');
+//     else discordMessage.channel.send(`The server is currently running at \`${ipAddress}:2456\`.`);
+// });
 
-commands.addCommand('stop', async (rest, discordMessage) => {
-    if (!valheimServer.isRunning()) {
-        discordMessage.channel.send('The server is not running. Use `!start` to start the server.');
-    } else {
-        discordMessage.channel.send('Stopping server...');
-        valheimServer.stop(() => {
-            discordMessage.channel.send('Server stopped.');
-        });
-    }
-}, roles.Admin);
+// commands.addCommand('start', (rest, discordMessage) => {
+//     if (valheimServer.isRunning()) {
+//         discordMessage.channel.send(`The server is already running at \`${ipAddress}:2456\`.`);
+//     } else {
+//         discordMessage.channel.send('Starting server...');
+//         valheimServer.start(() => {
+//             discordMessage.channel.send(`Server started at \`${ipAddress}:2456\`.`);
+//         });
+//     }
+// });
 
-commands.addCommand('reboot', async (rest, discordMessage) => {
-    const stopServer = valheimServer.isRunning();
-    if (stopServer) discordMessage.channel.send('Stopping server...');
-    await valheimServer.stopAsync();
-    if (stopServer) await discordMessage.channel.send('Server stopped.');
+// commands.addCommand('stop', async (rest, discordMessage) => {
+//     if (!valheimServer.isRunning()) {
+//         discordMessage.channel.send('The server is not running. Use `!start` to start the server.');
+//     } else {
+//         discordMessage.channel.send('Stopping server...');
+//         valheimServer.stop(() => {
+//             discordMessage.channel.send('Server stopped.');
+//         });
+//     }
+// }, roles.Admin);
 
-    await discordMessage.channel.send('Rebooting VM. See you folks on the other side.');
-    spawn('shutdown', [ '/r' ], { detached: true });
-    client.destroy();
+// commands.addCommand('reboot', async (rest, discordMessage) => {
+//     const stopServer = valheimServer.isRunning();
+//     if (stopServer) discordMessage.channel.send('Stopping server...');
+//     await valheimServer.stopAsync();
+//     if (stopServer) await discordMessage.channel.send('Server stopped.');
 
-}, roles.Admin);
+//     await discordMessage.channel.send('Rebooting VM. See you folks on the other side.');
+//     spawn('shutdown', [ '/r' ], { detached: true });
+//     client.destroy();
+
+// }, roles.Admin);
 
 const client = new Discord.Client();
 
@@ -87,8 +97,13 @@ client.once('ready', () => {
     });
 });
 
+const commands = require('./discord/command.js');
 client.on('message', async msg => {
-    await commands.tryExecuteCommand(msg);
+    if (msg.channel.id !== config.defaultChannel || msg.author.bot) return;
+
+    const commandInfo = commands.parseMessage(msg.content);
+    if (commandInfo) await commands.executeCommand(commandInfo, msg);
+    // await commands.tryExecuteCommand(msg);
 });
 
 client.login(config.appToken);
