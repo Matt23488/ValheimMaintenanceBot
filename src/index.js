@@ -23,14 +23,18 @@ client.once('ready', async () => {
     const channel = client.channels.cache.get(config.defaultChannel);
     channel.send('I live. Starting server...');
     await valheimServer.start();
-    channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`. There are currently ${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} on the server.`);
+    channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+
+    function getPlayerCountMessage() {
+        return `There ${valheimServer.connectedPlayers.length === 1 ? 'is' : 'are'} currently ${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} on the server.`;
+    }
 
     valheimServer.addPlayerConnectedListener(player => {
-        channel.send(`Player \`${player.name}\` has joined the server!`);
+        channel.send(`Player \`${player.name}\` has joined the server! ${getPlayerCountMessage()}`);
     });
 
     valheimServer.addPlayerDisconnectedListener(player => {
-        channel.send(`Player \`${player.name}\` has left the server. There are currently ${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} on the server.`);
+        channel.send(`Player \`${player.name}\` has left the server. ${getPlayerCountMessage()}`);
     });
 });
 

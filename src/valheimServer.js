@@ -69,23 +69,25 @@ module.exports = {
                         startEventSent = true;
                         resolve();
                     } else if (dataString.indexOf('Got character ZDOID from ') > 0) {
-                        const prefix = dataString.indexOf('Got character ZDOID from ');
-                        const firstColon = dataString.indexOf(':', prefix + prefix.length);
+                        const prefix = 'Got character ZDOID from ';
+                        const prefixIndex = dataString.indexOf(prefix);
+                        const firstColon = dataString.indexOf(':', prefixIndex + prefix.length);
                         const secondColon = dataString.indexOf(':', firstColon + 1);
                         const newPlayer = {
                             id: dataString.slice(firstColon + 1, secondColon).trim(),
-                            name: dataString.slice(prefix + prefix.length, firstColon).trim()
+                            name: dataString.slice(prefixIndex + prefix.length, firstColon).trim()
                         };
                         this.connectedPlayers.push(newPlayer);
                         playerConnectedListeners.forEach(l => l(newPlayer));
                     } else if (dataString.indexOf('Destroying abandoned non persistent zdo ') > 0) {
-                        const prefix = dataString.indexOf('Destroying abandoned non persistent zdo ');
-                        const colon = dataString.indexOf(':', prefix + prefix.length);
-                        const id = dataString.slice(prefix + prefix.length, colon).trim();
+                        const prefix = 'Destroying abandoned non persistent zdo ';
+                        const prefixIndex = dataString.indexOf(prefix);
+                        const colon = dataString.indexOf(':', prefixIndex + prefix.length);
+                        const id = dataString.slice(prefixIndex + prefix.length, colon).trim();
                         const player = this.connectedPlayers.find(p => p.id === id);
                         if (player) {
                             this.connectedPlayers = this.connectedPlayers.filter(p => p.id !== id);
-                            playerDisconnectedListeners.foreach(l => l(player));
+                            playerDisconnectedListeners.forEach(l => l(player));
                         }
                     }
                 }
