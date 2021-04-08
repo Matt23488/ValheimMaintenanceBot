@@ -20,9 +20,9 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setColor('#9900ff')
                 .setTitle(`${config.valheim.name} Server Status`)
-                .addField('Connected players', `${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected`);
+                .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected`, '\u200B');
 
-            valheimServer.connectedPlayers.forEach(p => embed.addField(p.name, '\u200B', true));
+            valheimServer.connectedPlayers.forEach(p => embed.addField('\u200B', p.name, true));
 
             embed.setTimestamp();
             embed.spliceFields()
