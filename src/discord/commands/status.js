@@ -22,9 +22,10 @@ module.exports = {
                 .setTitle(`${config.valheim.name} Server Status`)
                 .addField('Connected players', `${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected`);
 
-            valheimServer.connectedPlayers.forEach(p => embed.addField('', p.name, true));
+            valheimServer.connectedPlayers.forEach(p => embed.addField(p.name, '\u200B', true));
 
             embed.setTimestamp();
+            embed.spliceFields()
 
             message.channel.send(embed);
         }
