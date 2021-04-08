@@ -11,7 +11,7 @@ module.exports = {
      * @param {string} rest 
      * @returns {Promise<void>}
      */
-    execute: async function (message, rest) {
+    execute: function (message, rest) {
         return new Promise(resolve => {
             try {
                 delete require.cache[require.resolve(`./${rest}`)];
