@@ -18,6 +18,7 @@ module.exports = {
             } catch (e) {
                 message.channel.send(`The ${config.discord.commandPrefix}${rest} command has not been used or does not exist.`);
                 resolve();
+                return;
             }
 
             message.channel.send(`The ${config.discord.commandPrefix}${rest} command has been refreshed.`);
