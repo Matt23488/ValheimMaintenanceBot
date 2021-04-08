@@ -15,19 +15,12 @@ module.exports = {
      */
     execute: async function (message, rest) {
         if (!valheimServer.isRunning()) message.channel.send('The server is not currently started. Use `!start` to start the server.');
-        // else message.channel.send(`The server is currently running at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
-        else {
-            const embed = new Discord.MessageEmbed()
-                .setColor('#9900ff')
-                .setTitle(`${config.valheim.name} Server Status`)
-                .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected`, '\u200B');
-
-            valheimServer.connectedPlayers.forEach(p => embed.addField('\u200B', p.name, true));
-
-            embed.setTimestamp();
-            embed.spliceFields()
-
-            message.channel.send(embed);
-        }
+        else message.channel.send(new Discord.MessageEmbed()
+            .setColor('#9900ff')
+            .setTitle(`${config.valheim.name} Server Status`)
+            .addField('Server IP', `${getServerIpAddress()}:${config.valheim.port}`)
+            .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.map(p => p.name).join(', '))
+            .setTimestamp()
+        );
     }
 };
