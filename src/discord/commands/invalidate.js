@@ -12,14 +12,16 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        rest = rest.trim(); // TODO: remove this at some point when it's no longer necessary
-        try {
-            delete require.cache[require.resolve(`./${rest}`)];
-        } catch (e) {
-            message.channel.send(`The ${config.discord.commandPrefix}${rest} command has not been used or does not exist.`);
-            return;
-        }
+        return new Promise(resolve => {
+            try {
+                delete require.cache[require.resolve(`./${rest}`)];
+            } catch (e) {
+                message.channel.send(`The ${config.discord.commandPrefix}${rest} command has not been used or does not exist.`);
+                resolve();
+            }
 
-        message.channel.send(`The ${config.discord.commandPrefix}${rest} command has been refreshed.`);
+            message.channel.send(`The ${config.discord.commandPrefix}${rest} command has been refreshed.`);
+            resolve();
+        });
     }
 };
