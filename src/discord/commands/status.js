@@ -19,7 +19,7 @@ module.exports = {
             .setColor('#9900ff')
             .setTitle(`${config.valheim.name} Server Status`)
             .addField('Server IP', `${getServerIpAddress()}:${config.valheim.port}`)
-            .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.map(p => p.name).join(', '))
+            .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.length > 0 ? valheimServer.connectedPlayers.map(p => p.name).join(', ') : '\u200B')
             .setTimestamp()
         );
     }
