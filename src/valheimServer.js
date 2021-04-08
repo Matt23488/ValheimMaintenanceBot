@@ -77,8 +77,12 @@ module.exports = {
                             id: dataString.slice(firstColon + 1, secondColon).trim(),
                             name: dataString.slice(prefixIndex + prefix.length, firstColon).trim()
                         };
-                        this.connectedPlayers.push(newPlayer);
-                        playerConnectedListeners.forEach(l => l(newPlayer));
+
+                        const existingPlayer = this.connectedPlayers.find(p => p.id === id);
+                        if (!existingPlayer) {
+                            this.connectedPlayers.push(newPlayer);
+                            playerConnectedListeners.forEach(l => l(newPlayer));
+                        }
                     } else if (dataString.indexOf('Destroying abandoned non persistent zdo ') > 0) {
                         const prefix = 'Destroying abandoned non persistent zdo ';
                         const prefixIndex = dataString.indexOf(prefix);
