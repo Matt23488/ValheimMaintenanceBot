@@ -11,7 +11,6 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        // await discordMessage.reply('you\'re 12');
-        await message.reply('pong');
+        await message.reply('pang');
     }
 };
