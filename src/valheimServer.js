@@ -19,66 +19,47 @@ let serverProc;
 module.exports = {
     isRunning: () => serverProc && serverProc.exitCode === null,
 
-    // upTime: function () {
-    //     if (!this.isRunning()) return null;
-    //     else return serverProc.runtim
-    // },
-
     /**
-     * 
-     * @param {() => void} callback
+     * @returns {Promise<void>}
      */
-    start: function (callback) {
-        if (this.isRunning()) return;
+    start: function () {
+        return new Promise(resolve => {
+            if (this.isRunning()) resolve();
 
-        serverProc = spawn(
-            config.serverExecutable,
-            [
-                '-nographics',
-                '-batchmode',
-                `-name "${config.valheim.name}"`,
-                `-port ${config.valheim.port}`,
-                `-world "${config.valheim.world}"`,
-                `-password "${config.valheim.password}"`,
-                '-public 0'
-            ], {
-                shell: true,
-                cwd: config.serverWorkingDirectory,
-                env: _.extend(process.env, { SteamAppId: steamAppId })
-            }
-        );
+            serverProc = spawn(
+                config.serverExecutable,
+                [
+                    '-nographics',
+                    '-batchmode',
+                    `-name "${config.valheim.name}"`,
+                    `-port ${config.valheim.port}`,
+                    `-world "${config.valheim.world}"`,
+                    `-password "${config.valheim.password}"`,
+                    '-public 0'
+                ], {
+                    shell: true,
+                    cwd: config.serverWorkingDirectory,
+                    env: _.extend(process.env, { SteamAppId: steamAppId })
+                }
+            );
 
-        let startEventSent = false;
-        serverProc.stdout.on('data', data => {
-            fs.appendFileSync(path.join(__dirname, config.valheim.stdout), `${data.toString()}`);
+            let startEventSent = false;
+            serverProc.stdout.on('data', data => {
+                fs.appendFileSync(path.join(__dirname, config.valheim.stdout), `${data.toString()}`);
 
-            if (data instanceof Buffer && data.toString().indexOf('Game server connected') > 0 && !startEventSent) {
-                startEventSent = true;
-                callback();
-            }
+                if (data instanceof Buffer && data.toString().indexOf('Game server connected') > 0 && !startEventSent) {
+                    startEventSent = true;
+                    resolve();
+                }
 
+            });
         });
-    },
-
-    /**
-     * 
-     * @param {() => void} callback 
-     */
-    stop: function (callback) {
-        if (!this.isRunning()) return;
-
-        serverProc.on('close', async (code, signal) => {
-            console.log(`Valheim server child process exited with code ${code} (${signal})`);
-            callback();
-        });
-        spawn('taskkill', [ '/IM', config.serverExecutable ]);
-        // callback();
     },
 
     /**
      * @returns {Promise<void>}
      */
-    stopAsync: function () {
+    stop: function () {
         return new Promise(resolve => {
             if (!this.isRunning()) {
                 resolve();

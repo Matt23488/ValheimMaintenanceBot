@@ -1,7 +1,8 @@
 const publicIp = require('public-ip');
 
-function getExternalIPv4() {
-    return publicIp.v4();
-}
+let serverIpAddress;
+publicIp.v4().then(ip => serverIpAddress = ip);
 
-module.exports = { getExternalIPv4 };
+function getServerIpAddress() { return serverIpAddress; }
+
+module.exports = { getServerIpAddress };
