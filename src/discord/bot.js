@@ -50,7 +50,7 @@ module.exports = {
             if (!validChannel || msg.author.bot) return;
         
             const commandInfo = commandManager.parseMessage(msg.content);
-            if (commandInfo) await commandManager.executeCommand(commandInfo, msg);
+            if (commandInfo) try { await commandManager.executeCommand(commandInfo, msg); } catch (e) { console.error(e); }
         });
         
         botClient.login(config.appToken);
