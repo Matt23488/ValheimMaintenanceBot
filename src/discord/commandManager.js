@@ -18,7 +18,12 @@ async function executeCommand(commandInfo, message) {
     }
 
     console.log(`${commandInfo.name} issued by ${message.author.tag}`);
-    await command.execute(message, commandInfo.rest);
+    try {
+        await command.execute(message, commandInfo.rest);
+    } catch (e) {
+        console.error(e);
+        message.channel.send('There was an error executing the command.');
+    }
 }
 
 /**
