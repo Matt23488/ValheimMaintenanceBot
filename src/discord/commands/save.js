@@ -19,6 +19,7 @@ module.exports = {
             if (rest.length === 0) {
                 message.reply('save what, hoss?');
                 resolve();
+                return;
             }
 
             const params = rest.split(' ');
