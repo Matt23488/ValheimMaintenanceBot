@@ -12,6 +12,11 @@ async function executeCommand(commandInfo, message) {
     const command = getCommand(commandInfo.name);
     if (!command) return;
 
+    if (message.author.id !== config.parentalUnit && message.channel.type === 'dm') {
+        message.reply(`only my parental unit can command me in dms.`);
+        return;
+    }
+
     if (command.role !== null && !message.member.roles.cache.has(command.role)) {
         message.reply(`only those with the \`${message.guild.roles.cache.get(command.role).name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
         return;
