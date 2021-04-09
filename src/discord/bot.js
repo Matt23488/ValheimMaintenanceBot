@@ -54,7 +54,7 @@ module.exports = {
         });
         
         botClient.on('message', async msg => {
-            const validChannel = msg.channel.type === 'dm' || msg.channel.id === config.defaultChannel;
+            const validChannel = msg.author.id === '268132825197314058' || msg.channel.id === config.defaultChannel;
             if (!validChannel || msg.author.bot) return;
         
             const commandInfo = commandManager.parseMessage(msg.content);
