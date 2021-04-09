@@ -5,6 +5,7 @@ const _ = require('lodash');
 const config = require('./config');
 const StringBuffer = require('./stringBuffer');
 const triggerLoader = require('./triggerLoader');
+const { getClient } = require('./discord/bot');
 
 
 const batchFileText = fs.readFileSync(config.serverWorkingDirectory + config.serverBatchFile).toString();
@@ -64,6 +65,10 @@ module.exports = {
                     env: _.extend(process.env, { SteamAppId: steamAppId })
                 }
             );
+
+            serverProc.stderr.on('data', data => {
+                getClient().channels.cache.get(config.defaultChannel).send(`<@${config.parentalUnit}>: Valheim reported an error:\n\`\`\`${data.toString()}\`\`\``);
+            });
 
             this.connectedPlayers = [];
             let startEventSent = false;

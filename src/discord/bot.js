@@ -9,10 +9,8 @@ const { getServerIpAddress } = require('../ip');
 // !backup world
 // !change world
 // Separate log files for server instances, delete after so many, etc
-// Send errors to channel with the formatting thingy
 // !reboot should take a param ('bot', 'server', 'vm')
 
-//const botClient = new Discord.Client();
 /**
  * @type {Discord.Client}
  */
