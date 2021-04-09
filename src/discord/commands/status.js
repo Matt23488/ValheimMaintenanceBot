@@ -32,8 +32,9 @@ module.exports = {
                     message.channel.send(new Discord.MessageEmbed()
                         .setColor('#9900ff')
                         .setTitle(`${config.valheim.name} Server Status`)
-                        .addField('\u200B', repeat('-', `${config.valheim.name} Server Status`.length))
+                        .addField(repeat('-', 35), '\u200B')
                         .addField('Server IP', `\`${getServerIpAddress()}:${config.valheim.port}\``)
+                        .addField(repeat('-', 35), '\u200B')
                         .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.length > 0 ? valheimServer.connectedPlayers.map(p => `_${p.name}_`).join(', ') : '\u200B')
                         .setTimestamp()
                     );
