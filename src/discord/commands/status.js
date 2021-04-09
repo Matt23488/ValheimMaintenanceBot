@@ -3,6 +3,17 @@ const config = require('../../config');
 const { getServerIpAddress } = require('../../ip');
 const valheimServer = require('../../valheimServer');
 
+/**
+ * 
+ * @param {string} str 
+ * @param {number} length 
+ */
+function repeat(str, length) {
+    let result = '';
+    for (let i = 0; i < length; i++) result += str;
+    return result;
+}
+
 module.exports = {
     role: null,
 
@@ -20,8 +31,8 @@ module.exports = {
                 try {
                     message.channel.send(new Discord.MessageEmbed()
                         .setColor('#9900ff')
-                        .setTitle(`### ${config.valheim.name} Server Status`)
-                        .addField('\u200B', '---')
+                        .setTitle(`${config.valheim.name} Server Status`)
+                        .addField('\u200B', repeat('-', `${config.valheim.name} Server Status`.length))
                         .addField('Server IP', `\`${getServerIpAddress()}:${config.valheim.port}\``)
                         .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.length > 0 ? valheimServer.connectedPlayers.map(p => `_${p.name}_`).join(', ') : '\u200B')
                         .setTimestamp()
