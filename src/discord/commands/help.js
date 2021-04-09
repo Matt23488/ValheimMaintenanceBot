@@ -16,12 +16,19 @@ module.exports = {
      */
     execute: function (message, rest) {
         return new Promise(resolve => {
+            /**
+             * @type {{ name: string, description: string, role: string, (message: Discord.Message, rest: string) => Promise<void>: execute}[]}
+             */
             const commands = fs.readdirSync(__dirname).map(f => require(path.join(__dirname, f)));
 
-            // message.channel.send(new Discord.MessageEmbed()
-
-            // );
-            message.channel.send(`Testing:\n\n${commands.map(c => c.name).join('\n')}`);
+            message.channel.send(new Discord.MessageEmbed()
+                .setColor('#9900ff')
+                .setTitle('Command Help')
+                .setDescription('Lists all commands and what they do')
+                .addFields(commands.map(c => { return { name: c.name, value: c.description }; }))
+                .setTimestamp()
+            );
+            // message.channel.send(`Testing:\n\n${commands.map(c => c.name).join('\n')}`);
 
             resolve();
         });
