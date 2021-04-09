@@ -12,14 +12,26 @@ async function executeCommand(commandInfo, message) {
     const command = getCommand(commandInfo.name);
     if (!command) return;
 
-    if (message.author.id !== config.parentalUnit && message.channel.type === 'dm') {
-        message.reply(`only my parental unit can command me in dms.`);
-        return;
-    }
+    // if (message.author.id !== config.parentalUnit && message.channel.type === 'dm') {
+    //     message.reply(`only my parental unit can command me in dms.`);
+    //     return;
+    // }
 
-    if (command.role !== null && !message.member.roles.cache.has(command.role)) {
-        message.reply(`only those with the \`${message.guild.roles.cache.get(command.role).name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
-        return;
+    // if (message.author.id !== config.parentalUnit && command.role !== null && (message.author.id !== config.parentalUnit || !message.member.roles.cache.has(command.role))) {
+    //     message.reply(`only those with the \`${message.guild.roles.cache.get(command.role).name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
+    //     return;
+    // }
+
+    if (message.channel.type === 'dm') {
+        if (message.author.id !== config.parentalUnit) {
+            message.reply(`only my parental unit can command me in dms.`);
+            return;
+        }
+    } else {
+        if (command.role !== null && !message.member.roles.cache.has(command.role)) {
+            message.reply(`only those with the \`${message.guild.roles.cache.get(command.role).name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
+            return;
+        }
     }
 
     console.log(`${commandInfo.name} issued by ${message.author.tag}`);
