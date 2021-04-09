@@ -15,6 +15,7 @@ const { getServerIpAddress } = require('./ip');
 // Keep track of connected players using the server logs
 // Random event set:foresttrolls (detect these)
 // Fix issue with players dying and being re-added to the server.
+// !reboot should take a param ('bot', 'server', 'vm')
 
 const client = new Discord.Client();
 
