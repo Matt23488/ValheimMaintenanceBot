@@ -10,6 +10,6 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        await message.reply('pang');
+        await message.reply('pong');
     }
 };
