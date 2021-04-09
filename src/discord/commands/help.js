@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const config = require('../../config');
+const roles = require('../roles');
 
 module.exports = {
     name: 'help',
@@ -27,7 +28,8 @@ module.exports = {
                 .setTitle('Command Help')
                 .setDescription('Lists all commands and what they do')
                 .addField('\u200B', '\u200B')
-                .addFields(commands.filter(c => c.role === null || message.member.roles.cache.has(c.role)).map(c => {
+                // .addFields(commands.filter(c => c.role === null || message.member.roles.cache.has(c.role)).map(c => {
+                .addFields(commands.filter(c => roles.hasRole(message, c.role)).map(c => {
                     let name = config.discord.commandPrefix + c.name;
                     if (c.role !== null) {
                         name = `${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
