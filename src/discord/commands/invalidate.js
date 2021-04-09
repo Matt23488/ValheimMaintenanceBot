@@ -15,15 +15,17 @@ module.exports = {
      */
     execute: function (message, rest) {
         return new Promise(resolve => {
-            try {
-                delete require.cache[require.resolve(`./${rest}`)];
-            } catch (e) {
-                message.channel.send(`The ${config.discord.commandPrefix}${rest} command has not been used or does not exist.`);
-                resolve();
-                return;
-            }
+            rest.split(' ').forEach(command => {
+                try {
+                    delete require.cache[require.resolve(`./${command}`)];
+                } catch (e) {
+                    message.channel.send(`The ${config.discord.commandPrefix}${command} command has not been used or does not exist.`);
+                    return;
+                }
 
-            message.channel.send(`The ${config.discord.commandPrefix}${rest} command has been refreshed.`);
+                message.channel.send(`The ${config.discord.commandPrefix}${rest} command has been refreshed.`);
+            });
+
             resolve();
         });
     }
