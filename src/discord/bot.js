@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
-const config = require('./config');
-const valheimServer = require('./valheimServer');
-const commandManager = require('./discord/commandManager');
-const { getServerIpAddress } = require('./ip');
+const config = require('../config');
+const valheimServer = require('../valheimServer');
+const commandManager = require('./commandManager');
+const { getServerIpAddress } = require('../ip');
 
 // TODO:
 // !uptime
