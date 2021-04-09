@@ -26,6 +26,7 @@ module.exports = {
 
                 //const final = prefix + output.substring(output.length - 2000 - prefix.length - suffix.length);
 
+                console.log(final.length);
                 message.channel.send(final);
             } else message.channel.send(`\`${rest}\` is not a valid parameter of ${config.discord.commandPrefix}save.`);
         });
