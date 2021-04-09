@@ -34,7 +34,7 @@ module.exports = {
                 else final = prefix + output + suffix;
                 message.channel.send(final);
 
-                if (params[1].length > 0) fs.writeFileSync(path.join(__dirname, `../../../logs/${message.author.tag}_${params[1]}.txt`), output`);
+                if (params[1].length > 0) fs.writeFileSync(path.join(__dirname, `../../../logs/${message.author.username}_${params[1]}.txt`), output);
 
             } else message.channel.send(`\`${params[0]}\` is not a valid parameter of ${config.discord.commandPrefix}save.`);
         });
