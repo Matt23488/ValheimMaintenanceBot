@@ -5,7 +5,7 @@ module.exports = {
     name: 'Help',
     description: 'Displays this help bubble.',
 
-    roles: null,
+    role: null,
 
     /**
      * 
