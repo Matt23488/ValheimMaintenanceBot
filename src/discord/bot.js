@@ -4,12 +4,6 @@ const valheimServer = require('../valheimServer');
 const commandManager = require('./commandManager');
 const { getServerIpAddress } = require('../ip');
 
-// TODO:
-// !uptime
-// !backup world
-// !change world
-// Separate log files for server instances, delete after so many, etc
-// !reboot should take a param ('bot', 'server', 'vm')
 
 /**
  * @type {Discord.Client}
