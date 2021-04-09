@@ -48,16 +48,3 @@ class StringBuffer {
 };
 
 module.exports = StringBuffer;
-
-const test = new StringBuffer(25);
-for (let i = 0; i < 15; i++) {
-    test.add(i.toString());
-}
-
-console.log(test.toArray());
-
-for (let i = 15; i < 35; i++) {
-    test.add(i.toString());
-}
-
-console.log(test.toArray());
