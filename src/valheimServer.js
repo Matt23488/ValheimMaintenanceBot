@@ -87,10 +87,13 @@ module.exports = {
                             name: dataString.slice(prefixIndex + prefix.length, firstColon).trim()
                         };
 
-                        const existingPlayer = this.connectedPlayers.find(p => p.id === newPlayer.id);
-                        if (!existingPlayer) {
-                            this.connectedPlayers.push(newPlayer);
-                            playerConnectedListeners.forEach(l => l(newPlayer));
+                        // If id is 0 then it was a death, not a new connection.
+                        if (newPlayer.id !== '0') {
+                            const existingPlayer = this.connectedPlayers.find(p => p.id === newPlayer.id);
+                            if (!existingPlayer) {
+                                this.connectedPlayers.push(newPlayer);
+                                playerConnectedListeners.forEach(l => l(newPlayer));
+                            }
                         }
                     } else if (dataString.indexOf('Destroying abandoned non persistent zdo ') > 0) {
                         const prefix = 'Destroying abandoned non persistent zdo ';

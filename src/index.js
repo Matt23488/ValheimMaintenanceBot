@@ -13,9 +13,10 @@ const { getServerIpAddress } = require('./ip');
 // Separate log files for server instances, delete after so many, etc
 // Send errors to channel with the formatting thingy
 // Keep track of connected players using the server logs
-// Random event set:foresttrolls (detect these)
+// Random event set:foresttrolls (detect these) (army_bonemass is another)
 // Fix issue with players dying and being re-added to the server.
 // !reboot should take a param ('bot', 'server', 'vm')
+// Accept commands on a dm channel if possible to avoid spamming the server
 
 const client = new Discord.Client();
 

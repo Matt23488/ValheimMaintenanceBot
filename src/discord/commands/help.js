@@ -18,7 +18,7 @@ module.exports = {
     execute: function (message, rest) {
         return new Promise(resolve => {
             /**
-             * @type {{ name: string, description: string, role: string, (message: Discord.Message, rest: string) => Promise<void>: execute}[]}
+             * @type {{ name: string, description: string, role: string, (message: Discord.Message, rest: string) => Promise<void>: execute }[]}
              */
             const commands = fs.readdirSync(__dirname).map(f => require(path.join(__dirname, f)));
 
@@ -34,7 +34,6 @@ module.exports = {
                     }
                     return { name, value: c.description };
                 }))
-                .setTimestamp()
             );
             // message.channel.send(`Testing:\n\n${commands.map(c => c.name).join('\n')}`);
 
