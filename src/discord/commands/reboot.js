@@ -4,6 +4,8 @@ const roles = require('../roles');
 const { spawn } = require('child_process');
 
 module.exports = {
+    name: 'Reboot',
+    description: 'Reboots the VM. Saves and shuts down the Valheim server first if it\'s running.',
     role: roles.Admin,
 
 

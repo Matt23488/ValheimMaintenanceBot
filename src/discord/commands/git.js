@@ -4,6 +4,8 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 module.exports = {
+    name: 'Git',
+    description: 'Execute git commands. Currently supports:\n* pull - Executes a `git pull` command.',
     role: roles.Admin,
 
     /**

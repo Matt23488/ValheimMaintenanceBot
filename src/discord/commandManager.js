@@ -29,7 +29,7 @@ async function executeCommand(commandInfo, message) {
 /**
  * 
  * @param {string} commandName 
- * @returns {{ role: string, execute: (rest: string, message: Discord.Message) => Promise<void> }}
+ * @returns {{ name: string, description: string, role: string, execute: (rest: string, message: Discord.Message) => Promise<void> }}
  */
 function getCommand(commandName) {
     try {

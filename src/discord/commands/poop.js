@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 // const config = require('../../config');
 
 module.exports = {
+    name: 'Poop',
+    description: 'Have the bot insult you.',
     role: null,
 
     /**

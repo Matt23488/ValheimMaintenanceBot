@@ -3,6 +3,8 @@ const config = require('../../config');
 const roles = require('../roles');
 
 module.exports = {
+    name: 'Invalidate',
+    description: `In the event that a command has been updated, this command will cause the bot to pick up the change. Example: \`${config.discord.commandPrefix}invalidate help\` would pick up any changes to the \`${config.discord.commandPrefix}help\` command.`,
     role: roles.Admin,
 
     /**

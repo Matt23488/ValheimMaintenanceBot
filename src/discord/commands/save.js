@@ -6,6 +6,8 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
+    name: 'Save',
+    description: `Causes the bot show some arbitrary output in the channel. Optionally saves the output to a file on the VM if specified. Currently supports:\n* stdout - The standard output of the Valheim server. Example: \`${config.discord.commandPrefix}${this.save} stdout test.txt\` will save the last few data chunks to the file \`text.txt\` on the VM.`,
     role: roles.Admin,
 
     /**
