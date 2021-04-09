@@ -3,6 +3,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const _ = require('lodash');
 const config = require('./config');
+const StringBuffer = require('./stringBuffer');
 
 
 const batchFileText = fs.readFileSync(config.serverWorkingDirectory + config.serverBatchFile).toString();
@@ -35,6 +36,11 @@ module.exports = {
     isRunning: () => serverProc && serverProc.exitCode === null,
 
     /**
+     * @type {StringBuffer}
+     */
+    stdoutBuffer: null,
+
+    /**
      * @returns {Promise<void>}
      */
     start: function () {
@@ -60,8 +66,11 @@ module.exports = {
 
             this.connectedPlayers = [];
             let startEventSent = false;
+            this.stdoutBuffer = new StringBuffer(25);
             serverProc.stdout.on('data', data => {
-                fs.appendFileSync(path.join(__dirname, config.valheim.stdout), `${data.toString()}`);
+                // fs.appendFileSync(path.join(__dirname, config.valheim.stdout), `${data.toString()}`);
+                this.stdoutBuffer.add(data.toString());
+
 
                 if (data instanceof Buffer) {
                     const dataString = data.toString();
