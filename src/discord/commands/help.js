@@ -31,7 +31,7 @@ module.exports = {
                 // .addFields(commands.filter(c => c.role === null || message.member.roles.cache.has(c.role)).map(c => {
                 .addFields(commands.filter(c => roles.hasRole(message, c.role)).map(c => {
                     let name = config.discord.commandPrefix + c.name;
-                    if (c.role !== null) {
+                    if (c.role !== null && message.guild !== null) {
                         name = `${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
                     }
                     return { name, value: c.description };
