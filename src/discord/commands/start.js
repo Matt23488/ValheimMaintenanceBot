@@ -4,7 +4,7 @@ const { getServerIpAddress } = require('../../ip');
 const valheimServer = require('../../valheimServer');
 
 module.exports = {
-    name: 'Start',
+    name: 'start',
     description: 'Starts the Valheim server if it\'s not already running.',
     role: null,
 

@@ -15,7 +15,7 @@ function repeat(str, length) {
 }
 
 module.exports = {
-    name: 'Status',
+    name: 'status',
     description: 'Displays general information about the Valheim server, such as the IP Address and who is playing.',
     role: null,
 

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'Ping',
+    name: 'ping',
     description: 'Have the bot reply "pong" to you. Mainly used to test that the bot is responsive.',
     role: null,
 

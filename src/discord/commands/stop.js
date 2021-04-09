@@ -4,7 +4,7 @@ const valheimServer = require('../../valheimServer');
 const roles = require('../roles');
 
 module.exports = {
-    name: 'Stop',
+    name: 'stop',
     description: 'Saves and shuts down the Valheim server if it\'s running.',
     role: roles.Admin,
 

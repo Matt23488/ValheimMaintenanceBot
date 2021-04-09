@@ -1,9 +1,10 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const config = require('../../config');
 
 module.exports = {
-    name: 'Help',
+    name: 'help',
     description: 'Displays this help bubble.',
 
     role: null,
@@ -25,10 +26,11 @@ module.exports = {
                 .setColor('#9900ff')
                 .setTitle('Command Help')
                 .setDescription('Lists all commands and what they do')
+                .addField({ name: '\u200B', value: '\u200B' })
                 .addFields(commands.map(c => {
                     let name = c.name;
                     if (c.role !== null) {
-                        name = `${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
+                        name = `${config.discord.commandPrefix}${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
                     }
                     return { name, value: c.description };
                 }))
