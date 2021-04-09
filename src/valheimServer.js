@@ -73,12 +73,7 @@ module.exports = {
                 const dataString = data.toString();
                 this.stdoutBuffer.add(dataString);
 
-                // if (data instanceof Buffer) {
-                //     triggerLoader.handleOutput(data.toString());
-                // }
 
-
-                // if (data instanceof Buffer) {
                 if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
                     startEventSent = true;
                     resolve();
@@ -111,7 +106,6 @@ module.exports = {
                         playerDisconnectedListeners.forEach(l => l(player));
                     }
                 } else triggerLoader.handleOutput(dataString);
-                // }
 
             });
         });
