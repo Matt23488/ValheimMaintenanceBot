@@ -28,9 +28,9 @@ module.exports = {
                 .setDescription('Lists all commands and what they do')
                 .addField({ name: '\u200B', value: '\u200B' })
                 .addFields(commands.map(c => {
-                    let name = c.name;
+                    let name = config.discord.commandPrefix + c.name;
                     if (c.role !== null) {
-                        name = `${config.discord.commandPrefix}${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
+                        name = `${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
                     }
                     return { name, value: c.description };
                 }))
