@@ -15,7 +15,18 @@ module.exports = {
     execute: function (message, rest) {
         return new Promise(resolve => {
             if (rest === 'stdout') {
-                message.channel.send(`\`stdout\` output:\n\`\`\`${valheimServer.stdoutBuffer.toArray().join('\n')}\`\`\``)
+                const prefix = '`stdout` output:\n```';
+                const suffix = '```';
+                const output = valheimServer.stdoutBuffer.toArray().join('\n');
+                const totalLength = prefix.length + suffix.length + output.length;
+                let final;
+
+                if (totalLength > 2000) final = prefix + '...' + output.substring(output.length - 2000 - prefix.length - suffix.length + 3) + suffix;
+                else final = prefix + output + suffix;
+
+                //const final = prefix + output.substring(output.length - 2000 - prefix.length - suffix.length);
+
+                message.channel.send(final);
             } else message.channel.send(`\`${rest}\` is not a valid parameter of ${config.discord.commandPrefix}save.`);
         });
     }
