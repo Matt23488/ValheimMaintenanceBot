@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     name: 'Help',
@@ -15,7 +16,7 @@ module.exports = {
      */
     execute: function (message, rest) {
         return new Promise(resolve => {
-            const commands = fs.readdirSync(__dirname).map(f => require(f));
+            const commands = fs.readdirSync(__dirname).map(f => require(path.join(__dirname, f)));
 
             // message.channel.send(new Discord.MessageEmbed()
 
