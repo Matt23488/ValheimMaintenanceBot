@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = {
     name: 'git',
-    description: 'Execute git commands. Currently supports:\n\u200B\u200B* `pull` - Executes a `git pull` command.',
+    description: 'Execute git commands. Currently supports:\t* `pull` - Executes a `git pull` command.',
     role: roles.Admin,
 
     /**
