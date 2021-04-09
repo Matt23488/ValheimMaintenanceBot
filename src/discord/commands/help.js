@@ -25,7 +25,13 @@ module.exports = {
                 .setColor('#9900ff')
                 .setTitle('Command Help')
                 .setDescription('Lists all commands and what they do')
-                .addFields(commands.map(c => { return { name: c.name, value: c.description }; }))
+                .addFields(commands.map(c => {
+                    let name = c.name;
+                    if (c.role !== null) {
+                        name = `${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
+                    }
+                    return { name, value: c.description };
+                }))
                 .setTimestamp()
             );
             // message.channel.send(`Testing:\n\n${commands.map(c => c.name).join('\n')}`);
