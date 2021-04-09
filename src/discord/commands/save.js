@@ -21,7 +21,7 @@ module.exports = {
                 const totalLength = prefix.length + suffix.length + output.length;
                 let final;
 
-                if (totalLength > 2000) final = prefix + '...' + output.substring(output.length - 2000 - prefix.length - suffix.length + 3) + suffix;
+                if (totalLength > 2000) final = prefix + '...' + output.substring(output.length - (2000 - prefix.length - suffix.length - 3)) + suffix;
                 else final = prefix + output + suffix;
 
                 //const final = prefix + output.substring(output.length - 2000 - prefix.length - suffix.length);
