@@ -15,12 +15,12 @@ module.exports = {
      */
     execute: function (message, rest) {
         return new Promise(resolve => {
-            const commandFiles = fs.readdirSync(__dirname);
+            const commands = fs.readdirSync(__dirname).map(f => require(f));
 
             // message.channel.send(new Discord.MessageEmbed()
 
             // );
-            message.channel.send(`Testing:\n\n${commandFiles.join('\n')}`);
+            message.channel.send(`Testing:\n\n${commands.map(c => c.name).join('\n')}`);
 
             resolve();
         });
