@@ -9,7 +9,7 @@ const { getClient } = require('../bot');
 
 module.exports = {
     name: 'reboot',
-    description: `Reboots something. Currently supports:\n * \`bot\` - Reboots me.\n * \`valheim\` - Reboots ${config.valheim.name}.\n * \`vm\` - Reboots the virtual machine. _Will require RDP to launch me and ${config.valheim.name}_.`,
+    description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${config.valheim.name}.\n  * \`vm\` - Reboots the virtual machine. _Will require RDP to launch me and ${config.valheim.name}_.`,
     role: roles.Admin,
 
 
