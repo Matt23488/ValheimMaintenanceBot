@@ -27,7 +27,7 @@ module.exports = {
                 .setTitle('Command Help')
                 .setDescription('Lists all commands and what they do')
                 .addField('\u200B', '\u200B')
-                .addFields(commands.map(c => {
+                .addFields(commands.filter(c => c.role === null || message.member.roles.cache.has(c.role)).map(c => {
                     let name = config.discord.commandPrefix + c.name;
                     if (c.role !== null) {
                         name = `${name} - _${message.guild.roles.cache.get(c.role).name} role only_`;
