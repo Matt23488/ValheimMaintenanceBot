@@ -26,7 +26,7 @@ module.exports = {
                 .setColor('#9900ff')
                 .setTitle('Command Help')
                 .setDescription('Lists all commands and what they do')
-                .addField({ name: '\u200B', value: '\u200B' })
+                .addField('\u200B', '\u200B')
                 .addFields(commands.map(c => {
                     let name = config.discord.commandPrefix + c.name;
                     if (c.role !== null) {
