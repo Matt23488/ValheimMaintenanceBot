@@ -23,7 +23,7 @@ module.exports = {
                     return;
                 }
 
-                message.channel.send(`The ${config.discord.commandPrefix}${rest} command has been refreshed.`);
+                message.channel.send(`The ${config.discord.commandPrefix}${command} command has been refreshed.`);
             });
 
             resolve();
