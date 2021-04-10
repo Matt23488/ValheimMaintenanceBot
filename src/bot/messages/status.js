@@ -23,11 +23,11 @@ module.exports =  {
          * @type {{ isRunning: boolean, name: string, ip: string, connectedPlayers: string[] }}
          */
         const statusInfo = JSON.parse(data);
+        const channel = discordBot.getClient().channels.cache.get(config.defaultChannel);
 
-        if (!statusInfo.isRunning) message.channel.send('The server is not currently started. Use `!start` to start the server.');
+        if (!statusInfo.isRunning) channel.send('The server is not currently started. Use `!start` to start the server.');
         else {
             try {
-                const channel = discordBot.getClient().channels.cache.get(config.defaultChannel);
                 const title = `${statusInfo.name} Server Status`;
                 channel.send(new Discord.MessageEmbed()
                     .setColor('#9900ff')
