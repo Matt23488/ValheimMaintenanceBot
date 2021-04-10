@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const roles = require('../roles');
-const valheimServer = require('../../valheimServer');
+// const valheimServer = require('../../valheimServer');
+const wsClient = require('../../wsClient');
 
 module.exports = {
     name: 'kill',
@@ -14,11 +15,13 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        if (valheimServer.isRunning()) {
-            message.channel.send('Stopping server...');
-            await valheimServer.stop();
-            await message.channel.send('Server stopped.');
-        }
+        // if (valheimServer.isRunning()) {
+        //     message.channel.send('Stopping server...');
+        //     await valheimServer.stop();
+        //     await message.channel.send('Server stopped.');
+        // }
+
+        if (wsClient.isConnected()) wsClient.getWsClient().close();
 
         await message.channel.send('bye');
         message.client.destroy();

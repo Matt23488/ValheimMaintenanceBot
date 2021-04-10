@@ -25,9 +25,9 @@ module.exports = {
                     objPath = __dirname;
                     prefix = config.discord.commandPrefix;
                     break;
-                case 'trigger':
-                    objPath = '../../triggers';
-                    break;
+                // case 'trigger':
+                //     objPath = '../../triggers';
+                //     break;
                 default:
                     message.channel.send(`I don't know how to invalidate a(n) \`${args[0]}\`.`);
                     resolve();

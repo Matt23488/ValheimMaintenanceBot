@@ -18,7 +18,7 @@ module.exports = {
         return new Promise(resolve => {
             if (rest === 'pull') {
                 let output = '';
-                const gitPull = spawn('git', [ rest ], { cwd: path.join(__dirname, '..') });
+                const gitPull = spawn('git', [ rest ], { cwd: path.join(__dirname, '../../../..') });
                 gitPull.stdout.on('data', data => {
                     output = output + '\n' + data.toString();
                 });

@@ -1,11 +1,11 @@
 const fs = require('fs');
-const path = require('path');
 const { spawn } = require('child_process');
 const _ = require('lodash');
 const config = require('../config');
 const StringBuffer = require('../stringBuffer');
-const triggerLoader = require('../triggerLoader');
-const { getClient } = require('../bot/discord/bot');
+const triggerLoader = require('./triggerLoader');
+const { getServer } = require('./wsServer');
+const { getServerIpAddress } = require('../ip');
 
 
 const batchFileText = fs.readFileSync(config.serverWorkingDirectory + config.serverBatchFile).toString();
@@ -18,24 +18,27 @@ const steamAppId = batchFileText.slice(steamAppIdRef + steamAppIdRefText.length,
  * @type {import('child_process').ChildProcessWithoutNullStreams}
  */
 let serverProc;
-
-/**
- * @type {Array<({ id: string, name: string }) => void>}
- */
-const playerConnectedListeners = [];
-
-/**
- * @type {Array<({ id: string, name: string }) => void>}
- */
-const playerDisconnectedListeners = [];
+let started = false;
+let ready = false;
 
 module.exports = {
+    statuses: {
+        stopped: 0,
+        starting: 1,
+        ready: 2
+    },
+
     /**
      * @type {{ id: string, name: string }[]}
      */
     connectedPlayers: [],
 
     isRunning: () => serverProc && serverProc.exitCode === null,
+    getStatus: function () {
+        if (ready) return this.statuses.ready;
+        if (started) return this.statuses.starting;
+        return this.statuses.stopped;
+    },
 
     /**
      * @type {StringBuffer}
@@ -43,76 +46,51 @@ module.exports = {
     stdoutBuffer: null,
 
     /**
-     * @returns {Promise<void>}
+     * @returns {void}
      */
     start: function () {
-        return new Promise(resolve => {
-            if (this.isRunning()) resolve();
+        if (this.isRunning()) return;
 
-            serverProc = spawn(
-                config.serverExecutable,
-                [
-                    '-nographics',
-                    '-batchmode',
-                    `-name "${config.valheim.name}"`,
-                    `-port ${config.valheim.port}`,
-                    `-world "${config.valheim.world}"`,
-                    `-password "${config.valheim.password}"`,
-                    '-public 0'
-                ], {
-                    shell: true,
-                    cwd: config.serverWorkingDirectory,
-                    env: _.extend(process.env, { SteamAppId: steamAppId })
-                }
-            );
+        serverProc = spawn(
+            config.serverExecutable,
+            [
+                '-nographics',
+                '-batchmode',
+                `-name "${config.valheim.name}"`,
+                `-port ${config.valheim.port}`,
+                `-world "${config.valheim.world}"`,
+                `-password "${config.valheim.password}"`,
+                '-public 0'
+            ], {
+                shell: true,
+                cwd: config.serverWorkingDirectory,
+                env: _.extend(process.env, { SteamAppId: steamAppId })
+            }
+        );
+        started = true;
+        this.connectedPlayers = [];
 
-            serverProc.stderr.on('data', data => {
-                getClient().channels.cache.get(config.defaultChannel).send(`<@${config.parentalUnit}>: Valheim reported an error:\n\`\`\`${data.toString()}\`\`\``);
+        serverProc.stderr.on('data', data => {
+            getServer().clients.forEach(ws => {
+                ws.send(`stderr ${data.toString()}`);
+            });
+        });
+
+        let startEventSent = false;
+        serverProc.stdout.on('data', data => {
+            const dataString = data.toString();
+
+            getServer().clients.forEach(ws => {
+                ws.send(`stdout ${data.toString()}`);
             });
 
-            this.connectedPlayers = [];
-            let startEventSent = false;
-            this.stdoutBuffer = new StringBuffer(25);
-            serverProc.stdout.on('data', data => {
-                // fs.appendFileSync(path.join(__dirname, config.valheim.stdout), `${data.toString()}`);
-                const dataString = data.toString();
-                this.stdoutBuffer.add(dataString);
-
-
-                if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
-                    startEventSent = true;
-                    resolve();
-                } else if (dataString.indexOf('Got character ZDOID from ') > 0) {
-                    const prefix = 'Got character ZDOID from ';
-                    const prefixIndex = dataString.indexOf(prefix);
-                    const firstColon = dataString.indexOf(':', prefixIndex + prefix.length);
-                    const secondColon = dataString.indexOf(':', firstColon + 1);
-                    const newPlayer = {
-                        id: dataString.slice(firstColon + 1, secondColon).trim(),
-                        name: dataString.slice(prefixIndex + prefix.length, firstColon).trim()
-                    };
-
-                    // If id is 0 then it was a death, not a new connection.
-                    if (newPlayer.id !== '0') {
-                        const existingPlayer = this.connectedPlayers.find(p => p.id === newPlayer.id);
-                        if (!existingPlayer) {
-                            this.connectedPlayers.push(newPlayer);
-                            playerConnectedListeners.forEach(l => l(newPlayer));
-                        }
-                    }
-                } else if (dataString.indexOf('Destroying abandoned non persistent zdo ') > 0) {
-                    const prefix = 'Destroying abandoned non persistent zdo ';
-                    const prefixIndex = dataString.indexOf(prefix);
-                    const colon = dataString.indexOf(':', prefixIndex + prefix.length);
-                    const id = dataString.slice(prefixIndex + prefix.length, colon).trim();
-                    const player = this.connectedPlayers.find(p => p.id === id);
-                    if (player) {
-                        this.connectedPlayers = this.connectedPlayers.filter(p => p.id !== id);
-                        playerDisconnectedListeners.forEach(l => l(player));
-                    }
-                } else triggerLoader.handleOutput(dataString);
-
-            });
+            if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
+                startEventSent = true;
+                ready = true;
+                getServer().clients.forEach(ws => {
+                    ws.send(`echo Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+                });
+            } else triggerLoader.handleOutput(dataString);
         });
     },
 
@@ -120,49 +98,12 @@ module.exports = {
      * @returns {Promise<void>}
      */
     stop: function () {
-        return new Promise(resolve => {
-            if (!this.isRunning()) {
-                resolve();
-                return;
-            }
+        if (!this.isRunning()) return;
 
-            serverProc.on('close', (code, signal) => {
-                console.log(`Valheim server child process exited with code ${code} (${signal})`);
-                resolve();
-            });
-            spawn('taskkill', [ '/IM', config.serverExecutable ]);
+        serverProc.on('close', (code, signal) => {
+            console.log(`Valheim server child process exited with code ${code} (${signal})`);
+            resolve();
         });
-    },
-
-    /**
-     * 
-     * @param {({ id: string, name: string }) => void} callback 
-     */
-    addPlayerConnectedListener: function (callback) {
-        playerConnectedListeners.push(callback);
-    },
-
-    /**
-     * 
-     * @param {({ id: string, name: string }) => void} callback 
-     */
-    removePlayerConnectedListener: function (callback) {
-        playerConnectedListeners = playerConnectedListeners.filter(l => l !== callback);
-    },
-
-    /**
-     * 
-     * @param {({ id: string, name: string }) => void} callback 
-     */
-    addPlayerDisconnectedListener: function (callback) {
-        playerDisconnectedListeners.push(callback);
-    },
-
-    /**
-     * 
-     * @param {({ id: string, name: string }) => void} callback 
-     */
-    removePlayerDisconnectedListener: function (callback) {
-        playerDisconnectedListeners = playerDisconnectedListeners.filter(l => l !== callback);
+        spawn('taskkill', [ '/IM', config.serverExecutable ]);
     }
 };

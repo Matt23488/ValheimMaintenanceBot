@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const config = require('../../../config');
 const { getServerIpAddress } = require('../../../ip');
 const valheimServer = require('../../valheimServer');
+const wsClient = require('../../wsClient');
 
 module.exports = {
     name: 'start',
@@ -17,8 +18,9 @@ module.exports = {
         if (valheimServer.isRunning()) message.channel.send(`The server is already running at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
         else {
             message.channel.send('Starting server...');
-            await valheimServer.start();
-            message.channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+            // wsClient.sendMessage('start');
+            // await valheimServer.start();
+            // message.channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
         }
     }
 };

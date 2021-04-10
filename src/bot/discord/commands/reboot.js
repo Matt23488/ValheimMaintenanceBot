@@ -5,7 +5,9 @@ const roles = require('../roles');
 const { spawn } = require('child_process');
 const { getServerIpAddress } = require('../../../ip');
 const config = require('../../../config');
-const { getClient } = require('../bot');
+// const { getClient } = require('../bot');
+const discordBot = require('../bot');
+const wsClient = require('../../wsClient');
 
 module.exports = {
     name: 'reboot',
@@ -29,29 +31,31 @@ module.exports = {
         // spawn('shutdown', [ '/r' ], { detached: true });
         // message.client.destroy();
 
-        async function stopServer() {
-            const stopServer = valheimServer.isRunning();
-            if (stopServer) message.channel.send('Stopping server...');
-            await valheimServer.stop();
-            if (stopServer) message.channel.send('Server stopped.');
-        }
+        // async function stopServer() {
+        //     const stopServer = valheimServer.isRunning();
+        //     if (stopServer) message.channel.send('Stopping server...');
+        //     await valheimServer.stop();
+        //     if (stopServer) message.channel.send('Server stopped.');
+        // }
 
         switch (rest) {
             case 'bot':
-                await stopServer();
+                // await stopServer();
                 await message.channel.send('BRB');
-                getClient().destroy();
-                const dir = path.join(__dirname, "../../..");
+                discordBot.getClient().destroy();
+                const dir = path.join(__dirname, '../../../..');
                 spawn(path.join(dir, 'startbot.bat'), [], { cwd: dir, detached: true });
                 break;
             case 'valheim':
-                await stopServer();
-                message.channel.send('Starting server...');
-                await valheimServer.start();
-                message.channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+                wsClient.sendMessage('reboot');
+                // await stopServer();
+                // message.channel.send('Starting server...');
+                // await valheimServer.start();
+                // message.channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
                 break;
             case 'vm':
-                await stopServer();
+                wsClient.sendMessage('shutdown');
+                // await stopServer();
                 await message.channel.send('Rebooting VM. See you folks on the other side.');
                 spawn('shutdown', [ '/r' ], { detached: true });
                 message.client.destroy();

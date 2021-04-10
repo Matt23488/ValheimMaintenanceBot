@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const config = require('../../../config');
 const { getServerIpAddress } = require('../../../ip');
 const valheimServer = require('../../valheimServer');
+const wsClient = require('../../wsClient');
 
 /**
  * 
@@ -28,21 +29,23 @@ module.exports = {
      */
     execute: function (message, rest) {
         return new Promise(resolve => {
-            if (!valheimServer.isRunning()) message.channel.send('The server is not currently started. Use `!start` to start the server.');
-            else {
-                try {
-                    const title = `${config.valheim.name} Server Status`;
-                    message.channel.send(new Discord.MessageEmbed()
-                        .setColor('#9900ff')
-                        .setTitle(`\`${title}\``)
-                        .addField(`\`${repeat('-', title.length)}\``, '\u200B')
-                        .addField('Server IP', `\`${getServerIpAddress()}:${config.valheim.port}\``)
-                        .addField(`\`${repeat('-', title.length)}\``, '\u200B')
-                        .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.length > 0 ? valheimServer.connectedPlayers.map(p => `_${p.name}_`).join(', ') : '\u200B')
-                        .setTimestamp()
-                    );
-                } catch (e) { }
-            }
+            // if (!valheimServer.isRunning()) message.channel.send('The server is not currently started. Use `!start` to start the server.');
+            // else {
+            //     try {
+            //         const title = `${config.valheim.name} Server Status`;
+            //         message.channel.send(new Discord.MessageEmbed()
+            //             .setColor('#9900ff')
+            //             .setTitle(`\`${title}\``)
+            //             .addField(`\`${repeat('-', title.length)}\``, '\u200B')
+            //             .addField('Server IP', `\`${getServerIpAddress()}:${config.valheim.port}\``)
+            //             .addField(`\`${repeat('-', title.length)}\``, '\u200B')
+            //             .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.length > 0 ? valheimServer.connectedPlayers.map(p => `_${p.name}_`).join(', ') : '\u200B')
+            //             .setTimestamp()
+            //         );
+            //     } catch (e) { }
+            // }
+            // resolve();
+            wsClient.sendMessage('status');
             resolve();
         });
     }
