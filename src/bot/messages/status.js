@@ -35,7 +35,7 @@ module.exports =  {
                     .addField(repeat('-', 50), '\u200B')
                     .addField('Server IP', `\`${statusInfo.ip}\``)
                     .addField(repeat('-', 50), '\u200B')
-                    .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected:`, statusInfo.connectedPlayers.length > 0 ? statusInfo.connectedPlayers.map(p => `_${p}_`).join(', ') : '\u200B')
+                    .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`, statusInfo.connectedPlayers.map(p => `_${p}_`).join(', '))
                     .setTimestamp()
                 );
             } catch (e) { }
