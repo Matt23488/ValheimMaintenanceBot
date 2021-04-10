@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const config = require('../../config');
+const config = require('../../../config');
 const roles = require('../roles');
 
 module.exports = {

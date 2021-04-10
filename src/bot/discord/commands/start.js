@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const config = require('../../config');
-const { getServerIpAddress } = require('../../ip');
+const config = require('../../../config');
+const { getServerIpAddress } = require('../../../ip');
 const valheimServer = require('../../valheimServer');
 
 module.exports = {

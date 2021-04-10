@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../../config');
+const config = require('../../../config');
 const valheimServer = require('../../valheimServer');
 const roles = require('../roles');
 const fs = require('fs');

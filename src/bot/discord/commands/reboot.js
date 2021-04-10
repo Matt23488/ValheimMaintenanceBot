@@ -3,8 +3,8 @@ const path = require('path');
 const valheimServer = require('../../valheimServer');
 const roles = require('../roles');
 const { spawn } = require('child_process');
-const { getServerIpAddress } = require('../../ip');
-const config = require('../../config');
+const { getServerIpAddress } = require('../../../ip');
+const config = require('../../../config');
 const { getClient } = require('../bot');
 
 module.exports = {

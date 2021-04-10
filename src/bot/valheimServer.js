@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const _ = require('lodash');
-const config = require('./config');
-const StringBuffer = require('./stringBuffer');
-const triggerLoader = require('./triggerLoader');
+const config = require('../config');
+const StringBuffer = require('../stringBuffer');
+const triggerLoader = require('../triggerLoader');
 const { getClient } = require('./discord/bot');
 
 

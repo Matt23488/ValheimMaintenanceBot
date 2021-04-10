@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../../config');
+const config = require('../../../config');
 
 const todoList = [
     { name: 'uptime', value: `I want to keep track of server uptime and player playtime. This will be displayed as part of the \`${config.discord.commandPrefix}status\` command.` },
