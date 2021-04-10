@@ -105,7 +105,7 @@ module.exports = {
      * @returns {Promise<void>}
      */
     stop: function () {
-        if (!this.isRunning()) return;
+        if (getStatus() === statuses.stopped) return;
 
         serverProc.on('close', (code, signal) => {
             console.log(`Valheim server child process exited with code ${code} (${signal})`);
