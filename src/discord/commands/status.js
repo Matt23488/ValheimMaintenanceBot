@@ -31,12 +31,13 @@ module.exports = {
             if (!valheimServer.isRunning()) message.channel.send('The server is not currently started. Use `!start` to start the server.');
             else {
                 try {
+                    const title = `${config.valheim.name} Server Status`;
                     message.channel.send(new Discord.MessageEmbed()
                         .setColor('#9900ff')
-                        .setTitle(`${config.valheim.name} Server Status`)
-                        .addField(repeat('-', 35), '\u200B')
+                        .setTitle(`\`${title}\``)
+                        .addField(`\`${repeat('-', title.length)}\``, '\u200B')
                         .addField('Server IP', `\`${getServerIpAddress()}:${config.valheim.port}\``)
-                        .addField(repeat('-', 35), '\u200B')
+                        .addField(`\`${repeat('-', title.length)}\``, '\u200B')
                         .addField(`${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} connected:`, valheimServer.connectedPlayers.length > 0 ? valheimServer.connectedPlayers.map(p => `_${p.name}_`).join(', ') : '\u200B')
                         .setTimestamp()
                     );
