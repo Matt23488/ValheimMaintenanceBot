@@ -86,8 +86,10 @@ module.exports = {
             const dataString = data.toString();
 
             getServer().clients.forEach(ws => {
-                ws.send(`stdout ${data.toString()}`);
+                ws.send(`stdout ${dataString}`);
             });
+
+            console.log(dataString);
 
             if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
                 startEventSent = true;

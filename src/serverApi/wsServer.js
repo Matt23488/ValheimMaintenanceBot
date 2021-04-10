@@ -27,8 +27,6 @@ module.exports = {
                     console.log(`Unknown message from wsServer: ${message}`);
                 }
             });
-
-            ws.send('Hello! Message From Server!!');
         });
     }
 };
