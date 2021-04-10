@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const _ = require('lodash');
-const config = require('../src/config');
-const StringBuffer = require('../src/stringBuffer');
-const triggerLoader = require('../src/triggerLoader');
-const { getClient } = require('../src/discord/bot');
+const config = require('../config');
+const StringBuffer = require('../stringBuffer');
+const triggerLoader = require('../triggerLoader');
+const { getClient } = require('../bot/discord/bot');
 
 
 const batchFileText = fs.readFileSync(config.serverWorkingDirectory + config.serverBatchFile).toString();
