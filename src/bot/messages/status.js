@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const config = require('../../config.js');
 const discordBot = require('../discord/bot.js');
 
