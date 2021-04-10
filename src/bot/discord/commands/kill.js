@@ -21,7 +21,7 @@ module.exports = {
         //     await message.channel.send('Server stopped.');
         // }
 
-        if (wsClient.isConnected()) wsClient.getWsClient().close();
+        if (wsClient.isConnected()) wsClient.destroy();//wsClient.getWsClient().close();
 
         await message.channel.send('bye');
         message.client.destroy();

@@ -8,6 +8,7 @@ const discordBot = require('./discord/bot');
 let connection;
 
 let connected = false;
+let tryReconnect = true;
 
 /**
  * @returns {void}
@@ -25,7 +26,7 @@ function connect() {
         
             connection.onclose = e => {
                 connected = false;
-                setTimeout(connect, 10000);
+                if (tryReconnect) setTimeout(connect, 10000);
             }
         
             connection.onerror = error => {
@@ -63,6 +64,11 @@ function connect() {
     // });
 }
 
+function destroy() {
+    tryReconnect = false;
+    connection.close();
+}
+
 module.exports = {
     isConnected: () => connected,
     getWsClient: () => connection,
@@ -71,5 +77,6 @@ module.exports = {
 
         connection.send(message);
     },
-    connect
+    connect,
+    destroy
 };

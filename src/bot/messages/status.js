@@ -19,7 +19,6 @@ module.exports =  {
      * @param {string} data 
      */
     execute: function (data) {
-        //discordBot.getClient().channels.cache.get(config.defaultChannel).send(data);
         /**
          * @type {{ isRunning: boolean, name: string, ip: string, connectedPlayers: string[] }}
          */
