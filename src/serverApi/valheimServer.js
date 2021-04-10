@@ -21,24 +21,28 @@ let serverProc;
 let started = false;
 let ready = false;
 
+const statuses = {
+    stopped: 0,
+    starting: 1,
+    ready: 2
+};
+
+function getStatus() {
+    if (ready) return statuses.ready;
+    if (started) return statuses.starting;
+    return statuses.stopped;
+}
+
 module.exports = {
-    statuses: {
-        stopped: 0,
-        starting: 1,
-        ready: 2
-    },
+    statuses,
 
     /**
      * @type {{ id: string, name: string }[]}
      */
     connectedPlayers: [],
 
-    isRunning: () => serverProc && serverProc.exitCode === null,
-    getStatus: function () {
-        if (ready) return this.statuses.ready;
-        if (started) return this.statuses.starting;
-        return this.statuses.stopped;
-    },
+    // isRunning: () => serverProc && serverProc.exitCode === null,
+    getStatus,
 
     /**
      * @type {StringBuffer}
@@ -50,7 +54,7 @@ module.exports = {
      */
     start: function () {
         //if (this.isRunning()) return;
-        if (this.getStatus() !== this.statuses.stopped) return;
+        if (getStatus() !== statuses.stopped) return;
 
         serverProc = spawn(
             config.serverExecutable,
