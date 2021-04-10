@@ -38,11 +38,11 @@ module.exports = {
                 try {
                     delete require.cache[require.resolve(path.join(objPath, command))];
                 } catch (e) {
-                    message.channel.send(`The \`${prefix}${args[0]}\` ${args[0]} does not exist.`);
+                    message.channel.send(`The \`${prefix}${command}\` ${args[0]} does not exist.`);
                     return;
                 }
 
-                message.channel.send(`The \`${prefix}${args[0]}\` ${args[0]} has been refreshed.`);
+                message.channel.send(`The \`${prefix}${command}\` ${args[0]} has been refreshed.`);
             });
             // rest.split(' ').forEach(command => {
             //     try {
