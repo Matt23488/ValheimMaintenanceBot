@@ -18,7 +18,7 @@ module.exports = {
 
         const prefixIndex = text.indexOf(prefix);
         const colon = text.indexOf(':', prefixIndex + prefix.length);
-        const id = dataString.slice(prefixIndex + prefix.length, colon).trim();
+        const id = text.slice(prefixIndex + prefix.length, colon).trim();
         const player = valheimServer.connectedPlayers.find(p => p.id === id);
         if (!player) return { canHandle: false, data: null };
 
