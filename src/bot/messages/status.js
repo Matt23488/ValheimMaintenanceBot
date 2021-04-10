@@ -1,3 +1,6 @@
+const config = require('../../config.js');
+const discordBot = require('../discord/bot.js');
+
 /**
  * 
  * @param {string} str 
@@ -24,8 +27,9 @@ module.exports =  {
         if (!statusInfo.isRunning) message.channel.send('The server is not currently started. Use `!start` to start the server.');
         else {
             try {
+                const channel = discordBot.getClient().channels.cache.get(config.defaultChannel);
                 const title = `${statusInfo.name} Server Status`;
-                message.channel.send(new Discord.MessageEmbed()
+                channel.send(new Discord.MessageEmbed()
                     .setColor('#9900ff')
                     .setTitle(`\`${title}\``)
                     .addField(repeat('-', 50), '\u200B')
