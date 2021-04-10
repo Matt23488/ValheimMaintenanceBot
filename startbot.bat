@@ -1,3 +1,3 @@
 @echo off
 
-node src
+node src/bot

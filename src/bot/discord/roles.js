@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../config');
+const config = require('../../config');
 
 module.exports = {
     Admin: '829058617159319592',
@@ -15,8 +15,7 @@ module.exports = {
         if (!role) return true;
         if (message.author.id === config.parentalUnit) return true;
         if (message.channel.type !== 'text') return false;
-        if (!message.member?.roles?.cache?.has(role) ?? true) return false;
-
-        return true;
+        if (!message.member) return false;
+        return message.memeber.roles.cache.has(role);
     }
 };
