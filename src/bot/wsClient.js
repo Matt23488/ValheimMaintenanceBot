@@ -38,15 +38,15 @@ function connect() {
             connection.onmessage = message => {
                 //const messageHandlers = fs.readdirSync(path.join(__dirname, 'messages')).map(f => require(path.join(__dirname, 'messages', f)));
         
-                const space = message.indexOf(' ');
-                const type = space > 0 ? message.slice(0, space) : message;
-                const rest = space > 0 ? message.slice(space).trim() : '';
+                const space = message.data.indexOf(' ');
+                const type = space > 0 ? message.data.slice(0, space) : message;
+                const rest = space > 0 ? message.data.slice(space).trim() : '';
         
                 try {
                     const handler = require(path.join(__dirname, 'messages', type));
                     handler.execute(rest);
                 } catch (ess) {
-                    console.log(`Unknown message from wsServer: ${message}`);
+                    console.log(`Unknown message from wsServer: ${message.data}`);
                 }
         
                 // for (let handler of messageHandlers) {
