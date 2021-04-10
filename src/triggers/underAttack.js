@@ -1,5 +1,5 @@
 const config = require("../config");
-const { getClient } = require("../discord/bot");
+const { getClient } = require("../bot/discord/bot");
 
 module.exports = {
     searchText: 'Random event set:',
