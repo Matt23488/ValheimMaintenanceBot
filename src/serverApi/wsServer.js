@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const path = require('path');
 
 /**
  * @type {WebSocket.Server}
