@@ -49,7 +49,8 @@ module.exports = {
      * @returns {void}
      */
     start: function () {
-        if (this.isRunning()) return;
+        //if (this.isRunning()) return;
+        if (this.getStatus() !== this.statuses.stopped) return;
 
         serverProc = spawn(
             config.serverExecutable,
