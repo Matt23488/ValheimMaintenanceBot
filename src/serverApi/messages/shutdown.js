@@ -3,7 +3,7 @@ const valheimServer = require('../valheimServer');
 const wsServer = require('../wsServer');
 
 module.exports = {
-    prefix: 'reboot',
+    prefix: 'shutdown',
 
     /**
      * 
@@ -11,10 +11,11 @@ module.exports = {
      * @returns {string}
      */
     execute: function (data) {
-        wsServer.getServer().close();
+        // wsServer.getServer().close();
         valheimServer.stop().then(() => {
-            const dir = path.join(__dirname, '../../..');
-            spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
+            // const dir = path.join(__dirname, '../../..');
+            // spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
+            wsServer.getServer().close();
         });
     }
 };
