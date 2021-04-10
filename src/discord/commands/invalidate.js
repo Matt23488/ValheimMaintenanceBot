@@ -22,7 +22,7 @@ module.exports = {
             let prefix = '';
             switch (args[0]) {
                 case 'command':
-                    objPath = '.';
+                    objPath = __dirname;
                     prefix = config.discord.commandPrefix;
                     break;
                 case 'trigger':
@@ -34,15 +34,15 @@ module.exports = {
                     return;
             }
 
-            args.slice(1).forEach(command => {
+            args.slice(1).forEach(module => {
                 try {
-                    delete require.cache[require.resolve(path.join(objPath, command))];
+                    delete require.cache[require.resolve(path.join(objPath, module))];
                 } catch (e) {
-                    message.channel.send(`The \`${prefix}${command}\` ${args[0]} does not exist.`);
+                    message.channel.send(`The \`${prefix}${module}\` ${args[0]} does not exist.`);
                     return;
                 }
 
-                message.channel.send(`The \`${prefix}${command}\` ${args[0]} has been refreshed.`);
+                message.channel.send(`The \`${prefix}${module}\` ${args[0]} has been refreshed.`);
             });
             // rest.split(' ').forEach(command => {
             //     try {
