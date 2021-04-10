@@ -22,19 +22,18 @@ module.exports = {
         const player = valheimServer.connectedPlayers.find(p => p.id === id);
         if (!player) return { canHandle: false, data: null };
 
-        valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== id);
-        return { canHandle: true, data: player.name };
+        return { canHandle: true, data: player };
     },
 
     /**
      * 
-     * @param {string} data 
+     * @param {{ id: string, name: string }} data 
      * @returns {void}
      */
     execute: function (data) {
-        valheimServer.connectedPlayers.push(data);
+        valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== data.id);
         getServer().clients.forEach(ws => {
-            ws.send(`echo Player \`${data}\` has left the server. ${getPlayerCountMessage()}`);
+            ws.send(`echo Player \`${data.name}\` has left the server. ${getPlayerCountMessage()}`);
         });
     }
 };
