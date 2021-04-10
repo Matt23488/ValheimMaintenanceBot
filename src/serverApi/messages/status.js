@@ -17,7 +17,7 @@ module.exports = {
      */
     execute: function (data) {
         const statusInfo = JSON.stringify({
-            isRunning: valheimServer.isRunning(),
+            isRunning: valheimServer.getStatus() === valheimServer.statuses.ready,
             name: config.valheim.name,
             ip: `${getServerIpAddress()}:${config.valheim.port}`,
             connectedPlayers: valheimServer.connectedPlayers.map(p => p.name)
