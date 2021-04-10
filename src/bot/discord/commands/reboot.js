@@ -42,6 +42,7 @@ module.exports = {
             case 'bot':
                 // await stopServer();
                 await message.channel.send('BRB');
+                wsClient.destroy();
                 discordBot.getClient().destroy();
                 const dir = path.join(__dirname, '../../../..');
                 spawn(path.join(dir, 'startbot.bat'), [], { cwd: dir, detached: true });
@@ -55,6 +56,7 @@ module.exports = {
                 break;
             case 'vm':
                 wsClient.sendMessage('shutdown');
+                wsClient.destroy();
                 // await stopServer();
                 await message.channel.send('Rebooting VM. See you folks on the other side.');
                 spawn('shutdown', [ '/r' ], { detached: true });
