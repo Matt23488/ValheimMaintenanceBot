@@ -44,16 +44,6 @@ module.exports = {
 
                 message.channel.send(`The \`${prefix}${module}\` ${args[0]} has been refreshed.`);
             });
-            // rest.split(' ').forEach(command => {
-            //     try {
-            //         delete require.cache[require.resolve(`./${command}`)];
-            //     } catch (e) {
-            //         message.channel.send(`The ${config.discord.commandPrefix}${command} command has not been used or does not exist.`);
-            //         return;
-            //     }
-
-            //     message.channel.send(`The ${config.discord.commandPrefix}${command} command has been refreshed.`);
-            // });
 
             resolve();
         });
