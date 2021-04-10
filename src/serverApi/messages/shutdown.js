@@ -16,6 +16,7 @@ module.exports = {
             // const dir = path.join(__dirname, '../../..');
             // spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
             wsServer.getServer().close();
+            process.exit();
         });
     }
 };
