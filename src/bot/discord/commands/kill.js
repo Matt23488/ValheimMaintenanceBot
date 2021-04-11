@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const roles = require('../roles');
-// const valheimServer = require('../../valheimServer');
 const wsClient = require('../../wsClient');
 
 module.exports = {

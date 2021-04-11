@@ -1,19 +1,6 @@
 const Discord = require('discord.js');
 const config = require('../../../config');
-const { getServerIpAddress } = require('../../../ip');
-const valheimServer = require('../../valheimServer');
 const wsClient = require('../../wsClient');
-
-/**
- * 
- * @param {string} str 
- * @param {number} length 
- */
-function repeat(str, length) {
-    let result = '';
-    for (let i = 0; i < length; i++) result += str;
-    return result;
-}
 
 module.exports = {
     name: 'status',

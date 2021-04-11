@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const config = require('../../config');
-// const valheimServer = require('../valheimServer');
 const commandManager = require('./commandManager');
-// const { getServerIpAddress } = require('../../ip');
 const wsClient = require('../wsClient');
 
 /**
@@ -21,25 +19,6 @@ module.exports = {
         botClient.once('ready', async () => {
             console.log(`Logged in as ${botClient.user.tag}!`);
             await wsClient.connect();
-
-
-        
-            // const channel = botClient.channels.cache.get(config.defaultChannel);
-            // channel.send('I live. Starting server...');
-            // await valheimServer.start();
-            // channel.send(`Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
-        
-            // function getPlayerCountMessage() {
-            //     return `There ${valheimServer.connectedPlayers.length === 1 ? 'is' : 'are'} currently ${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} on the server.`;
-            // }
-        
-            // valheimServer.addPlayerConnectedListener(player => {
-            //     channel.send(`Player \`${player.name}\` has joined the server! ${getPlayerCountMessage()}`);
-            // });
-        
-            // valheimServer.addPlayerDisconnectedListener(player => {
-            //     channel.send(`Player \`${player.name}\` has left the server. ${getPlayerCountMessage()}`);
-            // });
         });
         
         botClient.on('message', async msg => {
