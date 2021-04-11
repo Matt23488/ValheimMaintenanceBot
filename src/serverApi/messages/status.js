@@ -24,6 +24,6 @@ module.exports = {
             connectedPlayers: valheimServer.connectedPlayers.map(p => p.name)
         };
 
-        wsServer.sendMessage('status', statusInfo, requestId);
+        wsServer.sendResponse(requestId, 'status', statusInfo);
     }
 };

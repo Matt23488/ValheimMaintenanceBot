@@ -16,6 +16,7 @@ module.exports = {
         valheimServer.stop().then(() => {
             // const dir = path.join(__dirname, '../../..');
             // spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
+            wsServer.sendResponse(requestId, 'shutdown');
             wsServer.getServer().close();
             process.exit();
         });
