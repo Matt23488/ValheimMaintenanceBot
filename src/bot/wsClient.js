@@ -9,6 +9,7 @@ let connection;
 
 let connected = false;
 let tryReconnect = true;
+let closedDueToError = false;
 
 /**
  * @type {Map<number, (data: any) => void>}
@@ -87,19 +88,18 @@ function connect() {
     connection = new WebSocket('ws://localhost:8080');
 
     connection.onopen = e => {
-        console.log('onopen');
         connected = true;
     };
 
     connection.onclose = e => {
-        console.log('onclose');
         connected = false;
-        if (tryReconnect) setTimeout(connect, 10000);
+        if (tryReconnect && !closedDueToError) setTimeout(connect, 10000);
+        closedDueToError = false;
     }
 
     connection.onerror = error => {
-        console.log('onerror');
         if (error.error && error.error.code === 'ECONNREFUSED') {
+            closedDueToError = true;
             console.error('Couldn\'t connect to server. Trying again in 10 seconds.');
             setTimeout(connect, 10000);
         }
