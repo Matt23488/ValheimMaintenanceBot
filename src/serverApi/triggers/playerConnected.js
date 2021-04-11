@@ -1,3 +1,4 @@
+const Stopwatch = require('statman-stopwatch');
 const valheimServer = require("../valheimServer");
 const wsServer = require("../wsServer");
 
@@ -40,6 +41,7 @@ module.exports = {
      * @returns {void}
      */
     execute: function (data) {
+        data.stopwatch = new Stopwatch(true);
         valheimServer.connectedPlayers.push(data);
 
         wsServer.sendMessage('echo', `Player \`${data.name}\` has joined the server! ${getPlayerCountMessage()}`);

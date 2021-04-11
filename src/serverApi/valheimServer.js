@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { spawn } = require('child_process');
 const _ = require('lodash');
+const Stopwatch = require('statman-stopwatch');
 const config = require('../config');
 const StringBuffer = require('../stringBuffer');
 const triggerLoader = require('./triggerLoader');
@@ -21,6 +22,11 @@ let serverProc;
 let started = false;
 let ready = false;
 
+/**
+ * @type {Stopwatch}
+ */
+let stopwatch;
+
 const statuses = {
     stopped: 0,
     starting: 1,
@@ -37,7 +43,7 @@ module.exports = {
     statuses,
 
     /**
-     * @type {{ id: string, name: string }[]}
+     * @type {{ id: string, name: string, stopwatch: Stopwatch }[]}
      */
     connectedPlayers: [],
 
@@ -71,6 +77,7 @@ module.exports = {
             }
         );
         started = true;
+        stopwatch = new Stopwatch(true);
         this.connectedPlayers = [];
 
         serverProc.stderr.on('data', data => {
@@ -109,5 +116,11 @@ module.exports = {
             });
             spawn('taskkill', [ '/IM', config.serverExecutable ]);
         });
+    },
+
+    getServerUptime: function () {
+        if (!stopwatch || stopwatch.state() !== stopwatch.STATES.RUNNING) return -1;
+
+        return stopwatch.read();
     }
 };

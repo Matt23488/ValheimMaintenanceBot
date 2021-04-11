@@ -18,7 +18,8 @@ module.exports = {
             statuses: valheimServer.statuses,
             name: config.valheim.name,
             ip: `${getServerIpAddress()}:${config.valheim.port}`,
-            connectedPlayers: valheimServer.connectedPlayers.map(p => p.name)
+            connectedPlayers: valheimServer.connectedPlayers.map(p => { return { name: p.name, uptime: p.stopwatch.read() }; }),
+            uptime: valheimServer.getServerUptime()
         };
 
         wsServer.sendResponse(requestId, 'status', statusInfo);
