@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
+const path = require('path');
 const { spawn } = require('child_process');
-const config = require('../../../config');
-const { getServerIpAddress } = require('../../../ip');
-const valheimServer = require('../../valheimServer');
 const wsClient = require('../../wsClient');
 
 module.exports = {
