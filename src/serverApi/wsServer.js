@@ -6,7 +6,6 @@ const path = require('path');
  */
 let server;
 
-// module.exports = server;
 module.exports = {
     getServer: () => server,
     startServer: () => {

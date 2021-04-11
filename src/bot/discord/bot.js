@@ -9,8 +9,16 @@ const wsClient = require('../wsClient');
 let botClient;
 
 module.exports = {
+    /**
+     * Gets the Discord client object associated with the bot.
+     * @returns {Discord.Client} The Discord client object.
+     */
     getClient: () => botClient,
 
+    /**
+     * Initiates the Discord client and turns on the bot.
+     * @returns {void}
+     */
     start: function () {
         if (botClient) return;
 

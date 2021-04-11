@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-// const config = require('../../config');
 
 module.exports = {
     name: 'poop',
@@ -13,7 +12,6 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        // await discordMessage.reply('you\'re 12');
         await message.reply('you\'re 12.');
     }
 };

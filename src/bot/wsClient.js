@@ -9,7 +9,6 @@ let connection;
 
 let connected = false;
 let tryReconnect = true;
-// let closedDueToError = false;
 
 /**
  * @type {Map<number, (data: any) => void>}
@@ -18,10 +17,10 @@ const requestMap = new Map();
 let requestId = 0;
 
 /**
- * 
- * @param {string} type 
- * @param {any} data 
- * @returns {Promise<any>}
+ * Sends a message to the server and waits for a response.
+ * @param {string} type The type of message.
+ * @param {any} data Any data that the server needs to process the message.
+ * @returns {Promise<any>} A promise that resolves when the server processes the request and sends back the response.
  */
 function sendRequest(type, data = null) {
     if (!connected) return Promise.resolve(null);
@@ -41,9 +40,9 @@ function sendRequest(type, data = null) {
 }
 
 /**
- * 
- * @param {string} type 
- * @param {any} data 
+ * Sends a message to the server that does not need a response.
+ * @param {string} type The type of message.
+ * @param {any} data Any data that the server needs to process the message.
  */
 function sendMessage(type, data) {
     if (!connected) return;
@@ -56,11 +55,10 @@ function sendMessage(type, data) {
 }
 
 /**
- * 
- * @param {string} message 
- * @returns {boolean}
+ * Reads a message from the server. If the message contains an id, the `Promise` associated with the request will be resolved. Otherwise, the message is processed according to the associated module in the `messages` directory.
+ * @param {string} message The message from the server.
  */
-function receiveResponse(message) {
+function receiveMessage(message) {
     /**
      * @type {{ id: number, type: string, data: any }}
      */
@@ -81,7 +79,7 @@ function receiveResponse(message) {
 }
 
 /**
- * @returns {void}
+ * Attempts to connect to the server. Will continually retry every 10 seconds if the connection fails.
  */
 function connect() {
 
@@ -103,10 +101,13 @@ function connect() {
     };
     
     connection.onmessage = message => {
-        receiveResponse(message.data);
+        receiveMessage(message.data);
     };
 }
 
+/**
+ * Closes the connection to the server and does not attempt to reconnect.
+ */
 function destroy() {
     tryReconnect = false;
     connection.close();

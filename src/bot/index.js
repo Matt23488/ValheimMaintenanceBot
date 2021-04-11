@@ -1,3 +1,3 @@
-const { start } = require("./discord/bot");
+const discordBot = require("./discord/bot");
 
-start();
+discordBot.start();
