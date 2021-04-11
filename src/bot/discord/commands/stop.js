@@ -15,9 +15,15 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
+        if (!wsClient.isConnected()) {
+            message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
+            return;
+        }
+
         const statusInfo = await wsClient.sendRequest('status');
         if (!statusInfo.isRunning) {
             message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
+            return;
         }
         message.channel.send('Stopping server...');
         await wsClient.sendRequest('shutdown');
