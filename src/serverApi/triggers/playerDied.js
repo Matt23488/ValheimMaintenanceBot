@@ -20,7 +20,7 @@ module.exports = {
             name: text.slice(prefixIndex + prefix.length, firstColon).trim()
         };
 
-        if (newPlayer.id !== 0) return { canHandle: false, data: null };
+        if (newPlayer.id !== '0') return { canHandle: false, data: null };
         return { canHandle: true, data: newPlayer.name };
     },
 
