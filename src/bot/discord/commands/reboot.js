@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const path = require('path');
 const roles = require('../roles');
 const { spawn } = require('child_process');
-const { getServerIpAddress } = require('../../../ip');
 const config = require('../../../config');
 const discordBot = require('../bot');
 const wsClient = require('../../wsClient');
@@ -30,6 +29,12 @@ module.exports = {
                 process.exit();
                 break;
             case 'valheim':
+                if (!wsClient.isConnected()) {
+                    message.channel.send('Valheim server isn\'t started, but I\'ll go ahead and start it for you...');
+                    require('./start').execute(message, rest);
+                    break;
+                }
+
                 message.channel.send('Rebooting Valheim Server...');
                 wsClient.sendMessage('reboot');
                 break;
