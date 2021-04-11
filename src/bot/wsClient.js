@@ -9,7 +9,7 @@ let connection;
 
 let connected = false;
 let tryReconnect = true;
-let closedDueToError = false;
+// let closedDueToError = false;
 
 /**
  * @type {Map<number, (data: any) => void>}
@@ -93,15 +93,15 @@ function connect() {
 
     connection.onclose = e => {
         connected = false;
-        if (tryReconnect && !closedDueToError) setTimeout(connect, 10000);
-        closedDueToError = false;
+        if (tryReconnect) setTimeout(connect, 10000);
+        // closedDueToError = false;
     }
 
     connection.onerror = error => {
         if (error.error && error.error.code === 'ECONNREFUSED') {
-            closedDueToError = true;
+            // closedDueToError = true;
             console.error('Couldn\'t connect to server. Trying again in 10 seconds.');
-            setTimeout(connect, 10000);
+            //setTimeout(connect, 10000);
         }
     };
     
