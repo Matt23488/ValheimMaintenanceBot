@@ -17,7 +17,7 @@ module.exports = {
     execute: async function (message, rest) {
         return new Promise(resolve => {
             let output = '';
-            const npm = spawn('npm', [ rest ], { cwd: path.join(__dirname, '../../../..') });
+            const npm = spawn('npm', [ rest ], { shell: true, cwd: path.join(__dirname, '../../../..') });
             npm.stdout.on('data', data => {
                 output = output + '\n' + data.toString();
             });
