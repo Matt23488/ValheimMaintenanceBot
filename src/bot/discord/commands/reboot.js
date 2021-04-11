@@ -42,7 +42,7 @@ module.exports = {
             case 'vm':
                 if (wsClient.isConnected()) {
                     const statusInfo = await wsClient.sendRequest('status');
-                    if (!statusInfo.isRunning) {
+                    if (statusInfo.isRunning) {
                         message.channel.send('Stopping server...');
                         await wsClient.sendRequest('shutdown');
                     }
