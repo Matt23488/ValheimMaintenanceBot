@@ -40,9 +40,14 @@ module.exports = {
                 require('./start').execute(message, rest);
                 break;
             case 'vm':
-                message.channel.send('Stopping server...');
-                await wsClient.sendRequest('shutdown');
-                wsClient.destroy();
+                if (wsClient.isConnected()) {
+                    const statusInfo = await wsClient.sendRequest('status');
+                    if (!statusInfo.isRunning) {
+                        message.channel.send('Stopping server...');
+                        await wsClient.sendRequest('shutdown');
+                    }
+                    wsClient.destroy();
+                }
                 await message.channel.send('Rebooting VM. See you folks on the other side.');
                 spawn('shutdown', [ '/r' ], { detached: true });
                 message.client.destroy();
