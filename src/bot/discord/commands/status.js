@@ -37,21 +37,29 @@ module.exports = {
          * @type {{ status: number, statuses: any, name: string, ip: string, connectedPlayers: string[] }}
          */
         const statusInfo = await wsClient.sendRequest('status');
-        if (statusInfo.status === statusInfo.statuses.stopped) message.channel.send(`The server is not currently started. Use \`${config.discord.commandPrefix}start\` to start the server.`);
-        else if (statusInfo.status === statusInfo.statuses.starting) message.channel.send('The server is in the process of being started.');
-        else {
-            try {
-                const title = `${statusInfo.name} Server Status`;
-                message.channel.send(new Discord.MessageEmbed()
-                    .setColor('#9900ff')
-                    .setTitle(title)
-                    .addField(repeat('-', 50), '\u200B')
+        const embed = new Discord.MessageEmbed()
+            .setTitle(`${statusInfo.name} Server Status`);
+
+        switch (statusInfo.status) {
+            case statusInfo.statuses.stopped:
+                embed.setColor(0xff0000)
+                    .setDescription(`The server is currently stopped. Use ${config.discord.commandPrefix}start to start the server.`);
+                break;
+            case statusInfo.statuses.starting:
+                embed.setColor(0xffff00)
+                    .setDescription(`The server is in the process of starting. I'll let you know when it's started. If I don't, please alert <@${config.parentalUnit}>.`);
+                break;
+            case statusInfo.statuses.ready:
+                embed.setColor(0x9900ff)
+                    .setDescription('The server is running.')
                     .addField('Server IP', statusInfo.ip)
-                    .addField(repeat('-', 50), '\u200B')
-                    .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected:`, statusInfo.connectedPlayers.length > 0 ? statusInfo.connectedPlayers.map(p => `_${p}_`).join(', ') : '\u200B')
-                    .setTimestamp()
-                );
-            } catch (e) { }
+                    .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`, statusInfo.connectedPlayers.length > 0 ? statusInfo.connectedPlayers.map(p => `_${p}_`).join(', ') : '\u200B')
+                break;
+            default:
+                embed.setColor(0xff0000)
+                    .setDescription(`I can't determine the server status for some reason. <@${config.parentalUnit}> needs to look into it.`);
         }
+
+        message.channel.send(embed);
     }
 };
