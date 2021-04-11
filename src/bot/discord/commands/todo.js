@@ -3,7 +3,6 @@ const config = require('../../../config');
 
 const todoList = [
     { name: 'Valheim Server and Bot Separation', value: `I want to put an api between myself (the bot) and the \`${config.valheim.name}\` server. This will allow me to be taken down without affecting players playing. **Currently working on this and some features are broken as a result.**` },
-    { name: 'Uptime', value: `I want to keep track of server uptime and player playtime. This will be displayed as part of the \`${config.discord.commandPrefix}status\` command.` },
     { name: 'World Stuff', value: 'I want to be able to create/restore backups of the world, as well as change the world that is hosted. Low priority.' },
 ];
 
