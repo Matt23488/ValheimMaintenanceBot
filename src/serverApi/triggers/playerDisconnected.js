@@ -28,11 +28,11 @@ module.exports = {
 
     /**
      * 
-     * @param {{ id: string, name: string, uptime: Stopwatch }} data 
+     * @param {{ id: string, name: string, stopwatch: Stopwatch }} data 
      * @returns {void}
      */
     execute: function (data) {
-        data.uptime.stop();
+        data.stopwatch.stop();
         valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== data.id);
         wsServer.sendMessage('echo', `Player \`${data.name}\` has left the server. ${getPlayerCountMessage()}`);
     }

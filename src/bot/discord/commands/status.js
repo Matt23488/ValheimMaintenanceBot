@@ -47,7 +47,7 @@ module.exports = {
                     .setDescription('The server is running.')
                     .addField('Server IP', `\`${statusInfo.ip}\``)
                     .addField('Uptime', `${statusInfo.uptime}`)
-                    .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`, '\u200B')
+                    .addField('\u200B', `${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`)
                     .addFields(statusInfo.connectedPlayers.map(p => { return { name: p.name, value: `${p.uptime}`, inline: true }; }))
                 break;
             default:
