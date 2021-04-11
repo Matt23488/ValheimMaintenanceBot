@@ -24,7 +24,7 @@ module.exports = {
             const commands = fs.readdirSync(__dirname).map(f => require(path.join(__dirname, f)));
 
             message.channel.send(new Discord.MessageEmbed()
-                .setColor('#9900ff')
+                .setColor(0x0099ff)
                 .setTitle('Command Help')
                 .setDescription('Lists all commands and what they do')
                 .addField('\u200B', '\u200B')
