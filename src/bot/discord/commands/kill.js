@@ -4,7 +4,7 @@ const wsClient = require('../../wsClient');
 
 module.exports = {
     name: 'kill',
-    description: 'Shuts down the bot. Saves and shuts down the Valheim server first if it\'s running.',
+    description: 'Shuts down the bot.',
     role: roles.Admin,
 
     /**

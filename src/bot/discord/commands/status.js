@@ -18,6 +18,7 @@ module.exports = {
         if (!wsClient.isConnected()) {
             message.channel.send(new Discord.MessageEmbed()
                 .setTitle('Valheim Server Status')
+                .setThumbnail('https://www.irongatestudio.se/____impro/1/onewebmedia/valheim_V.png?etag=%22519-5ed92f63%22&sourceContentType=image%2Fpng&ignoreAspectRatio&resize=38%2B38')
                 .setColor(0xff0000)
                 .setDescription(`The server is not currently started. Use \`${config.discord.commandPrefix}start\` to start the server.`)
                 .setTimestamp()
@@ -31,6 +32,7 @@ module.exports = {
         const statusInfo = await wsClient.sendRequest('status');
         const embed = new Discord.MessageEmbed()
             .setTitle(`${statusInfo.name} Server Status`)
+            .setThumbnail('https://www.irongatestudio.se/____impro/1/onewebmedia/valheim_V.png?etag=%22519-5ed92f63%22&sourceContentType=image%2Fpng&ignoreAspectRatio&resize=38%2B38')
             .setTimestamp();
 
         switch (statusInfo.status) {
