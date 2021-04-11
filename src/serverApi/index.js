@@ -1,5 +1,5 @@
-const { startServer } = require('./wsServer');
-const { start } = require('./valheimServer');
+const wsServer = require('./wsServer');
+const valheimServer = require('./valheimServer');
 
-startServer();
-start();
+wsServer.startServer();
+valheimServer.start();

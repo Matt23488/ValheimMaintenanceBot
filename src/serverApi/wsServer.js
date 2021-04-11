@@ -16,17 +16,32 @@ module.exports = {
 
         server.on('connection', ws => {
             ws.on('message', message => {
-                const space = message.indexOf(' ');
-                const type = space > 0 ? message.slice(0, space) : message;
-                const rest = space > 0 ? message.slice(space).trim() : '';
-        
                 try {
-                    const handler = require(path.join(__dirname, 'messages', type));
-                    handler.execute(rest);
+                    /**
+                     * @type {{ id: number, type: string, data: any }}
+                     */
+                    const json = JSON.parse(message);
+                    const handler = require(path.join(__dirname, 'messages', json.type));
+                    handler.execute(json.id, json.data);
                 } catch (e) {
                     console.log(`Unknown message from wsServer: ${message}`);
                 }
             });
+        });
+    },
+    /**
+     * 
+     * @param {string} type 
+     * @param {any} data 
+     * @param {number} id
+     */
+    sendMessage: (type, data, id = null) => {
+        server.clients.forEach(ws => {
+            ws.send(JSON.stringify({
+                id,
+                type,
+                data
+            }));
         });
     }
 };

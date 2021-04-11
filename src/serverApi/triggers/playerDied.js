@@ -1,5 +1,5 @@
-const { getServer } = require("../wsServer");
 const valheimServer = require("../valheimServer");
+const wsServer = require("../wsServer");
 
 const prefix = 'Got character ZDOID from ';
 
@@ -31,8 +31,6 @@ module.exports = {
      */
     execute: function (data) {
         valheimServer.connectedPlayers.push(data);
-        getServer().clients.forEach(ws => {
-            ws.send(`echo Player \`${data}\` has died. F in the chat.`);
-        });
+        wsServer.sendMessage('echo', `Player \`${data}\` has died. F in the chat.`);
     }
 };

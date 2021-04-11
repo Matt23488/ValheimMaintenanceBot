@@ -1,4 +1,4 @@
-const { getServer } = require("../wsServer");
+const wsServer = require("../wsServer");
 
 const prefix = 'Random event set:';
 
@@ -76,12 +76,7 @@ module.exports = {
                 break;
         }
 
-        getServer().clients.forEach(ws => {
-            ws.send(`echo ${message}`);
-        });
-
-        setTimeout(() => getServer().clients.forEach(ws => {
-            ws.send('echo The attack _should_ be over. Thank gods.');
-        }), duration * 1000);
+        wsServer.sendMessage('echo', message);
+        setTimeout(() => wsServer.sendMessage('echo', 'The attack is over. Thank gods.'), duration * 1000);
     }
 };

@@ -7,10 +7,11 @@ module.exports = {
 
     /**
      * 
+     * @param {number} requestId
      * @param {string} data 
      * @returns {string}
      */
-    execute: function (data) {
+    execute: function (requestId, data) {
         // wsServer.getServer().close();
         valheimServer.stop().then(() => {
             // const dir = path.join(__dirname, '../../..');

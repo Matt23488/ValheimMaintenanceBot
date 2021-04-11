@@ -1,5 +1,5 @@
-const { getServer } = require("../wsServer");
 const valheimServer = require("../valheimServer");
+const wsServer = require("../wsServer");
 
 function getPlayerCountMessage() {
     return `There ${valheimServer.connectedPlayers.length === 1 ? 'is' : 'are'} currently ${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} on the server.`;
@@ -32,8 +32,6 @@ module.exports = {
      */
     execute: function (data) {
         valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== data.id);
-        getServer().clients.forEach(ws => {
-            ws.send(`echo Player \`${data.name}\` has left the server. ${getPlayerCountMessage()}`);
-        });
+        wsServer.sendMessage('echo', `Player \`${data.name}\` has left the server. ${getPlayerCountMessage()}`);
     }
 };

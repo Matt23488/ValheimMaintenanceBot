@@ -4,8 +4,8 @@ const _ = require('lodash');
 const config = require('../config');
 const StringBuffer = require('../stringBuffer');
 const triggerLoader = require('./triggerLoader');
-const { getServer } = require('./wsServer');
 const { getServerIpAddress } = require('../ip');
+const wsServer = require('./wsServer');
 
 
 const batchFileText = fs.readFileSync(config.serverWorkingDirectory + config.serverBatchFile).toString();
@@ -41,7 +41,6 @@ module.exports = {
      */
     connectedPlayers: [],
 
-    // isRunning: () => serverProc && serverProc.exitCode === null,
     getStatus,
 
     /**
@@ -53,7 +52,6 @@ module.exports = {
      * @returns {void}
      */
     start: function () {
-        //if (this.isRunning()) return;
         if (getStatus() !== statuses.stopped) return;
 
         serverProc = spawn(
@@ -76,27 +74,21 @@ module.exports = {
         this.connectedPlayers = [];
 
         serverProc.stderr.on('data', data => {
-            getServer().clients.forEach(ws => {
-                ws.send(`stderr ${data.toString()}`);
-            });
+            wsServer.sendMessage('stderr', data.toString());
         });
 
         let startEventSent = false;
         serverProc.stdout.on('data', data => {
             const dataString = data.toString();
 
-            getServer().clients.forEach(ws => {
-                ws.send(`stdout ${dataString}`);
-            });
+            wsServer.sendMessage('stdout', dataString);
 
             console.log(dataString);
 
             if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
                 startEventSent = true;
                 ready = true;
-                getServer().clients.forEach(ws => {
-                    ws.send(`echo Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
-                });
+                wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
             } else triggerLoader.handleOutput(dataString);
         });
     },
