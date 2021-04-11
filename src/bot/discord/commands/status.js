@@ -34,10 +34,11 @@ module.exports = {
         }
 
         /**
-         * @type {{ isRunning: boolean, name: string, ip: string, connectedPlayers: string[] }}
+         * @type {{ status: number, statuses: any, name: string, ip: string, connectedPlayers: string[] }}
          */
         const statusInfo = await wsClient.sendRequest('status');
-        if (!statusInfo.isRunning) message.channel.send('The server is not currently started. Use `!start` to start the server.');
+        if (statusInfo.status === statusInfo.statuses.stopped) message.channel.send(`The server is not currently started. Use \`${config.discord.commandPrefix}start\` to start the server.`);
+        else if (statusInfo.status === statusInfo.statuses.starting) message.channel.send('The server is in the process of being started.');
         else {
             try {
                 const title = `${statusInfo.name} Server Status`;

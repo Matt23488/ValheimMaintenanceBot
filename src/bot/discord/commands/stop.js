@@ -21,7 +21,7 @@ module.exports = {
         }
 
         const statusInfo = await wsClient.sendRequest('status');
-        if (!statusInfo.isRunning) {
+        if (statusInfo.status === statusInfo.statuses.stopped) {
             message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
             return;
         }
