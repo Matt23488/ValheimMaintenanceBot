@@ -7,7 +7,7 @@ const path = require('path');
 
 module.exports = {
     name: 'save',
-    description: `Causes the bot show some arbitrary output in the channel. Optionally saves the output to a file on the VM if specified. Currently supports:\n  * \`stdout\` - The standard output of the Valheim server. Example: \`${config.discord.commandPrefix}${this.save} stdout test\` will save the last few data chunks to the file \`test.txt\` on the VM.`,
+    description: `Causes the bot show some arbitrary output in the channel. Optionally saves the output to a file on the VM if specified. Currently supports:\n  * \`stdout\` - The standard output of the Valheim server. Example: \`${config.discord.commandPrefix}save stdout test\` will save the last few data chunks to the file \`test.txt\` on the VM.`,
     role: roles.Admin,
 
     /**
