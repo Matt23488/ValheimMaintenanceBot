@@ -70,7 +70,7 @@ function receiveResponse(message) {
             const handler = require(path.join(__dirname, 'messages', response.type));
             handler.execute(response.data);
         } catch (ess) {
-            console.log(`Unknown message from wsServer: ${message.data}`);
+            console.log(`Unknown message from wsServer: ${message}`);
         }
         return;
     }
@@ -94,14 +94,11 @@ function connect() {
     connection.onclose = e => {
         connected = false;
         if (tryReconnect) setTimeout(connect, 10000);
-        // closedDueToError = false;
     }
 
     connection.onerror = error => {
         if (error.error && error.error.code === 'ECONNREFUSED') {
-            // closedDueToError = true;
             console.error('Couldn\'t connect to server. Trying again in 10 seconds.');
-            //setTimeout(connect, 10000);
         }
     };
     

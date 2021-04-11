@@ -24,7 +24,7 @@ module.exports = {
                     const handler = require(path.join(__dirname, 'messages', json.type));
                     handler.execute(json.id, json.data);
                 } catch (e) {
-                    console.log(`Unknown message from wsServer: ${message}`);
+                    console.log(`Unknown message from wsClient: ${message}`);
                 }
             });
         });
