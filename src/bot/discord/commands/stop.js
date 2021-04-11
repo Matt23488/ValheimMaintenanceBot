@@ -19,7 +19,8 @@ module.exports = {
         if (!statusInfo.isRunning) {
             message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
         }
-        await wsClient.sendMessage('shutdown');
+        message.channel.send('Stopping server...');
+        await wsClient.sendRequest('shutdown');
         message.channel.send('The server is stopped.');
     }
 }
