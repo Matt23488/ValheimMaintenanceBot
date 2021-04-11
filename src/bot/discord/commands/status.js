@@ -59,7 +59,7 @@ module.exports = {
             case statusInfo.statuses.ready:
                 embed.setColor(0x00ff00)
                     .setDescription('The server is running.')
-                    .addField('Server IP', statusInfo.ip)
+                    .addField('Server IP', `\`${statusInfo.ip}\``)
                     .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`, statusInfo.connectedPlayers.length > 0 ? statusInfo.connectedPlayers.map(p => `_${p}_`).join(', ') : '\u200B')
                 break;
             default:
