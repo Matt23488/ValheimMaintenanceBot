@@ -87,15 +87,18 @@ function connect() {
     connection = new WebSocket('ws://localhost:8080');
 
     connection.onopen = e => {
+        console.log('onopen');
         connected = true;
     };
 
     connection.onclose = e => {
+        console.log('onclose');
         connected = false;
         if (tryReconnect) setTimeout(connect, 10000);
     }
 
     connection.onerror = error => {
+        console.log('onerror');
         if (error.error && error.error.code === 'ECONNREFUSED') {
             console.error('Couldn\'t connect to server. Trying again in 10 seconds.');
             setTimeout(connect, 10000);
