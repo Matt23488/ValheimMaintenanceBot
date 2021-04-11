@@ -84,57 +84,27 @@ function receiveResponse(message) {
  */
 function connect() {
 
-    // return new Promise(resolve => {
-    //     function logic() {
-            connection = new WebSocket('ws://localhost:8080');
-        
-            connection.onopen = e => {
-                connected = true;
-                // resolve();
-            };
-        
-            connection.onclose = e => {
-                connected = false;
-                if (tryReconnect) setTimeout(connect, 10000);
-            }
-        
-            connection.onerror = error => {
-                if (error.error && error.error.code === 'ECONNREFUSED') {
-                    console.error('Couldn\'t connect to server. Trying again in 10 seconds.');
-                    setTimeout(connect, 10000);
-                }
-            };
-            
-            connection.onmessage = message => {
-                receiveResponse(message.data);
+    connection = new WebSocket('ws://localhost:8080');
 
+    connection.onopen = e => {
+        connected = true;
+    };
 
+    connection.onclose = e => {
+        connected = false;
+        if (tryReconnect) setTimeout(connect, 10000);
+    }
 
-                //const messageHandlers = fs.readdirSync(path.join(__dirname, 'messages')).map(f => require(path.join(__dirname, 'messages', f)));
-        
-                // const space = message.data.indexOf(' ');
-                // const type = space > 0 ? message.data.slice(0, space) : message;
-                // const rest = space > 0 ? message.data.slice(space).trim() : '';
-        
-                // try {
-                //     const handler = require(path.join(__dirname, 'messages', type));
-                //     handler.execute(rest);
-                // } catch (ess) {
-                //     console.log(`Unknown message from wsServer: ${message.data}`);
-                // }
-        
-                // for (let handler of messageHandlers) {
-        
-                //     // const parsed = trigger.parse(output);
-                //     // if (!parsed.canHandle) continue;
-        
-                //     // trigger.execute(parsed.data);
-                // }
-            };
-        // }
-
-    //     logic();
-    // });
+    connection.onerror = error => {
+        if (error.error && error.error.code === 'ECONNREFUSED') {
+            console.error('Couldn\'t connect to server. Trying again in 10 seconds.');
+            setTimeout(connect, 10000);
+        }
+    };
+    
+    connection.onmessage = message => {
+        receiveResponse(message.data);
+    };
 }
 
 function destroy() {
@@ -145,11 +115,6 @@ function destroy() {
 module.exports = {
     isConnected: () => connected,
     getWsClient: () => connection,
-    // sendMessage: function (message) {
-    //     if (!connected) return;
-
-    //     connection.send(message);
-    // },
     sendMessage,
     sendRequest,
     connect,

@@ -97,11 +97,17 @@ module.exports = {
      * @returns {Promise<void>}
      */
     stop: function () {
-        if (getStatus() === statuses.stopped) return;
-
-        serverProc.on('close', (code, signal) => {
-            console.log(`Valheim server child process exited with code ${code} (${signal})`);
+        return new Promise(resolve => {
+            if (getStatus() === statuses.stopped) {
+                resolve();
+                return;
+            }
+    
+            serverProc.on('close', (code, signal) => {
+                console.log(`Valheim server child process exited with code ${code} (${signal})`);
+                resolve();
+            });
+            spawn('taskkill', [ '/IM', config.serverExecutable ]);
         });
-        spawn('taskkill', [ '/IM', config.serverExecutable ]);
     }
 };
