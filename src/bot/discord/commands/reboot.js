@@ -36,10 +36,12 @@ module.exports = {
                 }
 
                 message.channel.send('Rebooting Valheim Server...');
-                wsClient.sendMessage('reboot');
+                await wsClient.sendRequest('shutdown');
+                require('./start').execute(message, rest);
                 break;
             case 'vm':
-                wsClient.sendMessage('shutdown');
+                message.channel.send('Stopping server...');
+                await wsClient.sendRequest('shutdown');
                 wsClient.destroy();
                 await message.channel.send('Rebooting VM. See you folks on the other side.');
                 spawn('shutdown', [ '/r' ], { detached: true });
