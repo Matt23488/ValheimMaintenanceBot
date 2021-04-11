@@ -26,7 +26,7 @@ module.exports = {
         }
 
         /**
-         * @type {{ status: number, statuses: any, name: string, ip: string, connectedPlayers: { name: string, uptime: number }[], uptime: number }}
+         * @type {{ status: number, statuses: any, name: string, ip: string, connectedPlayers: { name: string, uptime: string }[], uptime: string }}
          */
         const statusInfo = await wsClient.sendRequest('status');
         const embed = new Discord.MessageEmbed()
@@ -46,10 +46,9 @@ module.exports = {
                 embed.setColor(0x00ff00)
                     .setDescription('The server is running.')
                     .addField('Server IP', `\`${statusInfo.ip}\``)
-                    .addField('Uptime', `${statusInfo.uptime}ms`)
-                    //.addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`, statusInfo.connectedPlayers.length > 0 ? statusInfo.connectedPlayers.map(p => `_${p}_`).join(', ') : '\u200B')
+                    .addField('Uptime', `${statusInfo.uptime}`)
                     .addField(`${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`, '\u200B')
-                    .addFields(statusInfo.connectedPlayers.map(p => { return { name: p.name, value: `${p.uptime}ms` }; }))
+                    .addFields(statusInfo.connectedPlayers.map(p => { return { name: p.name, value: `${p.uptime}`, inline: true }; }))
                 break;
             default:
                 embed.setColor(0xff0000)

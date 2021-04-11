@@ -1,3 +1,4 @@
+const Stopwatch = require('statman-stopwatch');
 const valheimServer = require("../valheimServer");
 const wsServer = require("../wsServer");
 
@@ -27,10 +28,11 @@ module.exports = {
 
     /**
      * 
-     * @param {{ id: string, name: string }} data 
+     * @param {{ id: string, name: string, uptime: Stopwatch }} data 
      * @returns {void}
      */
     execute: function (data) {
+        data.uptime.stop();
         valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== data.id);
         wsServer.sendMessage('echo', `Player \`${data.name}\` has left the server. ${getPlayerCountMessage()}`);
     }

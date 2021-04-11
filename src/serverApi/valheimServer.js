@@ -77,7 +77,6 @@ module.exports = {
             }
         );
         started = true;
-        stopwatch = new Stopwatch(true);
         this.connectedPlayers = [];
 
         serverProc.stderr.on('data', data => {
@@ -93,6 +92,7 @@ module.exports = {
             console.log(dataString);
 
             if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
+                stopwatch = new Stopwatch(true);
                 startEventSent = true;
                 ready = true;
                 wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
