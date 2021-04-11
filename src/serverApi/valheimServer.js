@@ -109,7 +109,6 @@ module.exports = {
 
         serverProc.on('close', (code, signal) => {
             console.log(`Valheim server child process exited with code ${code} (${signal})`);
-            resolve();
         });
         spawn('taskkill', [ '/IM', config.serverExecutable ]);
     }
