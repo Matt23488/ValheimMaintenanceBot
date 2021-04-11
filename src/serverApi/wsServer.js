@@ -32,16 +32,27 @@ module.exports = {
     /**
      * 
      * @param {string} type 
-     * @param {any} data 
-     * @param {number} id
+     * @param {any} data
      */
-    sendMessage: (type, data, id = null) => {
+    sendMessage: (type, data) => {
         server.clients.forEach(ws => {
             ws.send(JSON.stringify({
-                id,
+                id: null,
                 type,
                 data
             }));
+        });
+    },
+
+    /**
+     * 
+     * @param {number} id 
+     * @param {string} type 
+     * @param {any} data 
+     */
+    sendResponse: (id, type, data = null) => {
+        server.clients.forEach(ws => {
+            ws.send(JSON.stringify({ id, type, data }));
         });
     }
 };

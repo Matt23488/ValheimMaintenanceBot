@@ -17,6 +17,10 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: function (message, rest) {
+
+        return message.channel.send('That command is broken right now.');
+
+        return;
         return new Promise(resolve => {
             if (rest.length === 0) {
                 message.reply('save what, hoss?');

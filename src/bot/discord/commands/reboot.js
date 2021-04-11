@@ -61,6 +61,7 @@ module.exports = {
                 await message.channel.send('Rebooting VM. See you folks on the other side.');
                 spawn('shutdown', [ '/r' ], { detached: true });
                 message.client.destroy();
+                process.exit();
                 break;
             default:
                 message.channel.send(`I don't know how to restart \`${rest}\`.`);

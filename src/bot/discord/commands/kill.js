@@ -15,15 +15,10 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        // if (valheimServer.isRunning()) {
-        //     message.channel.send('Stopping server...');
-        //     await valheimServer.stop();
-        //     await message.channel.send('Server stopped.');
-        // }
-
-        if (wsClient.isConnected()) wsClient.destroy();//wsClient.getWsClient().close();
+        if (wsClient.isConnected()) wsClient.destroy();
 
         await message.channel.send('bye');
         message.client.destroy();
+        process.exit(0);
     }
 };
