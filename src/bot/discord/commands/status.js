@@ -32,6 +32,7 @@ module.exports = {
             message.channel.send(`The server is not currently started. Use \`${config.discord.commandPrefix}start\` to start the server.`);
             message.channel.send(new Discord.MessageEmbed()
                 .setTitle('Valheim Server Status')
+                .setColor(0xff0000)
                 .setDescription(`The server is not currently started. Use \`${config.discord.commandPrefix}start\` to start the server.`)
                 .setTimestamp()
             );
