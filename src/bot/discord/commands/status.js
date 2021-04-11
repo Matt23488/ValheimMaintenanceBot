@@ -44,7 +44,7 @@ module.exports = {
                 const title = `${statusInfo.name} Server Status`;
                 message.channel.send(new Discord.MessageEmbed()
                     .setColor('#9900ff')
-                    .setTitle(`\`${title}\``)
+                    .setTitle(title)
                     .addField(repeat('-', 50), '\u200B')
                     .addField('Server IP', statusInfo.ip)
                     .addField(repeat('-', 50), '\u200B')
