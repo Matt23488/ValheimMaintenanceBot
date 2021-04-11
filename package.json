@@ -12,6 +12,7 @@
     "discord.js": "^12.5.3",
     "lodash": "^4.17.21",
     "public-ip": "^4.0.3",
+    "statman-stopwatch": "^2.12.0",
     "ws": "^7.4.4"
   }
 }
