@@ -28,6 +28,11 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
+        if (!wsClient.isConnected()) {
+            message.channel.send('The server is not currently started. Use `!start` to start the server.');
+            return;
+        }
+
         /**
          * @type {{ isRunning: boolean, name: string, ip: string, connectedPlayers: string[] }}
          */
