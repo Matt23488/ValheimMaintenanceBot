@@ -76,7 +76,11 @@ module.exports = {
                 break;
         }
 
-        wsServer.sendMessage('echo', message);
+        // wsServer.sendMessage('echo', message);
+        wsServer.sendMessage('underAttack', {
+            type: data,
+            message
+        });
         setTimeout(() => wsServer.sendMessage('echo', 'The attack is over. Thank gods.'), duration * 1000);
     }
 };
