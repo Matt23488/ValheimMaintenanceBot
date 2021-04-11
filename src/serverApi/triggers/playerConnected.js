@@ -24,7 +24,13 @@ module.exports = {
             name: text.slice(prefixIndex + prefix.length, firstColon).trim()
         };
 
-        if (newPlayer.id === 0) return { canHandle: false, data: null };
+        // Died
+        if (newPlayer.id === '0') return { canHandle: false, data: null };
+
+        // Respawned
+        const existing = valheimServer.connectedPlayers.find(p => p.id === newPlayer.id);
+        if (existing) return { canHandle: false, data: null };
+
         return { canHandle: true, data: newPlayer };
     },
 

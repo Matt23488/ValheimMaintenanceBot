@@ -15,13 +15,13 @@ module.exports = {
         const prefixIndex = text.indexOf(prefix);
         const firstColon = text.indexOf(':', prefixIndex + prefix.length);
         const secondColon = text.indexOf(':', firstColon + 1);
-        const newPlayer = {
+        const player = {
             id: text.slice(firstColon + 1, secondColon).trim(),
             name: text.slice(prefixIndex + prefix.length, firstColon).trim()
         };
 
-        if (newPlayer.id !== 0) return { canHandle: false, data: null };
-        return { canHandle: true, data: newPlayer.name };
+        if (player.id !== '0') return { canHandle: false, data: null };
+        return { canHandle: true, data: player.name };
     },
 
     /**
