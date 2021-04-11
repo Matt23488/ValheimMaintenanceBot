@@ -30,7 +30,6 @@ module.exports = {
      * @returns {void}
      */
     execute: function (data) {
-        valheimServer.connectedPlayers.push(data);
         wsServer.sendMessage('echo', `Player \`${data}\` has died. F in the chat.`);
     }
 };
