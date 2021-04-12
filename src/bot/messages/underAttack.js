@@ -16,6 +16,10 @@ module.exports =  {
             .setDescription(data.message);
 
         switch (data.type) {
+            case 'army_moder':
+                embed.setImage('https://i.pinimg.com/originals/73/56/55/73565582e9ab3974c9e2d54e063cb9a8.gif');
+                break;
+
             case 'skeletons':
                 embed.setImage('https://i.pinimg.com/originals/7f/e2/49/7fe2495ce378b955d79567ce2f5d5fb3.gif');
                 break;
