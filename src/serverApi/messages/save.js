@@ -21,9 +21,9 @@ module.exports = {
         }
 
         const output = buffer.toArray().join('\n');
-        if (data.outFileName) fs.writeFileSync(path.join(__dirname, `../../../logs/${data.author}_${data.outFileName}.txt`), output);
+        if (data.outFileName) fs.writeFileSync(path.join(__dirname, `../../logs/${data.author}_${data.outFileName}.txt`), output);
         wsServer.sendResponse(requestId, 'save', output);
-        
+
         // switch (data.name) {
         //     case 'stdout':
         //         const output = valheimServer.stdoutBuffer.toArray().join('\n');

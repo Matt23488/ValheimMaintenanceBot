@@ -101,7 +101,8 @@ module.exports = {
                 stopwatch = new Stopwatch(true);
                 startEventSent = true;
                 ready = true;
-                wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+                // TODO: Uncomment this. I only removed it to prevent spam.
+                //wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
             } else triggerLoader.handleOutput(dataString);
         });
     },
