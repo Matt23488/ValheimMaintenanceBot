@@ -38,6 +38,15 @@ function formatMilliseconds(ms) {
     return str;
 }
 
+/**
+ * 
+ * @param {number} max The generated number will be up to but not including this value.
+ * @param {number} min The generated number will be at least this number.
+ */
+function getRandomInteger(max, min = 0) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 module.exports = {
     formatMilliseconds
 };
