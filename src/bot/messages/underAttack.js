@@ -71,6 +71,9 @@ module.exports =  {
                 embed.setImage('https://media0.giphy.com/media/yr7n0u3qzO9nG/200w.gif?cid=82a1493b2g1sygp2r690zy4yu0qcuadc3v3xgwz2chrv1v5v&rid=200w.gif')
                      .setDescription('There\'s a smell of sulfur in the air! Surtlings are attacking!');
                 break;
+            default:
+                embed.setDescription(`Not sure what they are, but the server event is \`${data}\`!`);
+                break;
         }
 
         channel.send(embed);
