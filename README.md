@@ -6,7 +6,7 @@
 <br />
 
 <p align="center">
-    <a href="https://github.com/Matt23488/ValheimMaintenanceBot/commits/master">
+    <a href="https://github.com/Matt23488/ValheimMaintenanceBot/commits/main">
     <img src="https://img.shields.io/github/last-commit/Matt23488/ValheimMaintenanceBot.svg?style=for-the-badge&logo=github&logoColor=white"
          alt="GitHub last commit"></a>
     <a href="https://github.com/Matt23488/ValheimMaintenanceBot/issues">
