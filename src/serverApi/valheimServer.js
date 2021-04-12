@@ -102,7 +102,7 @@ module.exports = {
                 startEventSent = true;
                 ready = true;
                 // TODO: Uncomment this. I only removed it to prevent spam.
-                //wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+                wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
             } else triggerLoader.handleOutput(dataString);
         });
     },

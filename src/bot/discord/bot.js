@@ -24,10 +24,10 @@ module.exports = {
 
         botClient = new Discord.Client();
 
-        botClient.once('ready', async () => {
+        botClient.once('ready', () => {
             console.log(`Logged in as ${botClient.user.tag}!`);
             botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
-            await wsClient.connect();
+            wsClient.connect();
         });
         
         botClient.on('message', async msg => {

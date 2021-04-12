@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const config = require('../../../config');
 
 const todoList = [
-    { name: 'Valheim Server and Bot Separation', value: `I want to put an api between myself (the bot) and the \`${config.valheim.name}\` server. This will allow me to be taken down without affecting players playing. **Currently working on this and some features are broken as a result.**` },
     { name: 'Personality', value: 'I want all of my response messages to come from a great Viking warrior.' },
     { name: 'World Stuff', value: 'I want to be able to create/restore backups of the world, as well as change the world that is hosted. Low priority.' },
     { name: 'Refactoring', value: 'I need to refactor the server messages, so that they don\'t call wsServer.sendResponse() but instead return their data.' }
