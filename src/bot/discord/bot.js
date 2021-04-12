@@ -26,6 +26,7 @@ module.exports = {
 
         botClient.once('ready', async () => {
             console.log(`Logged in as ${botClient.user.tag}!`);
+            botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
             await wsClient.connect();
         });
         
