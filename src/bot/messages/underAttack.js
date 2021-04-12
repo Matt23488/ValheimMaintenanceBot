@@ -23,6 +23,9 @@ module.exports =  {
             case 'skeletons':
                 embed.setImage('https://i.pinimg.com/originals/7f/e2/49/7fe2495ce378b955d79567ce2f5d5fb3.gif');
                 break;
+            case 'blobs':
+                embed.setImage('https://media.tenor.com/images/0f53444a91cea9c75b96e49873853fb8/tenor.gif');
+                break;
             case 'foresttrolls':
                 embed.setImage('https://cdn.discordapp.com/attachments/347519580610232320/830267128799821874/troll-hunter-gif-3.gif');
                 break;
