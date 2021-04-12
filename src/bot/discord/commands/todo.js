@@ -3,8 +3,7 @@ const config = require('../../../config');
 
 const todoList = [
     { name: 'Personality', value: 'I want all of my response messages to come from a great Viking warrior.' },
-    { name: 'World Stuff', value: 'I want to be able to create/restore backups of the world, as well as change the world that is hosted. Low priority.' },
-    { name: 'Refactoring', value: 'I need to refactor the server messages, so that they don\'t call wsServer.sendResponse() but instead return their data.' }
+    { name: 'World Stuff', value: 'I want to be able to create/restore backups of the world, as well as change the world that is hosted. Low priority.' }
 ];
 
 module.exports = {

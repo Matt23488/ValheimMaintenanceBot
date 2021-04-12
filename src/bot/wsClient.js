@@ -116,7 +116,7 @@ function destroy() {
 module.exports = {
     isConnected: () => connected,
     getWsClient: () => connection,
-    sendMessage,
+    sendMessage, // TODO: I don't think this is used anywhere.
     sendRequest,
     connect,
     destroy

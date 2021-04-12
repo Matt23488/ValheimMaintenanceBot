@@ -8,18 +8,17 @@ module.exports = {
 
     /**
      * 
-     * @param {number} requestId
      * @param {{ name: string, outFileName: string, author: string }} data 
+     * @returns {Promise<string>}
      */
-    execute: function (requestId, data) {
+    execute: function (data) {
         const buffer = valheimServer.getBuffer(data.name);
         if (!buffer) {
-            wsServer.sendResponse(requestId, 'save');
-            return;
+            return Promise.resolve(null);
         }
 
         const output = buffer.toArray().join('\n');
         if (data.outFileName) fs.writeFileSync(path.join(__dirname, `../../../logs/${data.author}_${data.outFileName}.txt`), output);
-        wsServer.sendResponse(requestId, 'save', output);
+        return Promise.resolve(output);
     }
 };

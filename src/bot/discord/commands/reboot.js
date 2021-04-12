@@ -36,8 +36,8 @@ module.exports = {
                 }
 
                 message.channel.send('Rebooting Valheim Server...');
-                await wsClient.sendRequest('shutdown');
-                require('./start').execute(message, rest);
+                await wsClient.sendRequest('reboot');
+                // require('./start').execute(message, rest);
                 break;
             case 'vm':
                 if (wsClient.isConnected()) {

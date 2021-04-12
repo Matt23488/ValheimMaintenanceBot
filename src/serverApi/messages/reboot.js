@@ -7,16 +7,21 @@ module.exports = {
 
     /**
      * 
-     * @param {number} requestId
      * @param {string} data 
-     * @returns {string}
+     * @returns {Promise<null>}
      */
-    execute: function (requestId, data) {
-        valheimServer.stop().then(() => {
-            wsServer.getServer().close();
-            const dir = path.join(__dirname, '../../..');
-            spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
-            process.exit();
-        });
+    execute: async function (data) {
+        // valheimServer.stop().then(() => {
+        //     wsServer.getServer().close();
+        //     const dir = path.join(__dirname, '../../..');
+        //     spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
+        //     process.exit();
+        // });
+
+        await valheimServer.stop();
+        const dir = path.join(__dirname, '../../..');
+        spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
+        wsServer.destroyWhenReady();
+        return null;
     }
 };

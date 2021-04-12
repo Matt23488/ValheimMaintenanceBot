@@ -14,14 +14,15 @@ module.exports = {
         server = new WebSocket.Server({ port: 8080 });
 
         server.on('connection', ws => {
-            ws.on('message', message => {
+            ws.on('message', async message => {
                 try {
                     /**
                      * @type {{ id: number, type: string, data: any }}
                      */
                     const json = JSON.parse(message);
                     const handler = require(path.join(__dirname, 'messages', json.type));
-                    handler.execute(json.id, json.data);
+                    json.data = await handler.execute(json.data);
+                    ws.send(JSON.stringify(json));
                 } catch (e) {
                     console.log(`Unknown message from wsClient: ${message}`);
                 }
@@ -43,15 +44,7 @@ module.exports = {
         });
     },
 
-    /**
-     * 
-     * @param {number} id 
-     * @param {string} type 
-     * @param {any} data 
-     */
-    sendResponse: (id, type, data = null) => {
-        server.clients.forEach(ws => {
-            ws.send(JSON.stringify({ id, type, data }));
-        });
+    destroyWhenReady: function () {
+        setTimeout(() => server.close(), 0);
     }
 };
