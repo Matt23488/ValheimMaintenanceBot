@@ -63,7 +63,7 @@ module.exports =  {
                 break;
             case 'wolves':
                 duration = 120;
-                embed.setImage('https://cdn2.scratch.mit.edu/get_image/gallery/4456537_170x100.png')
+                embed.setImage('https://i.pinimg.com/originals/b5/3c/70/b53c70c78900a201352876aaa7eaf823.gif')
                      .setDescription('You are being hunted! Wolves are attacking!');
                 break;
             case 'surtlings':
