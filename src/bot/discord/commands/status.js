@@ -17,7 +17,7 @@ module.exports = {
     execute: async function (message, rest) {
         if (!wsClient.isConnected()) {
             message.channel.send(new Discord.MessageEmbed()
-                .setTitle('Valheim Server Status')
+                .setTitle(`${config.valheim.name} Server Status`)
                 .setThumbnail('https://gamelaunchercreator.com/wp-content/uploads/2021/03/valheim-logo.png')
                 .setColor(0xff0000)
                 .setDescription(`The server is not currently started. Use \`${config.discord.commandPrefix}start\` to start the server.`)

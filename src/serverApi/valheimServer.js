@@ -27,6 +27,12 @@ let ready = false;
  */
 let stopwatch;
 
+/**
+ * @type {StringBuffer}
+ */
+let stdoutBuffer;
+let stderrBuffer = stdoutBuffer;
+
 const statuses = {
     stopped: 0,
     starting: 1,
@@ -48,11 +54,6 @@ module.exports = {
     connectedPlayers: [],
 
     getStatus,
-
-    /**
-     * @type {StringBuffer}
-     */
-    stdoutBuffer: null,
 
     /**
      * @returns {void}
@@ -77,10 +78,14 @@ module.exports = {
             }
         );
         started = true;
-        this.connectedPlayers = [];
+        this.connectedPlayers = []; // TODO: Refactor this to a module variable instead of an instance variable. Will need to expose add and remove methods for the triggers that access this.
+        stdoutBuffer = new StringBuffer(25);
+        stderrBuffer = new StringBuffer(25);
 
         serverProc.stderr.on('data', data => {
-            wsServer.sendMessage('stderr', data.toString());
+            const dataString = data.toString();
+            stderrBuffer.add(dataString);
+            wsServer.sendMessage('stderr', dataString);
         });
 
         let startEventSent = false;
@@ -90,6 +95,7 @@ module.exports = {
             wsServer.sendMessage('stdout', dataString);
 
             console.log(dataString);
+            stdoutBuffer.add(dataString);
 
             if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
                 stopwatch = new Stopwatch(true);
@@ -122,5 +128,19 @@ module.exports = {
         if (!stopwatch || stopwatch.state() !== stopwatch.STATES.RUNNING) return -1;
 
         return stopwatch.read();
-    }
+    },
+
+
+    /**
+     * 
+     * @param {string} name 
+     * @returns {StringBuffer}
+     */
+    getBuffer: function (name) {
+        switch (name) {
+            case 'stdout': return stdoutBuffer
+            case 'stderr': return stderrBuffer;
+            default: return null;
+        }
+    },
 };

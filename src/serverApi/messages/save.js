@@ -14,16 +14,26 @@ module.exports = {
      * @param {{ name: string, outFileName: string, author: string }} data 
      */
     execute: function (requestId, data) {
-        switch (data.name) {
-            case 'stdout':
-                const output = valheimServer.stdoutBuffer.toArray().join('\n');
-                if (data.outFileName) fs.writeFileSync(path.join(__dirname, `../../../logs/${data.author}_${data.outFileName}.txt`), output);
-                wsServer.sendResponse(requestId, 'save', output);
-                break;
-            default:
-                wsServer.sendResponse(requestId, 'save');
-                break;
+        const buffer = valheimServer.getBuffer(data.name);
+        if (!buffer) {
+            wsServer.sendResponse(requestId, 'save');
+            return;
         }
+
+        const output = buffer.toArray().join('\n');
+        if (data.outFileName) fs.writeFileSync(path.join(__dirname, `../../../logs/${data.author}_${data.outFileName}.txt`), output);
+        wsServer.sendResponse(requestId, 'save', output);
+        
+        // switch (data.name) {
+        //     case 'stdout':
+        //         const output = valheimServer.stdoutBuffer.toArray().join('\n');
+        //         if (data.outFileName) fs.writeFileSync(path.join(__dirname, `../../../logs/${data.author}_${data.outFileName}.txt`), output);
+        //         wsServer.sendResponse(requestId, 'save', output);
+        //         break;
+        //     default:
+        //         wsServer.sendResponse(requestId, 'save');
+        //         break;
+        // }
 
         //         if (params[1].length > 0) fs.writeFileSync(path.join(__dirname, `../../../logs/${message.author.tag}_${params[1]}.txt`), output);
 
