@@ -3,6 +3,7 @@ const config = require('../../../config');
 const roles = require('../roles');
 const fs = require('fs');
 const path = require('path');
+const wsClient = require('../../wsClient');
 
 module.exports = {
     name: 'save',
@@ -15,9 +16,51 @@ module.exports = {
      * @param {string} rest 
      * @returns {Promise<void>}
      */
-    execute: function (message, rest) {
+    execute: async function (message, rest) {
+        if (!wsClient.isConnected()) {
+            message.channel.send('The server is not running, there\'s nothing to save.');
+            return;
+        }
+        
+        const params = rest.split(' ');
+        if (params.length === 0) {
+            message.reply('save what, hoss?');
+            return;
+        }
 
-        return message.channel.send('That command is broken right now.');
+        /**
+         * @type {string}
+         */
+        const result = await wsClient.sendRequest('save', {
+            name: params[0],
+            outFileName: params[1] || null,
+            author: message.author.tag
+        });
+
+        if (!result) {
+            message.channel.send(`\`${params[0]}\` is not a valid parameter of ${config.discord.commandPrefix}save.`);
+            return;
+        }
+
+        const prefix = `\`${params[0]}\` output:\n\`\`\``;
+        const suffix = '```';
+        const totalLength = prefix.length + suffix.length + result.length;
+        let final;
+
+        if (totalLength > 2000) final = prefix + '...' + result.substring(result.length - (2000 - prefix.length - suffix.length - 3)) + suffix;
+        else final = prefix + result + suffix;
+        message.channel.send(final);
+
+        // if (params[0] === 'stdout') {
+        //     const result = await wsClient.sendRequest('save', {
+        //         name: params[0],
+        //         outFileName: params[1] || null
+        //     });
+
+        // } else message.channel.send(`\`${params[0]}\` is not a valid parameter of ${config.discord.commandPrefix}save.`);
+
+
+        // return message.channel.send('That command is broken right now.');
 
         // return;
         // return new Promise(resolve => {
