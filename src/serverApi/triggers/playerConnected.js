@@ -44,6 +44,6 @@ module.exports = {
         data.stopwatch = new Stopwatch(true);
         valheimServer.connectedPlayers.push(data);
 
-        wsServer.sendMessage('echo', `Player \`${data.name}\` has joined the server! ${getPlayerCountMessage()}`);
+        wsServer.sendMessage('echo', `Player _${data.name}_ has joined the server! ${getPlayerCountMessage()}`);
     }
 };

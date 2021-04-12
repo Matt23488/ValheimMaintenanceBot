@@ -34,6 +34,6 @@ module.exports = {
     execute: function (data) {
         data.stopwatch.stop();
         valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== data.id);
-        wsServer.sendMessage('echo', `Player \`${data.name}\` has left the server. ${getPlayerCountMessage()}`);
+        wsServer.sendMessage('echo', `Player _${data.name}_ has left the server. ${getPlayerCountMessage()}`);
     }
 };
