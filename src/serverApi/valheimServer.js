@@ -160,7 +160,7 @@ module.exports = {
      * @param {string} name
      */
     addPlayer: (id, name) => {
-        if (connectedPlayers.length === 0) activeStopwatch.start();
+        if (connectedPlayers.length === 0) activeStopwatch = new Stopwatch('active', true, readStopwatch(activeStopwatch));
         connectedPlayers.push({ id, name, stopwatch: new Stopwatch(true) });
     },
 
