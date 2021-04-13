@@ -3,7 +3,8 @@ const config = require('../../../config');
 
 const todoList = [
     { name: 'Personality', value: 'I want all of my response messages to come from a great Viking warrior.' },
-    { name: 'World Stuff', value: 'I want to be able to create/restore backups of the world, as well as change the world that is hosted. Low priority.' }
+    { name: 'World Stuff', value: 'I want to be able to create/restore backups of the world, as well as change the world that is hosted. Low priority.' },
+    { name: 'Uptime', value: 'I want to have another stopwatch that only runs while at least one player is connected, to keep track of how much irl time has passed in the game.' }
 ];
 
 module.exports = {

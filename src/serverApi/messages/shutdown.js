@@ -13,11 +13,5 @@ module.exports = {
         await valheimServer.stop();
         wsServer.destroyWhenReady();
         return null;
-        // valheimServer.stop().then(() => {
-        //     return null;
-        //     wsServer.sendResponse(requestId, 'shutdown');
-        //     wsServer.getServer().close();
-        //     process.exit();
-        // });
     }
 };

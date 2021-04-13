@@ -8,7 +8,7 @@ const wsClient = require('../../wsClient');
 
 module.exports = {
     name: 'reboot',
-    description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - ~~Reboots ${config.valheim.name}.~~ This one is broken, just shuts the server down.\n  * \`vm\` - Reboots the virtual machine. ~~_Will require RDP to launch me and ${config.valheim.name}_~~ The VM now auto logs on and starts the bot.`,
+    description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${config.valheim.name}.\n  * \`vm\` - Reboots the virtual machine.`,
     role: roles.Admin,
 
 
