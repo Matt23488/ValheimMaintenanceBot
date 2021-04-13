@@ -33,6 +33,11 @@ let stopwatch;
 let stdoutBuffer;
 let stderrBuffer = stdoutBuffer;
 
+/**
+ * @type {{ id: string, name: string, stopwatch: Stopwatch }[]}
+ */
+let connectedPlayers;
+
 const statuses = {
     stopped: 0,
     starting: 1,
@@ -47,12 +52,6 @@ function getStatus() {
 
 module.exports = {
     statuses,
-
-    /**
-     * @type {{ id: string, name: string, stopwatch: Stopwatch }[]}
-     */
-    connectedPlayers: [],
-
     getStatus,
 
     /**
@@ -78,7 +77,7 @@ module.exports = {
             }
         );
         started = true;
-        this.connectedPlayers = []; // TODO: Refactor this to a module variable instead of an instance variable. Will need to expose add and remove methods for the triggers that access this.
+        connectedPlayers = [];
         stdoutBuffer = new StringBuffer(25);
         stderrBuffer = new StringBuffer(25);
 
@@ -143,4 +142,28 @@ module.exports = {
             default: return null;
         }
     },
+
+    /**
+     * 
+     * @param {string} id
+     * @param {string} name
+     */
+    addPlayer: (id, name) => { connectedPlayers.push({ id, name, stopwatch: new Stopwatch(true) }); },
+
+    /**
+     * 
+     * @param {string} id 
+     */
+    findPlayer: id => connectedPlayers.find(p => p.id === id),
+
+    /**
+     * 
+     * @param {string} id 
+     */
+    removePlayer: id => {
+        connectedPlayers.find(p => p.id === id).stopwatch.stop();
+        connectedPlayers = connectedPlayers.filter(p => p.id !== id);
+    }
+
+    // TODO: Add a cache system that triggers can use to store data that other triggers can use, to prevent parsing values redundantly.
 };

@@ -29,7 +29,7 @@ module.exports = {
         if (newPlayer.id === '0') return { canHandle: false, data: null };
 
         // Respawned
-        const existing = valheimServer.connectedPlayers.find(p => p.id === newPlayer.id);
+        const existing = valheimServer.findPlayer(newPlayer.id);
         if (existing) return { canHandle: false, data: null };
 
         return { canHandle: true, data: newPlayer };
@@ -41,8 +41,7 @@ module.exports = {
      * @returns {void}
      */
     execute: function (data) {
-        data.stopwatch = new Stopwatch(true);
-        valheimServer.connectedPlayers.push(data);
+        valheimServer.addPlayer(data.id, data.name);
 
         wsServer.sendMessage('echo', `Player _${data.name}_ has joined the server! ${getPlayerCountMessage()}`);
     }

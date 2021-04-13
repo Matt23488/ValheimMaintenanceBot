@@ -12,7 +12,7 @@ module.exports = {
     /**
      * 
      * @param {string} text 
-     * @returns {{ canHandle: boolean, data: string }}
+     * @returns {{ canHandle: boolean, data: { id: string, name: string } }}
      */
     parse: function (text) {
         if (text.indexOf(prefix) === -1) return { canHandle: false, data: null };
@@ -20,7 +20,7 @@ module.exports = {
         const prefixIndex = text.indexOf(prefix);
         const colon = text.indexOf(':', prefixIndex + prefix.length);
         const id = text.slice(prefixIndex + prefix.length, colon).trim();
-        const player = valheimServer.connectedPlayers.find(p => p.id === id);
+        const player = valheimServer.findPlayer(id);
         if (!player) return { canHandle: false, data: null };
 
         return { canHandle: true, data: player };
@@ -28,12 +28,11 @@ module.exports = {
 
     /**
      * 
-     * @param {{ id: string, name: string, stopwatch: Stopwatch }} data 
+     * @param {{ id: string, name: string }} data 
      * @returns {void}
      */
     execute: function (data) {
-        data.stopwatch.stop();
-        valheimServer.connectedPlayers = valheimServer.connectedPlayers.filter(p => p.id !== data.id);
+        valheimServer.removePlayer(data.id);
         wsServer.sendMessage('echo', `Player _${data.name}_ has left the server. ${getPlayerCountMessage()}`);
     }
 };

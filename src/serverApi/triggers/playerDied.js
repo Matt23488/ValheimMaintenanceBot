@@ -7,7 +7,7 @@ module.exports = {
     /**
      * 
      * @param {string} text 
-     * @returns {{ canHandle: boolean, data: { id: string, name: string } }}
+     * @returns {{ canHandle: boolean, data: string }}
      */
     parse: function (text) {
         if (text.indexOf(prefix) === -1) return { canHandle: false, data: null };
