@@ -10,7 +10,7 @@ module.exports = {
     /**
      * 
      * @param {string} data 
-     * @returns {Promise<{status: string, statuses: any, name: string, ip: string, connectedPlayers: { name: string, uptime: string }, uptime: string }>}
+     * @returns {Promise<{status: string, statuses: any, name: string, ip: string, connectedPlayers: { name: string, uptime: string }, uptime: string, activeUptime: string }>}
      */
     execute: function (data) {
         return Promise.resolve({
@@ -19,7 +19,8 @@ module.exports = {
             name: config.valheim.name,
             ip: `${getServerIpAddress()}:${config.valheim.port}`,
             connectedPlayers: valheimServer.connectedPlayers.map(p => { return { name: p.name, uptime: formatMilliseconds(p.stopwatch.read()) }; }),
-            uptime: formatMilliseconds(valheimServer.getServerUptime())
+            uptime: formatMilliseconds(valheimServer.getServerUptime()),
+            activeUptime = formatMilliseconds(valheimServer.getServerActiveUptime())
         });
     }
 };

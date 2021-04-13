@@ -26,6 +26,7 @@ let ready = false;
  * @type {Stopwatch}
  */
 let stopwatch;
+let activeStopwatch = stopwatch;
 
 /**
  * @type {StringBuffer}
@@ -98,6 +99,7 @@ module.exports = {
 
             if (dataString.indexOf('Game server connected') > 0 && !startEventSent) {
                 stopwatch = new Stopwatch(true);
+                activeStopwatch = new Stopwatch();
                 startEventSent = true;
                 ready = true;
                 wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
@@ -124,9 +126,15 @@ module.exports = {
     },
 
     getServerUptime: function () {
-        if (!stopwatch || stopwatch.state() !== stopwatch.STATES.RUNNING) return -1;
+        if (!stopwatch) return -1;
 
         return stopwatch.read();
+    },
+
+    getServerActiveUptime: function () {
+        if (!activeStopwatch) return -1;
+
+        return activeStopwatch.read();
     },
 
 
@@ -148,7 +156,10 @@ module.exports = {
      * @param {string} id
      * @param {string} name
      */
-    addPlayer: (id, name) => { connectedPlayers.push({ id, name, stopwatch: new Stopwatch(true) }); },
+    addPlayer: (id, name) => {
+        if (connectedPlayers.length === 0) activeStopwatch.start();
+        connectedPlayers.push({ id, name, stopwatch: new Stopwatch(true) });
+    },
 
     /**
      * 
@@ -163,5 +174,6 @@ module.exports = {
     removePlayer: id => {
         connectedPlayers.find(p => p.id === id).stopwatch.stop();
         connectedPlayers = connectedPlayers.filter(p => p.id !== id);
+        if (connectedPlayers.length === 0) activeStopwatch.stop();
     }
 };
