@@ -164,6 +164,4 @@ module.exports = {
         connectedPlayers.find(p => p.id === id).stopwatch.stop();
         connectedPlayers = connectedPlayers.filter(p => p.id !== id);
     }
-
-    // TODO: Add a cache system that triggers can use to store data that other triggers can use, to prevent parsing values redundantly.
 };
