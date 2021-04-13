@@ -2,7 +2,6 @@ const config = require('../../config');
 const { getServerIpAddress } = require('../../ip');
 const { formatMilliseconds } = require('../../utilities');
 const valheimServer = require('../valheimServer');
-const wsServer = require('../wsServer');
 
 module.exports = {
     prefix: 'status',
@@ -18,9 +17,9 @@ module.exports = {
             statuses: valheimServer.statuses,
             name: config.valheim.name,
             ip: `${getServerIpAddress()}:${config.valheim.port}`,
-            connectedPlayers: valheimServer.connectedPlayers.map(p => { return { name: p.name, uptime: formatMilliseconds(p.stopwatch.read()) }; }),
+            connectedPlayers: valheimServer.getPlayers().map(p => { return { name: p.name, uptime: formatMilliseconds(p.stopwatch.read()) }; }),
             uptime: formatMilliseconds(valheimServer.getServerUptime()),
-            activeUptime = formatMilliseconds(valheimServer.getServerActiveUptime())
+            activeUptime: formatMilliseconds(valheimServer.getServerActiveUptime())
         });
     }
 };

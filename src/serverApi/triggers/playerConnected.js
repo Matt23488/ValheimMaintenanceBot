@@ -1,9 +1,9 @@
-const Stopwatch = require('statman-stopwatch');
 const valheimServer = require("../valheimServer");
 const wsServer = require("../wsServer");
 
 function getPlayerCountMessage() {
-    return `There ${valheimServer.connectedPlayers.length === 1 ? 'is' : 'are'} currently ${valheimServer.connectedPlayers.length} player${valheimServer.connectedPlayers.length === 1 ? '' : 's'} on the server.`;
+    const players = valheimServer.getPlayers();
+    return `There ${players.length === 1 ? 'is' : 'are'} currently ${players.length} player${players.length === 1 ? '' : 's'} on the server.`;
 }
 
 const prefix = 'Got character ZDOID from ';

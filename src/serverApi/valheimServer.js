@@ -5,8 +5,8 @@ const Stopwatch = require('statman-stopwatch');
 const config = require('../config');
 const StringBuffer = require('../stringBuffer');
 const triggerLoader = require('./triggerLoader');
-const { getServerIpAddress } = require('../ip');
 const wsServer = require('./wsServer');
+const { getServerIpAddress } = require('../ip');
 
 
 const batchFileText = fs.readFileSync(config.serverWorkingDirectory + config.serverBatchFile).toString();
@@ -27,6 +27,18 @@ let ready = false;
  */
 let stopwatch;
 let activeStopwatch = stopwatch;
+
+/**
+ * 
+ * @param {Stopwatch} sw 
+ * @returns {number}
+ */
+function readStopwatch(sw) {
+    if (!sw) return 0;
+
+    const ms = sw.read();
+    return isNaN(ms) ? 0 : ms;
+}
 
 /**
  * @type {StringBuffer}
@@ -102,7 +114,7 @@ module.exports = {
                 activeStopwatch = new Stopwatch();
                 startEventSent = true;
                 ready = true;
-                wsServer.sendMessage('echo', `Server started at \`${getServerIpAddress()}:${config.valheim.port}\`.`);
+                wsServer.sendMessage('started', `${getServerIpAddress()}:${config.valheim.port}`);
             } else triggerLoader.handleOutput(dataString);
         });
     },
@@ -125,17 +137,8 @@ module.exports = {
         });
     },
 
-    getServerUptime: function () {
-        if (!stopwatch) return -1;
-
-        return stopwatch.read();
-    },
-
-    getServerActiveUptime: function () {
-        if (!activeStopwatch) return -1;
-
-        return activeStopwatch.read();
-    },
+    getServerUptime: () => readStopwatch(stopwatch),
+    getServerActiveUptime: () => readStopwatch(activeStopwatch),
 
 
     /**
@@ -175,5 +178,7 @@ module.exports = {
         connectedPlayers.find(p => p.id === id).stopwatch.stop();
         connectedPlayers = connectedPlayers.filter(p => p.id !== id);
         if (connectedPlayers.length === 0) activeStopwatch.stop();
-    }
+    },
+
+    getPlayers: () => connectedPlayers
 };

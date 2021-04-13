@@ -5,7 +5,6 @@
  * @returns {string} A human-readable string representing the milliseconds.
  */
 function formatMilliseconds(ms) {
-    ms = Math.floor(ms);
     let seconds = Math.floor(ms / 1000),
         minutes = 0,
         hours = 0;
@@ -30,7 +29,7 @@ function formatMilliseconds(ms) {
         str += `${minutes}m`;
     }
 
-    if (seconds > 0) {
+    if (seconds > 0 || str.length === 0) {
         if (str.length > 0) str += ' ';
         str += `${seconds}s`;
     }

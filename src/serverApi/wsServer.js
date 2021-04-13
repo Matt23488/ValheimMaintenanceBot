@@ -15,16 +15,42 @@ module.exports = {
 
         server.on('connection', ws => {
             ws.on('message', async message => {
+                /**
+                 * @type {{ id: number, type: string, data: any }}
+                 */
+                let json;
                 try {
-                    /**
-                     * @type {{ id: number, type: string, data: any }}
-                     */
-                    const json = JSON.parse(message);
-                    const handler = require(path.join(__dirname, 'messages', json.type));
+                    json = JSON.parse(message);
+                } catch (e) {
+                    console.error(`Unknown message from wsClient: ${message}`);
+                    return;
+                }
+
+                /**
+                 * @type {{ execute: (data: any) => any }}
+                 */
+                let handler;
+                try {
+                    handler = require(path.join(__dirname, 'messages', json.type));
+                } catch (e) {
+                    console.error(`Unknown message from wsClient: ${message}`);
+                    if (json.id !== null) {
+                        json.error = e;
+                        ws.send(JSON.stringify(json));
+                        return;
+                    }
+                }
+
+                try {
                     json.data = await handler.execute(json.data);
                     ws.send(JSON.stringify(json));
                 } catch (e) {
-                    console.log(`Unknown message from wsClient: ${message}`);
+                    console.error(`Error executing ${json.type}`);
+                    console.error(e);
+                    if (json.id !== null) {
+                        json.error = e;
+                        ws.send(JSON.stringify(json));
+                    }
                 }
             });
         });

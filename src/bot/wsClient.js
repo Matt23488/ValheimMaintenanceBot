@@ -11,6 +11,11 @@ let connected = false;
 let tryReconnect = true;
 
 /**
+ * @type {Set<string>}
+ */
+const ignoreMessageSet = new Set();
+
+/**
  * @type {Map<number, (data: any) => void>}
  */
 const requestMap = new Map();
@@ -64,6 +69,13 @@ function receiveMessage(message) {
      */
     const response = JSON.parse(message);
     if (response.id === null) {
+        console.log(`Received message '${response.type}' from server`);
+        if (ignoreMessageSet.has(response.type)) {
+            console.log('Ignoring');
+            ignoreMessageSet.delete(response.type);
+            return;
+        }
+
         try {
             const handler = require(path.join(__dirname, 'messages', response.type));
             handler.execute(response.data);
@@ -76,6 +88,14 @@ function receiveMessage(message) {
     const resolve = requestMap.get(response.id);
     requestMap.delete(response.id);
     resolve(response.data);
+}
+
+/**
+ * Causes the wsClient to ignore the next message of the given type.
+ * @param {string} type
+ */
+function ignoreMessage(type) {
+    ignoreMessageSet.add(type);
 }
 
 /**
@@ -118,6 +138,7 @@ module.exports = {
     getWsClient: () => connection,
     sendMessage, // TODO: I don't think this is used anywhere.
     sendRequest,
+    ignoreMessage,
     connect,
     destroy
 };
