@@ -67,7 +67,7 @@ function receiveMessage(message) {
         try {
             const handler = require(path.join(__dirname, 'messages', response.type));
             handler.execute(response.data);
-        } catch (ess) {
+        } catch (e) {
             console.log(`Unknown message from wsServer: ${message}`);
         }
         return;

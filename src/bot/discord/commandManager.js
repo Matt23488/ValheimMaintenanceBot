@@ -12,6 +12,7 @@ async function executeCommand(commandInfo, message) {
     const command = getCommand(commandInfo.name);
     if (!command) return;
 
+    // TODO: find a good way to translate a dm from me to an echo message trigger.
     if (message.channel.type === 'dm') {
         if (message.author.id !== config.parentalUnit) {
             message.reply(`only my parental unit can command me in dms.`);
