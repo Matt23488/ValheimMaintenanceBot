@@ -33,7 +33,7 @@ module.exports = {
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x0099ff)
             .setTitle('Haldor Locations')
-            .addFields(locations.map(l => { return { name: `Distance from origin: ${l.distFromOrigin.toFixed(3)}`, value: `\`\`\`X: ${l.x.toFixed(3)}\nY: ${l.y.toFixed(3)}\nZ: ${l.z.toFixed(3)}\`\`\``, inline: true }; }))
+            .addFields(locations.map(l => { return { name: `${l.distFromOrigin.toFixed(3)} from origin`, value: `\`\`\`X: ${l.x.toFixed(3)}\nY: ${l.y.toFixed(3)}\nZ: ${l.z.toFixed(3)}\`\`\``, inline: true }; }))
         );
     }
 };
