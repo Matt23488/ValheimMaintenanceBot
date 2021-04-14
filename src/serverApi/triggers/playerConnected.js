@@ -1,11 +1,6 @@
 const valheimServer = require("../valheimServer");
 const wsServer = require("../wsServer");
 
-function getPlayerCountMessage() {
-    const players = valheimServer.getPlayers();
-    return `There ${players.length === 1 ? 'is' : 'are'} currently ${players.length} player${players.length === 1 ? '' : 's'} on the server.`;
-}
-
 const prefix = 'Got character ZDOID from ';
 
 module.exports = {
