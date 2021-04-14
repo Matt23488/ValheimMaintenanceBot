@@ -33,6 +33,6 @@ module.exports = {
      */
     execute: function (data) {
         valheimServer.removePlayer(data.id);
-        wsServer.sendMessage('echo', `Player _${data.name}_ has left the server. ${getPlayerCountMessage()}`);
+        wsServer.sendMessage('playerDisconnected', data.name);
     }
 };

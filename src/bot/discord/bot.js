@@ -39,5 +39,11 @@ module.exports = {
         });
         
         botClient.login(config.appToken);
-    }
+    },
+
+    /**
+     * Returns the default channel the bot announces things in.
+     * @returns {Discord.TextChannel} The default channel the bot announces things in.
+     */
+    getDefaultChannel: () => botClient.channels.cache.get(config.defaultChannel)
 };

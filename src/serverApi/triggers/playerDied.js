@@ -30,7 +30,6 @@ module.exports = {
      * @returns {void}
      */
     execute: function (data) {
-        if (config.valheim.pickOnUsers.indexOf(data) >= 0) wsServer.sendMessage('echo', `_${data}_ died again. <:joy:831246652173844494>`);
-        else wsServer.sendMessage('echo', `Player _${data}_ has died. F in the chat.`);
+        wsServer.sendMessage('playerDied', data);
     }
 };

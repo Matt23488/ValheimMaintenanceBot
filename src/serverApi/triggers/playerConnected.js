@@ -42,7 +42,6 @@ module.exports = {
      */
     execute: function (data) {
         valheimServer.addPlayer(data.id, data.name);
-
-        wsServer.sendMessage('echo', `Player _${data.name}_ has joined the server! ${getPlayerCountMessage()}`);
+        wsServer.sendMessage('playerConnected', data.name);
     }
 };
