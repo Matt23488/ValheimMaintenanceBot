@@ -28,7 +28,7 @@ module.exports = {
             { x: -8714.86328125,     y: 40.4701538085937, z:  -270.191589355469 },
         ];
         locations.forEach(l => l.distFromOrigin = Math.sqrt(l.x*l.x+l.z*l.z));
-        locations.sort((a, b) => b.distFromOrigin - a.distFromOrigin);
+        locations.sort((a, b) => a.distFromOrigin - b.distFromOrigin);
 
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x0099ff)
