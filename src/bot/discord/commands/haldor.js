@@ -33,8 +33,8 @@ module.exports = {
 
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x0099ff)
-            .setTitle(`Haldor Location${locations.length > 1 ? 's' : ''}`)
-            .setDescription(locations.length > 1 ? 'Locations are relative to the center of the map.' : 'Location is relative to the center of the map.')
+            .setTitle(`${locations.length > 1 ? 'Possible ' : ''}Haldor Location${locations.length > 1 ? 's' : ''}`)
+            .setDescription(locations.length > 1 ? 'Haldor has not been found on this world. Locations are relative to the center of the map.' : 'Haldor has been found. Location is relative to the center of the map.')
             .addFields(locations.map(l => { return { name: `${Math.round(l.distFromOrigin)}m away`, value: `\`\`\`${Math.round(Math.abs(l.x))}m ${l.x < 0 ? 'W' : 'E'}\n${Math.round(Math.abs(l.z))}m ${l.z < 0 ? 'S' : 'N'}\`\`\``, inline: true }; }))
         );
     }
