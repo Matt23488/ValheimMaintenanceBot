@@ -5,7 +5,7 @@ const config = require('../../../config');
 
 module.exports = {
     name: 'haldor',
-    description: 'Tell us where Haldor\'s possible locations are.',
+    description: 'Tells you where Haldor is, if he has been found. Otherwise shows the ten possible locations. Once you find him once, he will always appear in that location.',
     role: null,
 
     /**
@@ -15,7 +15,8 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        const worldBytes = fs.readFileSync(path.join(process.env['USERPROFILE'], 'AppData/LocalLow/IronGate/Valheim/worlds', `${config.valheim.world}.db`));
+        const worldName = rest.length > 0 ? rest : config.valheim.world;
+        const worldBytes = fs.readFileSync(path.join(process.env['USERPROFILE'], 'AppData/LocalLow/IronGate/Valheim/worlds', `${worldName}.db`));
         const searchBuffer = Buffer.from('56656E646F725F426C61636B466F72657374', 'hex');
 
         /**
