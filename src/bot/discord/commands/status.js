@@ -47,11 +47,10 @@ module.exports = {
             case statusInfo.statuses.ready:
                 embed.setColor(0x00ff00)
                     .setDescription('The server is running.')
-                    .addField('Server IP', `\`${statusInfo.ip}\``)
-                    .addField('Password', `\`${statusInfo.password}\``)
-                    .addField('Uptime', `${statusInfo.uptime} (active for ${statusInfo.activeUptime})`)
-                    .addField('\u200B', `${statusInfo.connectedPlayers.length} player${statusInfo.connectedPlayers.length === 1 ? '' : 's'} connected`)
-                    .addFields(statusInfo.connectedPlayers.map(p => { return { name: p.name, value: `${p.uptime}`, inline: true }; }))
+                    .addField('Server IP', `_${statusInfo.ip}_`, true)
+                    .addField('Password', `_${statusInfo.password}_`, true)
+                    .addField('Uptime', `_${statusInfo.uptime} (active for ${statusInfo.activeUptime})_`)
+                    .addFields(statusInfo.connectedPlayers.map(p => { return { name: p.name, value: `_${p.uptime}_`, inline: true }; }))
                 break;
             default:
                 embed.setColor(0xff0000)
