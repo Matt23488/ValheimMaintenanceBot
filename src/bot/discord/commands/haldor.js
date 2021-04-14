@@ -34,7 +34,8 @@ module.exports = {
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x0099ff)
             .setTitle('Haldor Locations')
-            .addFields(locations.map(l => { return { name: `${l.distFromOrigin.toFixed(3)} from origin`, value: `\`\`\`${Math.abs(l.x).toFixed(3)} ${l.x < 0 ? 'W' : 'E'}\n${Math.abs(l.z).toFixed(3)} ${l.z < 0 ? 'S' : 'N'}\`\`\``, inline: true }; }))
+            .setDescription('Locations are relative to the center of the map.')
+            .addFields(locations.map(l => { return { name: `${l.distFromOrigin.toFixed(3)} away`, value: `\`\`\`${Math.abs(l.x).toFixed(3)} ${l.x < 0 ? 'W' : 'E'}\n${Math.abs(l.z).toFixed(3)} ${l.z < 0 ? 'S' : 'N'}\`\`\``, inline: true }; }))
         );
     }
 };
