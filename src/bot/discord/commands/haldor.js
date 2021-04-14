@@ -14,6 +14,7 @@ module.exports = {
     execute: async function (message, rest) {
         // TODO: Parse the world file. Tried it once but it was really slow so I manually parsed
         // the values and hardcoded them for now. Obviously this only works for our world.
+
         const locations = [
             { x:  7814.27685546875,  y: 46.8652153015137, z:  3194.57763671875  },
             { x: -7404.109375,       y: 32.0077476501465, z:  3761.87646484375  },
@@ -27,12 +28,12 @@ module.exports = {
             { x: -8714.86328125,     y: 40.4701538085937, z:  -270.191589355469 },
         ];
         locations.forEach(l => l.distFromOrigin = Math.sqrt(l.x*l.x+l.z*l.z));
-        //locations = locations.sort((a, b) => a.distFromOrigin - b.distFromOrigin);
+        locations.sort((a, b) => b.distFromOrigin - a.distFromOrigin);
 
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x0099ff)
             .setTitle('Haldor Locations')
-            .addFields(locations.map(l => { return { name: `Distance from origin: ${l.distFromOrigin.toFixed(3)}`, value: `\`\`\`X: ${l.x.toFixed(3)}\nY: ${l.y.toFixed(3)}\nY: ${l.z.toFixed(3)}\`\`\``, inline: true }; }))
+            .addFields(locations.map(l => { return { name: `Distance from origin: ${l.distFromOrigin.toFixed(3)}`, value: `\`\`\`X: ${l.x.toFixed(3)}\nY: ${l.y.toFixed(3)}\nZ: ${l.z.toFixed(3)}\`\`\``, inline: true }; }))
         );
     }
 };
