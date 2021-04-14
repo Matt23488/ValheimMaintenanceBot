@@ -12,7 +12,6 @@ async function executeCommand(commandInfo, message) {
     const command = getCommand(commandInfo.name);
     if (!command) return;
 
-    // TODO: find a good way to translate a dm from me to an echo message trigger.
     if (message.channel.type === 'dm') {
         if (message.author.id !== config.parentalUnit) {
             message.reply(`only my parental unit can command me in dms.`);
@@ -27,6 +26,7 @@ async function executeCommand(commandInfo, message) {
 
     console.log(`${commandInfo.name} issued by ${message.author.tag}`);
     try {
+        // TODO: Maybe add the startTyping()/stopTyping() logic in here
         await command.execute(message, commandInfo.rest);
     } catch (e) {
         console.error(e);
