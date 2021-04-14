@@ -1,4 +1,7 @@
 const Discord = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+const config = require('../../../config');
 
 module.exports = {
     name: 'haldor',
@@ -12,22 +15,20 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async function (message, rest) {
-        // TODO: Parse the world file. Tried it once but it was really slow so I manually parsed
-        // the values and hardcoded them for now. Obviously this only works for our world.
+        const worldBytes = fs.readFileSync(path.join(process.env['USERPROFILE'], 'AppData/LocalLow/IronGate/Valheim/worlds', `${config.valheim.world}.db`));
+        const searchBuffer = Buffer.from('56656E646F725F426C61636B466F72657374', 'hex');
 
-        const locations = [
-            { x:  7814.27685546875,  y: 46.8652153015137, z:  3194.57763671875  },
-            { x: -7404.109375,       y: 32.0077476501465, z:  3761.87646484375  },
-            { x:  -519.125366210937, y: 71.7126235961914, z: -6257.04931640625  },
-            { x: -9708.294921875,    y: 42.8488845825195, z:   643.530090332031 },
-            { x: -8846.37109375,     y: 37.3945922851562, z: -3340.88012695313  },
-            { x:  -687.266479492188, y: 45.0766296386719, z: -2446.80712890625  },
-            { x:  9405.5185546875,   y: 66.6875,          z:   182.668472290039 },
-            { x:  7481.71923828125,  y: 31.1889266967773, z: -3257.50952148438  },
-            { x: -1744.00402832031,  y: 47.6506233215332, z: -1290.71606445312  },
-            { x: -8714.86328125,     y: 40.4701538085937, z:  -270.191589355469 },
-        ];
-        locations.forEach(l => l.distFromOrigin = Math.sqrt(l.x*l.x+l.z*l.z));
+        /**
+         * @type {{ x: number, y: number, z: number, distFromOrigin: number }}
+         */
+        const locations = [];
+        let index = -1;
+        while ((index = worldBytes.indexOf(searchBuffer, index + 1)) >= 0) {
+            const x = worldBytes.readFloatLE(index + searchBuffer.length + 0);
+            const y = worldBytes.readFloatLE(index + searchBuffer.length + 4);
+            const z = worldBytes.readFloatLE(index + searchBuffer.length + 8);
+            locations.push({ x, y, z, distFromOrigin: Math.sqrt(x*x+z*z) });
+        }
         locations.sort((a, b) => a.distFromOrigin - b.distFromOrigin);
 
         message.channel.send(new Discord.MessageEmbed()
