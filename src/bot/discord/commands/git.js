@@ -23,7 +23,9 @@ module.exports = {
                     output = output + '\n' + data.toString();
                 });
 
+                message.channel.startTyping();
                 gitPull.on('close', (code, signal) => {
+                    message.channel.stopTyping();
                     message.channel.send(`\`git pull\` output:\n\`\`\`${output}\`\`\``);
                     resolve();
                 });
