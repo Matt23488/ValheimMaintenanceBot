@@ -35,7 +35,7 @@ module.exports = {
             .setColor(0x0099ff)
             .setTitle(`Haldor Location${locations.length > 1 ? 's' : ''}`)
             .setDescription(locations.length > 1 ? 'Locations are relative to the center of the map.' : 'Location is relative to the center of the map.')
-            .addFields(locations.map(l => { return { name: `${l.distFromOrigin.toFixed(3)} away`, value: `\`\`\`${Math.abs(l.x).toFixed(3)} ${l.x < 0 ? 'W' : 'E'}\n${Math.abs(l.z).toFixed(3)} ${l.z < 0 ? 'S' : 'N'}\`\`\``, inline: true }; }))
+            .addFields(locations.map(l => { return { name: `${Math.round(l.distFromOrigin)}m away`, value: `\`\`\`${Math.round(Math.abs(l.x))}m ${l.x < 0 ? 'W' : 'E'}\n${Math.round(Math.abs(l.z))}m ${l.z < 0 ? 'S' : 'N'}\`\`\``, inline: true }; }))
         );
     }
 };
