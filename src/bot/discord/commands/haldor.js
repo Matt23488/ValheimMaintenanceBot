@@ -22,8 +22,8 @@ module.exports = {
          * @type {{ x: number, y: number, z: number, distFromOrigin: number }}
          */
         const locations = [];
-        let index = -1;
-        while ((index = worldBytes.indexOf(searchBuffer, index + 1)) >= 0) {
+        let index = searchBuffer.length * -1;
+        while ((index = worldBytes.indexOf(searchBuffer, index + searchBuffer.length)) >= 0) {
             const x = worldBytes.readFloatLE(index + searchBuffer.length + 0);
             const y = worldBytes.readFloatLE(index + searchBuffer.length + 4);
             const z = worldBytes.readFloatLE(index + searchBuffer.length + 8);
