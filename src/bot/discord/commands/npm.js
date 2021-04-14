@@ -22,7 +22,9 @@ module.exports = {
                 output = output + '\n' + data.toString();
             });
 
+            message.channel.startTyping();
             npm.on('close', (code, signal) => {
+                message.channel.stopTyping();
                 message.channel.send(`\`npm ${rest}\` output:\n\`\`\`${output}\`\`\``);
                 resolve();
             });
