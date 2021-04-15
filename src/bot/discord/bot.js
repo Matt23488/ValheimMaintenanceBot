@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const config = require('../../config');
 const commandManager = require('./commandManager');
 const wsClient = require('../wsClient');
+const { getUsers, sleep } = require('../../utilities');
 
 /**
  * @type {Discord.Client}
@@ -33,6 +34,12 @@ module.exports = {
         botClient.on('message', async msg => {
             const validChannel = msg.channel.type === 'dm' || msg.channel.id === config.defaultChannel;
             if (!validChannel || msg.author.bot) return;
+
+            if (getUsers().find(u => u.id === msg.author.id && u.pickOn)) {
+                msg.reply('quiet, you.');
+                await sleep(3000);
+                msg.reply('jk <:joy:831246652173844494>');
+            }
         
             const commandInfo = commandManager.parseMessage(msg.content);
             if (commandInfo) try { await commandManager.executeCommand(commandInfo, msg); } catch (e) { console.error(e); }
