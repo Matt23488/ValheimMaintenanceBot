@@ -23,6 +23,7 @@ module.exports = {
              */
             const commands = fs.readdirSync(__dirname).map(f => require(path.join(__dirname, f)));
 
+            // TODO: Add `active` property to commands and hide them if inactive and obviously don't allow them to be executed.
             message.channel.send(new Discord.MessageEmbed()
                 .setColor(0x0099ff)
                 .setTitle('Command Help')
