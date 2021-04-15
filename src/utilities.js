@@ -50,6 +50,15 @@ function getRandomInteger(max, min = 0) {
 
 /**
  * 
+ * @param {number} percent 
+ * @returns {boolean}
+ */
+function nPercentChance(percent) {
+    return getRandomInteger(100) < percent;
+}
+
+/**
+ * 
  * @returns {{ id: string, pickOn: boolean, characters: string[] }[]}
  */
 function getUsers() {
@@ -97,6 +106,7 @@ function sleep(ms) {
 module.exports = {
     formatMilliseconds,
     getRandomInteger,
+    nPercentChance,
     getUsers,
     addCharacter,
     sleep

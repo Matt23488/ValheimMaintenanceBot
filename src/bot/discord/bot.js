@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const config = require('../../config');
 const commandManager = require('./commandManager');
 const wsClient = require('../wsClient');
-const { getUsers, sleep, getRandomInteger } = require('../../utilities');
+const { getUsers, sleep, nPercentChance } = require('../../utilities');
 
 /**
  * @type {Discord.Client}
@@ -37,7 +37,7 @@ module.exports = {
         
             const commandInfo = commandManager.parseMessage(msg.content);
             if (commandInfo) {
-                if (getUsers().find(u => u.id === msg.author.id && u.pickOn) && getRandomInteger(100) >= 75) {
+                if (getUsers().find(u => u.id === msg.author.id && u.pickOn) && nPercentChance(25)) {
                     msg.reply('quiet, you.');
                     await sleep(3000);
                     msg.reply('jk <:joy:831246652173844494>');
