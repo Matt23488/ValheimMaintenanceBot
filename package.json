@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "badwords": "^1.0.0",
     "discord.js": "^12.5.3",
     "lodash": "^4.17.21",
     "public-ip": "^4.0.3",

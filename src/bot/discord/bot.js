@@ -3,6 +3,7 @@ const config = require('../../config');
 const commandManager = require('./commandManager');
 const wsClient = require('../wsClient');
 const { getUsers, sleep, nPercentChance } = require('../../utilities');
+const badWords = require('badwords/regexp');
 
 /**
  * @type {Discord.Client}
@@ -34,6 +35,11 @@ module.exports = {
         botClient.on('message', async msg => {
             const validChannel = msg.channel.type === 'dm' || msg.channel.id === config.defaultChannel;
             if (!validChannel || msg.author.bot) return;
+
+            if (msg.content.match(badWords) && nPercentChance(10)) {
+                msg.channel.send(`<@${msg.author.id}>`);
+                msg.channel.send({ files: ['https://pa1.narvii.com/6608/cd9477ab5325b13701e0deba56df6ba3fd2ba56a_00.gif'] });
+            }
         
             const commandInfo = commandManager.parseMessage(msg.content);
             if (commandInfo) {
