@@ -7,6 +7,7 @@ module.exports = {
     name: 'npm',
     description: 'Execute npm commands.',
     role: roles.Admin,
+    active: true,
 
     /**
      * 

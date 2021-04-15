@@ -6,6 +6,7 @@ module.exports = {
     name: 'player',
     description: `Associate your in-game character to your Discord user, for more personalized messages. If your character's name is _Hamburger_ then you would just type \`${config.discord.commandPrefix}player Hamburger\``,
     role: null,
+    active: true,
 
     /**
      * 

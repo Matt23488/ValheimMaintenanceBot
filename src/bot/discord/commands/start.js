@@ -7,6 +7,7 @@ module.exports = {
     name: 'start',
     description: 'Starts the Valheim server if it\'s not already running.',
     role: null,
+    active: true,
 
     /**
      * @param {Discord.Message} message

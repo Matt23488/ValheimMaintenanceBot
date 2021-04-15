@@ -5,6 +5,7 @@ module.exports = {
     name: 'trigger',
     description: 'Tests a trigger.',
     role: roles.Admin,
+    active: true,
 
     /**
      * 

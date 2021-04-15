@@ -7,6 +7,7 @@ module.exports = {
     name: 'git',
     description: 'Execute git commands. Currently supports:\n * `pull` - Executes a `git pull` command.',
     role: roles.Admin,
+    active: true,
 
     /**
      * 

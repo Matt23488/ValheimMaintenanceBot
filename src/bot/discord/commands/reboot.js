@@ -10,6 +10,7 @@ module.exports = {
     name: 'reboot',
     description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${config.valheim.name}.\n  * \`vm\` - Reboots the virtual machine.`,
     role: roles.Admin,
+    active: true,
 
 
     /**

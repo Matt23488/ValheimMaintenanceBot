@@ -10,7 +10,7 @@ const fs = require('fs');
  */
 async function executeCommand(commandInfo, message) {
     const command = getCommand(commandInfo.name);
-    if (!command) return;
+    if (!command || !command.active) return;
 
     if (message.channel.type === 'dm') {
         if (message.author.id !== config.parentalUnit) {
@@ -37,7 +37,7 @@ async function executeCommand(commandInfo, message) {
 /**
  * Loads a command module with the supplied name.
  * @param {string} commandName The name of the command.
- * @returns {{ name: string, description: string, role: string, execute: (rest: string, message: Discord.Message) => Promise<void> }} The command module, or `null` if the command was not found.
+ * @returns {{ name: string, description: string, role: string, active: boolean, execute: (rest: string, message: Discord.Message) => Promise<void> }} The command module, or `null` if the command was not found.
  */
 function getCommand(commandName) {
     try {

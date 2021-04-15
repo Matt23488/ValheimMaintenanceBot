@@ -7,6 +7,7 @@ module.exports = {
     name: 'stop',
     description: 'Saves and shuts down the Valheim server if it\'s running.',
     role: roles.Admin,
+    active: true,
 
     /**
      * 

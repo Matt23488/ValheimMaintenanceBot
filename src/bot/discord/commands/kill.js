@@ -6,6 +6,7 @@ module.exports = {
     name: 'kill',
     description: 'Shuts down the bot.',
     role: roles.Admin,
+    active: true,
 
     /**
      * 

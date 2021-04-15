@@ -7,6 +7,7 @@ module.exports = {
     name: 'haldor',
     description: 'Tells you where Haldor is, if he has been found. Otherwise shows the ten possible locations. Once you find him once, he will always appear in that location.',
     role: null,
+    active: true,
 
     /**
      * 

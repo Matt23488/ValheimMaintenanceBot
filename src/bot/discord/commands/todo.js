@@ -11,6 +11,7 @@ module.exports = {
     name: 'todo',
     description: 'Lists upcoming changes.',
     role: null,
+    active: true,
 
     /**
      * 

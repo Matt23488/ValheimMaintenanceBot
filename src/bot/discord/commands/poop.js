@@ -4,6 +4,7 @@ module.exports = {
     name: 'poop',
     description: 'Have the bot insult you.',
     role: null,
+    active: false,
 
     /**
      * 

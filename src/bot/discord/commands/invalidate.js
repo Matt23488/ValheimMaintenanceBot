@@ -7,6 +7,7 @@ module.exports = {
     name: 'invalidate',
     description: `In the event that a command ~~or trigger~~ has been updated, this command will cause the bot to pick up the change. Example: \`${config.discord.commandPrefix}invalidate command help\` would pick up any changes to the \`${config.discord.commandPrefix}help\` command.`,
     role: roles.Admin,
+    active: true,
 
     /**
      * 
