@@ -45,6 +45,11 @@ module.exports = {
             case 'w':
             case 'world':
                 const worldName = params[1] || config.valheim.world;
+                if (!fs.existsSync(path.join(process.env['USERPROFILE'], 'AppData/LocalLow/IronGate/Valheim/worlds', `${worldName}.db`))) {
+                    message.reply(`I don't see a world named _${worldName}_.`);
+                    break;
+                }
+
                 if (!fs.existsSync(config.backupDir)) fs.mkdirSync(config.backupDir);
                 
                 const worldDir = path.join(config.backupDir, worldName);
