@@ -85,8 +85,7 @@ function addCharacter(id, characterName) {
         if (!existing.characters.find(c => c === characterName)) {
             existing.characters.push(characterName);
         }
-    }
-    else users.push({ id, pickOn: false, characters: [ characterName ] });
+    } else users.push({ id, pickOn: false, characters: [ characterName ] });
     
     fs.writeFileSync(path.join(__dirname, '../users.json'), JSON.stringify(users));
     console.log('users.json updated');
@@ -98,9 +97,7 @@ function addCharacter(id, characterName) {
  * @returns {Promise<void>}
  */
 function sleep(ms) {
-    return new Promise(resolve => {
-        setTimeout(() => resolve(), ms);
-    });
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 module.exports = {
