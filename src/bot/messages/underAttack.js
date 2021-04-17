@@ -18,8 +18,12 @@ module.exports =  {
         if (attack) {
             embed.setDescription(attack.message).setImage(attack.image);
             //setTimeout(() => channel.send('The attack is over. Thank gods.'), attack.duration * 1000);
+            discordBot.speak(attack.message);
         }
-        else embed.setDescription(`Not sure what they are, but the server event is \`${data}\`!`);
+        else {
+            embed.setDescription(`Not sure what they are, but the server event is \`${data}\`!`);
+            discordBot.speak(`We're under attack by ${data}!`);
+        }
 
         channel.send(embed);
     }

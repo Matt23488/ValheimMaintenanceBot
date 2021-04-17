@@ -4,11 +4,23 @@ const commandManager = require('./commandManager');
 const wsClient = require('../wsClient');
 const { getUsers, sleep, nPercentChance } = require('../../utilities');
 const badWords = require('badwords/regexp');
+const say = require('say');
+const fs = require('fs');
 
 /**
  * @type {Discord.Client}
  */
 let botClient;
+
+/**
+ * @type {Discord.VoiceChannel}
+ */
+let voice;
+
+/**
+ * @type {Discord.VoiceConnection}
+ */
+let voiceConnection;
 
 module.exports = {
     /**
@@ -28,6 +40,8 @@ module.exports = {
 
         botClient.once('ready', () => {
             console.log(`Logged in as ${botClient.user.tag}!`);
+            voice = botClient.channels.cache.get(config.defaultVoiceChannel);
+            this.joinVoice();
             // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
             wsClient.connect();
         });
@@ -60,5 +74,34 @@ module.exports = {
      * Returns the default channel the bot announces things in.
      * @returns {Discord.TextChannel} The default channel the bot announces things in.
      */
-    getDefaultChannel: () => botClient.channels.cache.get(config.defaultChannel)
+    getDefaultChannel: () => botClient.channels.cache.get(config.defaultChannel),
+
+    joinVoice: function () {
+        voice.join().then(connection => voiceConnection = connection);
+    },
+
+    leaveVoice: function () {
+        voiceConnection.disconnect();
+        voiceConnection = null;
+    },
+
+    speak: function (message) {
+        if (!voiceConnection) return;
+
+        const ms = new Date().getTime();
+        say.export(message, null, null, `${ms}.wav`, err => {
+            const dispatcher = voiceConnection.play(`${ms}.wav`);
+
+            // dispatcher.on('start', () => {
+            //     console.log(`saying '${data}'`);
+            // });
+
+            dispatcher.on('finish', () => {
+                fs.unlinkSync(`${ms}.wav`);
+            });
+
+            dispatcher.on('error', console.error);
+
+        });
+    }
 };
