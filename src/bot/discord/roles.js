@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const config = require('../../config');
 
 module.exports = {
-    Admin: '832256359889633350',
-    Everyone: '305518419556564992',
+    Admin: '829058617159319592',
+    Everyone: '540237369488441356',
 
     /**
      * Determines if the message author is authorized based on the role provided.
