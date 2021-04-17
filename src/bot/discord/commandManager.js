@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const config = require('../../config');
-const fs = require('fs');
 
 /**
  * Executes a bot command.
