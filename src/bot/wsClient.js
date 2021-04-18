@@ -76,6 +76,16 @@ function receiveMessage(message) {
             return;
         }
 
+        // voice Channel logic. Probably a better place to put it but for now it's here
+        if (response.type === 'playerConnected' || response.type === 'playerDisconnected') {
+            sendRequest('status').then(statusInfo => {
+                if (response.type === 'playerConnected' && statusInfo.connectedPlayers.length === 1)
+                    discordBot.joinVoice();
+                else if (response.type === 'playerDisconnected' && statusInfo.connectedPlayers.length === 0)
+                    discordBot.leaveVoice();
+            });
+        }
+
         try {
             const handler = require(path.join(__dirname, 'messages', response.type));
             handler.execute(response.data);
@@ -99,6 +109,18 @@ function ignoreMessage(type) {
 }
 
 /**
+ * @type {Array<() => void>}
+ */
+const onConnectedCallbacks = [];
+/**
+ * Registers a callback to be called when the wsClient connects.
+ * @param {() => void} callback
+ */
+function onConnected(callback) {
+    onConnectedCallbacks.push(callback);
+}
+
+/**
  * Attempts to connect to the server. Will continually retry every 10 seconds if the connection fails.
  */
 function connect() {
@@ -107,6 +129,7 @@ function connect() {
 
     connection.onopen = e => {
         connected = true;
+        onConnectedCallbacks.forEach(c => c());
     };
 
     connection.onclose = e => {
@@ -136,6 +159,7 @@ function destroy() {
 module.exports = {
     isConnected: () => connected,
     getWsClient: () => connection,
+    onConnected,
     sendMessage, // TODO: I don't think this is used anywhere.
     sendRequest,
     ignoreMessage,

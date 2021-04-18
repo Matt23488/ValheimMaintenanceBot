@@ -41,7 +41,10 @@ module.exports = {
         botClient.once('ready', () => {
             console.log(`Logged in as ${botClient.user.tag}!`);
             voice = botClient.channels.cache.get(config.defaultVoiceChannel);
-            this.joinVoice();
+            wsClient.onConnected(async () => {
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
+            });
             // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
             wsClient.connect();
         });
@@ -77,7 +80,7 @@ module.exports = {
     getDefaultChannel: () => botClient.channels.cache.get(config.defaultChannel),
 
     joinVoice: function () {
-        voice.join().then(connection => voiceConnection = connection);
+        voice.join().then(connection => voiceConnection = connection).then(() => this.speak('What\'s up, bitches?'));
     },
 
     leaveVoice: function () {
