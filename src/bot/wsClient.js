@@ -75,7 +75,7 @@ function receiveMessage(message) {
             return;
         }
 
-        if (onMessageCallbacks.has(response.type)) onMessageCallbacks.get(repsonse.type).forEach(c => c());
+        if (onMessageCallbacks.has(response.type)) onMessageCallbacks.get(response.type).forEach(c => c());
 
         try {
             const handler = require(path.join(__dirname, 'messages', response.type));
