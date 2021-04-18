@@ -106,6 +106,11 @@ module.exports = {
 
         const ms = new Date().getTime();
         say.export(message, null, null, `${ms}.wav`, err => {
+            if (!voiceConnection) {
+                fs.unlinkSync(`${ms}.wav`);
+                return;
+            }
+
             const dispatcher = voiceConnection.play(`${ms}.wav`);
 
             // dispatcher.on('start', () => {
