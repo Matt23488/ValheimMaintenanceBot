@@ -91,10 +91,12 @@ module.exports = {
     getDefaultChannel: () => botClient.channels.cache.get(config.defaultChannel),
 
     joinVoice: function () {
+        if (voiceConnection) return;
         voice.join().then(connection => voiceConnection = connection).then(() => this.speak('What\'s up, bitches?'));
     },
 
     leaveVoice: function () {
+        if (!voiceConnection) return;
         voiceConnection.disconnect();
         voiceConnection = null;
     },
