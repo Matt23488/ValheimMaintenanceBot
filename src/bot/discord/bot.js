@@ -45,6 +45,17 @@ module.exports = {
                 const statusInfo = await wsClient.sendRequest('status');
                 if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
             });
+
+            wsClient.onMessage('playerConnected', async () => {
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo.connectedPlayers.length === 1) this.joinVoice();
+            });
+
+            wsClient.onMessage('playerDisconnected', async () => {
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo.connectedPlayers.length === 0) this.leaveVoice();
+            });
+            
             // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
             wsClient.connect();
         });

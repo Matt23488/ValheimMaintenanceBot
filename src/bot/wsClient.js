@@ -1,6 +1,5 @@
 const WebSocket = require('ws');
 const path = require('path');
-const discordBot = require('./discord/bot');
 
 /**
  * @type {WebSocket}
@@ -76,15 +75,7 @@ function receiveMessage(message) {
             return;
         }
 
-        // voice Channel logic. Probably a better place to put it but for now it's here
-        if (response.type === 'playerConnected' || response.type === 'playerDisconnected') {
-            sendRequest('status').then(statusInfo => {
-                if (response.type === 'playerConnected' && statusInfo.connectedPlayers.length === 1)
-                    discordBot.joinVoice();
-                else if (response.type === 'playerDisconnected' && statusInfo.connectedPlayers.length === 0)
-                    discordBot.leaveVoice();
-            });
-        }
+        if (onMessageCallbacks.has(response.type)) onMessageCallbacks.get(repsonse.type).forEach(c => c());
 
         try {
             const handler = require(path.join(__dirname, 'messages', response.type));
@@ -118,6 +109,21 @@ const onConnectedCallbacks = [];
  */
 function onConnected(callback) {
     onConnectedCallbacks.push(callback);
+}
+
+/**
+ * @type {Map<string, Array<() => void>>}
+ */
+const onMessageCallbacks = new Map();
+/**
+ * Registers a callback to be called when a message of the specified type is received from the server.
+ * @param {string} type 
+ * @param {() => void} callback 
+ */
+function onMessage(type, callback) {
+    const callbacks = onMessageCallbacks.has(type) ? onMessageCallbacks.get(type) : [];
+    callbacks.push(callback);
+    onMessageCallbacks.set(type, callbacks);
 }
 
 /**
@@ -160,6 +166,7 @@ module.exports = {
     isConnected: () => connected,
     getWsClient: () => connection,
     onConnected,
+    onMessage,
     sendMessage, // TODO: I don't think this is used anywhere.
     sendRequest,
     ignoreMessage,
