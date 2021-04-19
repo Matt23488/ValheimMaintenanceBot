@@ -25,6 +25,7 @@ module.exports = {
             case 't':
             case 'true':
                 discordBot.setVoiceEnabled(true);
+                message.channel.send('Voice enabled successfully.');
                 break;
             case 'd':
             case 'disable':
@@ -32,6 +33,7 @@ module.exports = {
             case 'f':
             case 'false':
                 discordBot.setVoiceEnabled(false);
+                message.channel.send('Voice disabled successfully.');
                 break;
         }
         return Promise.resolve();
