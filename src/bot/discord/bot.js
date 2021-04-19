@@ -18,6 +18,11 @@ let botClient;
 let voice;
 
 /**
+ * @type {boolean}
+ */
+let voiceEnabled = true;
+
+/**
  * @type {Discord.VoiceConnection}
  */
 let voiceConnection;
@@ -41,20 +46,26 @@ module.exports = {
         botClient.once('ready', () => {
             console.log(`Logged in as ${botClient.user.tag}!`);
             voice = botClient.channels.cache.get(config.defaultVoiceChannel);
-            // wsClient.onConnected(async () => {
-            //     const statusInfo = await wsClient.sendRequest('status');
-            //     if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
-            // });
+            wsClient.onConnected(async () => {
+                if (!voiceEnabled) return;
 
-            // wsClient.onMessage('playerConnected', async () => {
-            //     const statusInfo = await wsClient.sendRequest('status');
-            //     if (statusInfo.connectedPlayers.length === 1) this.joinVoice();
-            // });
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
+            });
 
-            // wsClient.onMessage('playerDisconnected', async () => {
-            //     const statusInfo = await wsClient.sendRequest('status');
-            //     if (statusInfo.connectedPlayers.length === 0) this.leaveVoice();
-            // });
+            wsClient.onMessage('playerConnected', async () => {
+                if (!voiceEnabled) return;
+                
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo.connectedPlayers.length === 1) this.joinVoice();
+            });
+
+            wsClient.onMessage('playerDisconnected', async () => {
+                if (!voiceEnabled) return;
+                
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo.connectedPlayers.length === 0) this.leaveVoice();
+            });
             
             // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
             wsClient.connect();
@@ -91,7 +102,7 @@ module.exports = {
     getDefaultChannel: () => botClient.channels.cache.get(config.defaultChannel),
 
     joinVoice: function () {
-        if (voiceConnection) return;
+        if (!voiceEnabled || voiceConnection) return;
         voice.join().then(connection => voiceConnection = connection).then(() => this.speak('What\'s up, bitches?'));
     },
 
@@ -119,5 +130,16 @@ module.exports = {
             dispatcher.on('error', console.error);
 
         });
-    }
+    },
+
+    setVoiceEnabled: function (enabled) {
+        voiceEnabled = enabled;
+        if (voiceEnabled) {
+            wsClient.sendRequest('status').then(statusInfo => {
+                if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
+            });
+        } else this.leaveVoice();
+    },
+
+    getVoiceEnabled: () => voiceEnabled
 };
