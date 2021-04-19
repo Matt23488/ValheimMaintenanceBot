@@ -135,9 +135,11 @@ module.exports = {
     setVoiceEnabled: function (enabled) {
         voiceEnabled = enabled;
         if (voiceEnabled) {
-            wsClient.sendRequest('status').then(statusInfo => {
-                if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
-            });
+            if (wsClient.isConnected()) {
+                wsClient.sendRequest('status').then(statusInfo => {
+                    if (statusInfo.connectedPlayers.length > 0) this.joinVoice();
+                });
+            }
         } else this.leaveVoice();
     },
 
