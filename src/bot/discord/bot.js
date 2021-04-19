@@ -112,12 +112,7 @@ module.exports = {
             }
 
             const dispatcher = voiceConnection.play(`${ms}.wav`);
-
-            // dispatcher.on('start', () => {
-            //     console.log(`saying '${data}'`);
-            // });
-
-            dispatcher.on('finish', () => {
+            dispatcher.on('close', () => {
                 fs.unlinkSync(`${ms}.wav`);
             });
 
