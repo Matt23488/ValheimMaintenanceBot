@@ -8,6 +8,6 @@ module.exports =  {
      */
     execute: function (data) {
         const channel = discordBot.getClient().channels.cache.get(config.defaultChannel);
-        channel.send(`Server started at \`${data}\`.`);
+        require('../discord/commands/status').sendStatusEmbed(channel);
     }
 };

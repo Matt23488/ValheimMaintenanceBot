@@ -102,13 +102,21 @@ function ignoreMessage(type) {
 /**
  * @type {Array<() => void>}
  */
-const onConnectedCallbacks = [];
+let onConnectedCallbacks = [];
 /**
  * Registers a callback to be called when the wsClient connects.
  * @param {() => void} callback
  */
 function onConnected(callback) {
     onConnectedCallbacks.push(callback);
+}
+
+/**
+ * Unregisters a callback to be called when the wsClient connects.
+ * @param {() => void} callback
+ */
+function offConnected(callback) {
+    onConnectedCallbacks = onConnectedCallbacks.filter(c => c !== callback);
 }
 
 /**
@@ -166,6 +174,7 @@ module.exports = {
     isConnected: () => connected,
     getWsClient: () => connection,
     onConnected,
+    offConnected,
     onMessage,
     sendMessage, // TODO: I don't think this is used anywhere.
     sendRequest,

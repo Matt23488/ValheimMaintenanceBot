@@ -28,6 +28,6 @@ module.exports = {
         }
         message.channel.send('Stopping server...');
         await wsClient.sendRequest('shutdown');
-        message.channel.send('The server is stopped.');
+        setTimeout(() => require('./status').execute(message, ''), 1000);
     }
 }

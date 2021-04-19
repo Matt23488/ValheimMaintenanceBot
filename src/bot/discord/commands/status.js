@@ -15,9 +15,18 @@ module.exports = {
      * @param {string} rest 
      * @returns {Promise<void>}
      */
-    execute: async function (message, rest) {
+    execute: function (message, rest) {
+        return this.sendStatusEmbed(message.channel);
+    },
+
+    /**
+     * 
+     * @param {Discord.TextChannel} channel 
+     * @returns {Promise<void>}
+     */
+    sendStatusEmbed: async function (channel) {
         if (!wsClient.isConnected()) {
-            message.channel.send(new Discord.MessageEmbed()
+            channel.send(new Discord.MessageEmbed()
                 .setTitle(`${config.valheim.name} Server Status`)
                 .setThumbnail('https://gamelaunchercreator.com/wp-content/uploads/2021/03/valheim-logo.png')
                 .setColor(0xff0000)
@@ -58,6 +67,6 @@ module.exports = {
                     .setDescription(`I can't determine the server status for some reason. <@${config.parentalUnit}> needs to look into it.`);
         }
 
-        message.channel.send(embed);
+        channel.send(embed);
     }
 };
