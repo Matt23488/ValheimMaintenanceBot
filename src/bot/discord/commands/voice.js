@@ -4,7 +4,7 @@ const discordBot = require('../bot');
 
 module.exports = {
     name: 'voice',
-    description: '',
+    description: 'Tells you if the bot will join voice or not, or set if it can or not.',
     role: roles.Admin,
     active: true,
 
