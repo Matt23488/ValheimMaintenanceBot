@@ -13,6 +13,7 @@ module.exports = {
         if (prefixIndex === -1) return { canHandle: false, data: null };
 
         const data = text.slice(prefixIndex + prefix.length, text.indexOf('\n')).trim();
+        wsServer.sendMessage('echo', `\`\`\`\nDEBUG\ntext: ${text}\nprefixIndex: ${prefixIndex}\ndata: ${data}\`\`\``);
         return { canHandle: true, data };
     },
 

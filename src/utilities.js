@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const config = require('./config');
 
 /**
  * Takes a number of milliseconds and formats it into a human-readable string.
@@ -59,11 +60,11 @@ function nPercentChance(percent) {
 
 /**
  * 
- * @returns {{ id: string, pickOn: boolean, characters: string[] }[]}
+ * @returns {{ id: string, characters: string[], customMessages: {[key: string]: string} }[]}
  */
 function getUsers() {
     /**
-     * @type {{ id: string, pickOn: boolean, characters: string[] }[]}
+     * @type {{ id: string, characters: string[], customMessages: {[key: string]: string} }[]}
      */
     let users = [];
     if (fs.existsSync(path.join(__dirname, '../users.json'))) {
@@ -71,6 +72,26 @@ function getUsers() {
     }
 
     return users;
+}
+
+/**
+ * @param {string} characterName
+ * @param {string} messageType
+ * @param {string} defaultIfNone
+ * @returns {{ text: string, voice: string }}
+ */
+function getCustomMessages(characterName, messageType, defaultIfNone = '') {
+    const user = getUsers().find(u => u.characters.indexOf(characterName) >= 0);
+    if (!user) return {
+        text: defaultIfNone.replace('{name}', `_${characterName}_`).replace('{serverName}', `_${config.valheim.name}_`),
+        voice: defaultIfNone.replace('{name}', characterName).replace('{serverName}', config.valheim.name)
+    };
+
+    const messageTemplate = user.customMessages[messageType] || defaultIfNone;
+    return {
+        text: messageTemplate.replace('{name}', `<@${user.id}> (_${characterName}_)`).replace('{serverName}', `_${config.valheim.name}_`),
+        voice: messageTemplate.replace('{name}', characterName).replace('{serverName}', config.valheim.name)
+    };
 }
 
 /**
@@ -85,7 +106,7 @@ function addCharacter(id, characterName) {
         if (!existing.characters.find(c => c === characterName)) {
             existing.characters.push(characterName);
         }
-    } else users.push({ id, pickOn: false, characters: [ characterName ] });
+    } else users.push({ id, characters: [ characterName ], customMessages: {} });
     
     fs.writeFileSync(path.join(__dirname, '../users.json'), JSON.stringify(users));
     console.log('users.json updated');
@@ -106,5 +127,6 @@ module.exports = {
     nPercentChance,
     getUsers,
     addCharacter,
+    getCustomMessages,
     sleep
 };

@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const config = require('../../config');
 const commandManager = require('./commandManager');
 const wsClient = require('../wsClient');
-const { getUsers, sleep, nPercentChance } = require('../../utilities');
+const { nPercentChance } = require('../../utilities');
 const badWords = require('badwords/regexp');
 const say = require('say');
 const fs = require('fs');
@@ -82,12 +82,6 @@ module.exports = {
         
             const commandInfo = commandManager.parseMessage(msg.content);
             if (commandInfo) {
-                if (getUsers().find(u => u.id === msg.author.id && u.pickOn) && nPercentChance(25)) {
-                    msg.reply('quiet, you.');
-                    await sleep(3000);
-                    msg.reply('jk <:joy:831246652173844494>');
-                }
-
                 try { await commandManager.executeCommand(commandInfo, msg); } catch (e) { console.error(e); }
             }
         });

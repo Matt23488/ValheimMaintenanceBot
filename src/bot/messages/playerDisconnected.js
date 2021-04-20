@@ -1,6 +1,6 @@
 const discordBot = require('../discord/bot');
 const config = require('../../config');
-const { getUsers, nPercentChance } = require('../../utilities');
+const { getCustomMessages } = require('../../utilities');
 
 module.exports =  {
     /**
@@ -8,19 +8,8 @@ module.exports =  {
      * @param {string} data 
      */
     execute: function (data) {
-        const user = getUsers().find(u => u.characters.indexOf(data) >= 0);
-        if (user) {
-            if (user.pickOn && nPercentChance(25)) {
-                discordBot.getDefaultChannel().send(`<@${user.id}> (_${data}_) admits defeat and has left ${config.valheim.name}. <:joy:831246652173844494>`);
-                discordBot.speak(`${data} has admitted default and left ${config.valheim.name} lmao`);
-            }
-            else {
-                discordBot.getDefaultChannel().send(`<@${user.id}> (_${data}_) has left ${config.valheim.name}.`);
-                discordBot.speak(`${data} has left ${config.valheim.name}.`);
-            }
-        } else {
-            discordBot.getDefaultChannel().send(`_${data}_ has left ${config.valheim.name}.`);
-            discordBot.speak(`${data} has left ${config.valheim.name}.`);
-        }
+        const messages = getCustomMessages(data, 'playerDisconnected', '{name} has left {serverName}.');
+        discordBot.getDefaultChannel().send(messages.text);
+        discordBot.speak(messages.voice);
     }
 };
