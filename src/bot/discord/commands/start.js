@@ -25,8 +25,10 @@ module.exports = {
         const dir = path.join(__dirname, '../../../..');
         spawn(path.join(dir, 'startserver.bat'), [], { cwd: dir, detached: true });
         wsClient.onConnected(onConnected);
+        message.channel.startTyping();
 
         function onConnected() {
+            message.channel.stopTyping();
             wsClient.offConnected(onConnected);
             require('./status').execute(message, '');
         }
