@@ -83,14 +83,14 @@ function getUsers() {
 function getCustomMessages(characterName, messageType, defaultIfNone = '') {
     const user = getUsers().find(u => u.characters.indexOf(characterName) >= 0);
     if (!user) return {
-        text: defaultIfNone.replace('{name}', `_${characterName}_`).replace('{serverName}', `_${config.valheim.name}_`),
-        voice: defaultIfNone.replace('{name}', characterName).replace('{serverName}', config.valheim.name)
+        text: defaultIfNone.replace('{name}', `_${characterName}_`).replace('{serverName}', `_${config.valheim.name}_`).replace('{emoji:joy}', '<:joy:831246652173844494>'),
+        voice: defaultIfNone.replace('{name}', characterName).replace('{serverName}', config.valheim.name).replace('{emoji:joy}', 'lmao')
     };
 
     const messageTemplate = user.customMessages[messageType] || defaultIfNone;
     return {
-        text: messageTemplate.replace('{name}', `<@${user.id}> (_${characterName}_)`).replace('{serverName}', `_${config.valheim.name}_`),
-        voice: messageTemplate.replace('{name}', characterName).replace('{serverName}', config.valheim.name)
+        text: messageTemplate.replace('{name}', `<@${user.id}> (_${characterName}_)`).replace('{serverName}', `_${config.valheim.name}_`).replace('{emoji:joy}', '<:joy:831246652173844494>'),
+        voice: messageTemplate.replace('{name}', characterName).replace('{serverName}', config.valheim.name).replace('{emoji:joy}', 'lmao')
     };
 }
 
