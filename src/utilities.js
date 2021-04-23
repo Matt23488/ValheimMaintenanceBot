@@ -74,23 +74,51 @@ function getUsers() {
     return users;
 }
 
+// TODO: Maybe combine these two dictionaries into a 3-Tuple array
+/**
+ * @type {[string, string][]}
+ */
+const textVariableLookup = [
+    [ 'serverName', `_${config.valheim.name}_` ],
+    [ ':joy:', '<:joy:831246652173844494>' ]
+];
+/**
+ * @type {[string, string][]}
+ */
+const voiceVariableLookup = [
+    [ 'serverName', config.valheim.name ],
+    [ ':joy:', 'lmao' ]
+];
+
+/**
+ * 
+ * @param {string} template 
+ * @param {[string, string][][]} variableLookups 
+ * @returns {string}
+ */
+function fillInTemplate(template, ...variableLookups) {
+    let message = template;
+    variableLookups.forEach(m => m.forEach(([k, v]) => message = message.replace(`{${k}}`, v)));
+    return message;
+}
+
 /**
  * @param {string} characterName
  * @param {string} messageType
- * @param {string} defaultIfNone
+ * @param {{ defaultIfNone: string, variables: [string,string][] }} options
  * @returns {{ text: string, voice: string }}
  */
-function getCustomMessages(characterName, messageType, defaultIfNone = '') {
+function getCustomMessages(characterName, messageType, { defaultIfNone = '', variables = [] } = {}) {
     const user = getUsers().find(u => u.characters.indexOf(characterName) >= 0);
     if (!user) return {
-        text: defaultIfNone.replace('{name}', `_${characterName}_`).replace('{serverName}', `_${config.valheim.name}_`).replace('{emoji:joy}', '<:joy:831246652173844494>'),
-        voice: defaultIfNone.replace('{name}', characterName).replace('{serverName}', config.valheim.name).replace('{emoji:joy}', 'lmao')
+        text: fillInTemplate(defaultIfNone.replace('{name}', `_${characterName}_`), textVariableLookup, variables),
+        voice: fillInTemplate(defaultIfNone.replace('{name}', characterName), voiceVariableLookup, variables)
     };
 
     const messageTemplate = user.customMessages[messageType] || defaultIfNone;
     return {
-        text: messageTemplate.replace('{name}', `<@${user.id}> (_${characterName}_)`).replace('{serverName}', `_${config.valheim.name}_`).replace('{emoji:joy}', '<:joy:831246652173844494>'),
-        voice: messageTemplate.replace('{name}', characterName).replace('{serverName}', config.valheim.name).replace('{emoji:joy}', 'lmao')
+        text: fillInTemplate(messageTemplate.replace('{name}', `<@${user.id}> (_${characterName}_)`), textVariableLookup, variables),
+        voice: fillInTemplate(messageTemplate.replace('{name}', characterName), voiceVariableLookup, variables)
     };
 }
 
@@ -109,7 +137,6 @@ function addCharacter(id, characterName) {
     } else users.push({ id, characters: [ characterName ], customMessages: {} });
     
     fs.writeFileSync(path.join(__dirname, '../users.json'), JSON.stringify(users));
-    console.log('users.json updated');
 }
 
 /**

@@ -8,7 +8,7 @@ module.exports =  {
      * @param {string} data 
      */
     execute: function (data) {
-        const messages = getCustomMessages(data, 'playerDisconnected', '{name} has left {serverName}.');
+        const messages = getCustomMessages(data, 'playerDisconnected', { defaultIfNone: '{name} has left {serverName}.' });
         discordBot.getDefaultChannel().send(messages.text);
         discordBot.speak(messages.voice);
     }
