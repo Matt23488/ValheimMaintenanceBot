@@ -1,3 +1,3 @@
 @echo off
 
-node src/serverApi
+node dist/serverApi

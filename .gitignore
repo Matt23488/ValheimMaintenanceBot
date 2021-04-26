@@ -4,3 +4,5 @@ token.txt
 logs/
 users.json
 backups/
+dist/
+data/
