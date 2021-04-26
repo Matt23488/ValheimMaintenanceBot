@@ -1,6 +1,7 @@
+import { ServerStatusInfo } from '../../commonTypes';
 import { getAppSettings } from '../../config';
 import { getServerIpAddress } from '../../ip';
-import { formatMilliseconds, ServerStatusInfo } from '../../utilities';
+import { formatMilliseconds } from '../../utilities';
 import * as valheimServer from '../valheimServer';
 
 export const prefix = 'status';

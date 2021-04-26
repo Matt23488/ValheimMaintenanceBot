@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import path from 'path';
+import { ClientMessageTypeMap } from '../commonTypes';
 
 type ServerMessage = { id?: number, type: string, data: any };
 type ErrorResponse = ServerMessage & { error: string };
@@ -56,22 +57,7 @@ export function startServer() {
     });
 }
 
-// TODO: May not need this, everything maps to string. But I'm keeping it like this for now
-// in case I need a message in the future that maps to something else. Actually, I should move this to utilities
-// (and maybe into its own file at some point) so that the bot can also leverage the type map.
-// I'll also want one for messages sent from bot -> server.
-interface MessageTypeMap {
-    playerConnected: string;
-    playerDied: string;
-    playerDisconnected: string;
-    underAttack: string;
-    echo: string;
-    stderr: string;
-    stdout: string;
-    started: string;
-}
-
-export function sendMessage<T extends keyof MessageTypeMap>(type: T, data: MessageTypeMap[T]) {
+export function sendMessage<T extends keyof ClientMessageTypeMap>(type: T, data: ClientMessageTypeMap[T]) {
     server.clients.forEach(ws => {
         ws.send(JSON.stringify({
             type,

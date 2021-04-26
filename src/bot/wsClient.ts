@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import path from 'path';
+import { ServerMessageTypeMap, ServerMessageResponseTypeMap } from '../commonTypes';
 
 let connection: WebSocket;
 let connected = false;
@@ -16,10 +17,10 @@ let requestId = 0;
  * @param data Any data that the server needs to process the message.
  * @returns A promise that resolves when the server processes the request and sends back the response.
  */
-export function sendRequest(type: string, data?: any) {
+export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?: ServerMessageTypeMap[T]) {
     if (!connected) return Promise.resolve(null);
 
-    return new Promise<any>(resolve => {
+    return new Promise<T extends keyof ServerMessageResponseTypeMap ? ServerMessageResponseTypeMap[T] : never>(resolve => {
         const currentId = requestId++;
         requestMap.set(currentId, resolve);
         connection.send(JSON.stringify({
@@ -45,14 +46,16 @@ export function sendMessage(type: string, data: any) {
     }));
 }
 
-// TODO: TypeMap?
-type Response = { id?: number, type: string, data: any };
+// Can't use a typemap here, as the messages coming in are dynamic and thus their types are unknowable at compile-time.
+type Response = { id?: number, type: string, data: any, error?: string };
 /**
  * Reads a message from the server. If the message contains an id, the `Promise` associated with the request will be resolved. Otherwise, the message is processed according to the associated module in the `messages` directory.
  * @param message The message from the server.
  */
 function receiveMessage(message: string) {
-    const response: Response = JSON.parse(message);
+    const response = JSON.parse(message) as Response;
+    if (response.error) throw new Error(`Error sending '${message}' to server:\n${response.error}`);
+
     if (response.id === undefined) {
         console.log(`Received message '${response.type}' from server`);
         if (ignoreMessageSet.has(response.type)) {

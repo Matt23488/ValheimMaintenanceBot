@@ -21,9 +21,9 @@ export async function execute(message: Discord.Message, rest: string) {
         return;
     }
 
-    const result: string | null = await wsClient.sendRequest('save', {
+    const result = await wsClient.sendRequest('save', {
         name: params[0],
-        outFileName: params[1] || null,
+        outFileName: params[1],
         author: message.author.tag
     });
 

@@ -2,7 +2,6 @@ import Discord from 'discord.js';
 import path from 'path';
 import { spawn } from 'child_process';
 import * as wsClient from '../../wsClient';
-import { ServerStatusInfo } from '../../../utilities';
 
 export const name = 'start';
 export const description = 'Starts the Valheim server if it\'s not already running.';
@@ -11,8 +10,8 @@ export const active = true;
 
 export async function execute(message: Discord.Message, rest: string) {
     if (wsClient.isConnected()) {
-        const serverInfo: ServerStatusInfo = await wsClient.sendRequest('status');
-        message.channel.send(`The server is already running at \`${serverInfo.ip}\`.`);
+        const serverInfo = await wsClient.sendRequest('status');
+        message.channel.send(`The server is already running at \`${serverInfo!.ip}\`.`);
         return;
     }
 

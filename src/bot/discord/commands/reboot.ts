@@ -5,7 +5,7 @@ import { spawn } from 'child_process';
 import { getAppSettings } from '../../../config';
 import * as discordBot from '../bot';
 import * as wsClient from '../../wsClient';
-import { ServerStatuses, ServerStatusInfo } from '../../../utilities';
+import { ServerStatuses } from '../../../commonTypes';
 
 export const name = 'reboot';
 export const description = `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${getAppSettings().valheim.name}.\n  * \`vm\` - Reboots the virtual machine.`;
@@ -35,8 +35,8 @@ export async function execute(message: Discord.Message, rest: string) {
             break;
         case 'vm':
             if (wsClient.isConnected()) {
-                const statusInfo: ServerStatusInfo = await wsClient.sendRequest('status');
-                if (statusInfo.status !== ServerStatuses.stopped) {
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo!.status !== ServerStatuses.stopped) {
                     message.channel.send('Stopping server...');
                     await wsClient.sendRequest('shutdown');
                 }

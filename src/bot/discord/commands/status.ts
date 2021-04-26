@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
 import { getAppSettings } from '../../../config';
-import { ServerStatuses, ServerStatusInfo } from '../../../utilities';
+import { ServerStatuses } from '../../../commonTypes';
 import * as wsClient from '../../wsClient';
 
 export const name = 'status';
@@ -25,7 +25,7 @@ export async function sendStatusEmbed(channel: Discord.TextChannel) {
         return;
     }
 
-    const statusInfo: ServerStatusInfo = await wsClient.sendRequest('status');
+    const statusInfo = (await wsClient.sendRequest('status'))!;
     const embed = new Discord.MessageEmbed()
         .setTitle(`${statusInfo.name} Server Status`)
         .setThumbnail('https://gamelaunchercreator.com/wp-content/uploads/2021/03/valheim-logo.png')

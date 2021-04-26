@@ -130,19 +130,3 @@ export function addCharacter(id: string, characterName: string) {
 export function sleep(ms: number) {
     return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
-
-export enum ServerStatuses {
-    stopped,
-    starting,
-    ready
-}
-
-export type ServerStatusInfo = {
-    status: ServerStatuses,
-    name: string,
-    ip: string,
-    password: string,
-    connectedPlayers: { name: string, uptime: string }[],
-    uptime: string,
-    activeUptime: string
-};

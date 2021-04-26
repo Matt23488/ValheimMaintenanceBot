@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
 import { getAppSettings } from '../../../config';
-import { ServerStatuses, ServerStatusInfo } from '../../../utilities';
+import { ServerStatuses, ServerStatusInfo } from '../../../commonTypes';
 import * as wsClient from '../../wsClient';
 import * as roles from '../roles';
 
@@ -16,8 +16,8 @@ export async function execute(message: Discord.Message, rest: string) {
         return;
     }
 
-    const statusInfo: ServerStatusInfo = await wsClient.sendRequest('status');
-    if (statusInfo.status === ServerStatuses.stopped) {
+    const statusInfo = await wsClient.sendRequest('status');
+    if (statusInfo!.status === ServerStatuses.stopped) {
         message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
         return;
     }

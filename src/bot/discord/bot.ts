@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 import { getAppSettings, getAppSecrets } from '../../config';
 import * as commandManager from './commandManager';
 import * as wsClient from '../wsClient';
-import { nPercentChance, ServerStatusInfo } from '../../utilities';
+import { nPercentChance } from '../../utilities';
 import badWords from 'badwords/regexp';
 import say from 'say';
 import fs from 'fs';
@@ -33,22 +33,22 @@ export function start() {
         wsClient.onConnected(async () => {
             if (!voiceEnabled) return;
 
-            const statusInfo: ServerStatusInfo = await wsClient.sendRequest('status');
-            if (statusInfo.connectedPlayers.length > 0) joinVoice();
+            const statusInfo = await wsClient.sendRequest('status');
+            if (statusInfo && statusInfo.connectedPlayers.length > 0) joinVoice();
         });
 
         wsClient.onMessage('playerConnected', async () => {
             if (!voiceEnabled) return;
             
-            const statusInfo: ServerStatusInfo = await wsClient.sendRequest('status');
-            if (statusInfo.connectedPlayers.length === 1) joinVoice();
+            const statusInfo = await wsClient.sendRequest('status');
+            if (statusInfo && statusInfo.connectedPlayers.length === 1) joinVoice();
         });
 
         wsClient.onMessage('playerDisconnected', async () => {
             if (!voiceEnabled) return;
             
-            const statusInfo: ServerStatusInfo = await wsClient.sendRequest('status');
-            if (statusInfo.connectedPlayers.length === 0) leaveVoice();
+            const statusInfo = await wsClient.sendRequest('status');
+            if (statusInfo && statusInfo.connectedPlayers.length === 0) leaveVoice();
         });
         
         // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
@@ -125,9 +125,10 @@ export function setVoiceEnabled(enabled: boolean) {
     voiceEnabled = enabled;
     if (voiceEnabled) {
         if (wsClient.isConnected()) {
-            wsClient.sendRequest('status').then((statusInfo: ServerStatusInfo) => {
-                if (statusInfo.connectedPlayers.length > 0) joinVoice();
-            });
+            (async function () {
+                const statusInfo = await wsClient.sendRequest('status');
+                if (statusInfo && statusInfo.connectedPlayers.length > 0) joinVoice();
+            })();
         }
     } else leaveVoice();
 }

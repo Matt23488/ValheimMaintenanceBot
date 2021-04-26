@@ -7,7 +7,7 @@ import StringBuffer from '../stringBuffer';
 import * as triggerLoader from './triggerLoader';
 import * as wsServer from './wsServer';
 import { getServerIpAddress } from '../ip';
-import { ServerStatuses } from '../utilities';
+import { ServerStatuses } from '../commonTypes';
 
 let config = getAppSettings();
 
