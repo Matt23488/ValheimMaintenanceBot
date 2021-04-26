@@ -64,25 +64,22 @@ export function getUsers() {
 }
 
 type VariableLookup = [string, string][];
-
-// TODO: Maybe combine these two dictionaries into a 3-Tuple array
-const textVariableLookup: VariableLookup = [
-    [ 'serverName', `_${config.valheim.name}_` ],
-    [ ':joy:', '<:joy:831246652173844494>' ]
+type CombinedVariableLookup = [string, string, string][];
+const globalVariableLookup: CombinedVariableLookup = [
+    [ 'serverName', `_${config.valheim.name}_`, config.valheim.name ],
+    [ ':joy:', '<:joy:831246652173844494>', 'lmao' ]
 ];
-const voiceVariableLookup: VariableLookup = [
-    [ 'serverName', config.valheim.name ],
-    [ ':joy:', 'lmao' ]
-];
+const textVariableLookup = () => globalVariableLookup.map<[string, string]>(([k, t, v]) => [k, t]);
+const voiceVariableLookup = () => globalVariableLookup.map<[string, string]>(([k, t, v]) => [k, v]);
 
 /**
  * 
  * @param template 
  * @param variableLookups 
  */
-function fillInTemplate(template: string, ...variableLookups: VariableLookup[]) {
+function fillInTemplate(template: string, variables: VariableLookup) {
     let message = template;
-    variableLookups.forEach(m => m.forEach(([k, v]) => message = message.replace(`{${k}}`, v)));
+    variables.forEach(([k, v]) => message = message.replace(`{${k}}`, v));
     return message;
 }
 
@@ -98,14 +95,14 @@ type CustomMessageOptions = {
 export function getCustomMessages(characterName: string, messageType: string, { defaultIfNone = '', variables = [] }: CustomMessageOptions = {}) {
     const user = getUsers().find(u => u.characters.indexOf(characterName) >= 0);
     if (!user) return {
-        text: fillInTemplate(defaultIfNone.replace('{name}', `_${characterName}_`), textVariableLookup, variables),
-        voice: fillInTemplate(defaultIfNone.replace('{name}', characterName), voiceVariableLookup, variables)
+        text: fillInTemplate(defaultIfNone, [...textVariableLookup(), ...variables, ['name', `_${characterName}_`]]),
+        voice: fillInTemplate(defaultIfNone, [...voiceVariableLookup(), ...variables, [ 'name', characterName ]])
     };
 
     const messageTemplate = user.customMessages[messageType] || defaultIfNone;
     return {
-        text: fillInTemplate(messageTemplate.replace('{name}', `<@${user.id}> (_${characterName}_)`), textVariableLookup, variables),
-        voice: fillInTemplate(messageTemplate.replace('{name}', characterName), voiceVariableLookup, variables)
+        text: fillInTemplate(messageTemplate, [...textVariableLookup(), ...variables, ['name', `<@${user.id}> (_${characterName}_)`]]),
+        voice: fillInTemplate(messageTemplate, [...voiceVariableLookup(), ...variables, [ 'name', characterName ]])
     };
 }
 
