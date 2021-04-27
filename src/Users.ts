@@ -103,7 +103,7 @@ export function addCharacter(id: string, characterName: string) {
         if (!existing.characters.find(c => c === characterName)) {
             existing.addCharacter(characterName);
         }
-    } else users.push(new User(id, characterName)); //else users.push({ id, characters: [ characterName ], customMessages: {} });
+    } else users.push(new User(id, characterName));
     
     fs.writeFileSync('data/users.json', JSON.stringify(users.map(User.toJson)));
 }
