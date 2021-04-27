@@ -16,12 +16,8 @@ class User {
     }
 
     public get id() { return this._id; }
-    public get characters() { return [...this._characters]; }
-    public get customMessages() { return {...this._customMessages}; }
-
-    public addCharacter(characterName: string) {
-        this._characters.push(characterName);
-    }
+    public get characters() { return this._characters; }
+    public get customMessages() { return this._customMessages; }
 
     public static fromJson(json: UserLike) {
         const user = new User(json.id);
@@ -101,7 +97,7 @@ export function addCharacter(id: string, characterName: string) {
     const existing = users.find(u => u.id === id);
     if (existing) {
         if (!existing.characters.find(c => c === characterName)) {
-            existing.addCharacter(characterName);
+            existing.characters.push(characterName);
         }
     } else users.push(new User(id, characterName));
     
