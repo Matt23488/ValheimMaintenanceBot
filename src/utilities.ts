@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { getAppSettings } from './config';
 const config = getAppSettings();
 
@@ -51,76 +50,6 @@ export function getRandomInteger(max: number, min = 0) {
 
 export function nPercentChance(percent: number) {
     return getRandomInteger(100) < percent;
-}
-
-type User = { id: string, characters: string[], customMessages: { [key: string]: string }};
-export function getUsers() {
-    let users: User[] = [];
-    if (fs.existsSync('data/users.json')) {
-        users = JSON.parse(fs.readFileSync('data/users.json').toString());
-    }
-
-    return users;
-}
-
-type VariableLookup = [string, string][];
-type CombinedVariableLookup = [string, string, string][];
-const globalVariableLookup: CombinedVariableLookup = [
-    [ 'serverName', `_${config.valheim.name}_`, config.valheim.name ],
-    [ ':joy:', '<:joy:831246652173844494>', 'lmao' ]
-];
-const textVariableLookup = () => globalVariableLookup.map<[string, string]>(([k, t, v]) => [k, t]);
-const voiceVariableLookup = () => globalVariableLookup.map<[string, string]>(([k, t, v]) => [k, v]);
-
-/**
- * 
- * @param template 
- * @param variableLookups 
- */
-function fillInTemplate(template: string, variables: VariableLookup) {
-    let message = template;
-    variables.forEach(([k, v]) => message = message.replace(`{${k}}`, v));
-    return message;
-}
-
-type CustomMessageOptions = {
-    defaultIfNone?: string,
-    variables?: VariableLookup
-};
-/**
- * @param characterName
- * @param messageType
- * @param options
- */
-export function getCustomMessages(characterName: string, messageType: string, { defaultIfNone = '', variables = [] }: CustomMessageOptions = {}) {
-    const user = getUsers().find(u => u.characters.indexOf(characterName) >= 0);
-    if (!user) return {
-        text: fillInTemplate(defaultIfNone, [...textVariableLookup(), ...variables, ['name', `_${characterName}_`]]),
-        voice: fillInTemplate(defaultIfNone, [...voiceVariableLookup(), ...variables, [ 'name', characterName ]])
-    };
-
-    const messageTemplate = user.customMessages[messageType] || defaultIfNone;
-    return {
-        text: fillInTemplate(messageTemplate, [...textVariableLookup(), ...variables, ['name', `<@${user.id}> (_${characterName}_)`]]),
-        voice: fillInTemplate(messageTemplate, [...voiceVariableLookup(), ...variables, [ 'name', characterName ]])
-    };
-}
-
-/**
- * TODO: Pull users into a class.
- * @param id 
- * @param characterName 
- */
-export function addCharacter(id: string, characterName: string) {
-    const users = getUsers();
-    const existing = users.find(u => u.id === id);
-    if (existing) {
-        if (!existing.characters.find(c => c === characterName)) {
-            existing.characters.push(characterName);
-        }
-    } else users.push({ id, characters: [ characterName ], customMessages: {} });
-    
-    fs.writeFileSync('data/users.json', JSON.stringify(users));
 }
 
 /**

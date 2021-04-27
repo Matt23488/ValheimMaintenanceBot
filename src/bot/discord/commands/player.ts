@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
 import { getAppSettings } from '../../../config';
-import { getUsers, addCharacter } from '../../../utilities';
+import { getUsers, addCharacter } from '../../../Users';
 
 export const name = 'player';
 export const description = `Associate your in-game character to your Discord user, for more personalized messages. If your character's name is _Hamburger_ then you would just type \`${getAppSettings().discord.commandPrefix}player Hamburger\``;
