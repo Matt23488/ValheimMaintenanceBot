@@ -52,6 +52,11 @@ export function start() {
         });
         
         // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
+        botClient.users.fetch(config.discord.parentalUnit).then(parentalUnit => {
+            parentalUnit.createDM().then(dm => {
+                dm.send('I live');
+            });
+        });
         wsClient.connect();
     });
     
