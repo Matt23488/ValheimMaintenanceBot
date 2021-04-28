@@ -3,7 +3,6 @@ import { BotCommand } from '../../commonTypes';
 import { getAppSettings } from '../../config';
 
 type CommandInfo = { name: string, rest: string };
-// type CommandModule = { name: string, description: string, role: string, active: boolean, execute: (message: Discord.Message, rest: string) => Promise<void> };
 
 /**
  * Executes a bot command.
@@ -22,7 +21,7 @@ export async function executeCommand(commandInfo: CommandInfo, message: Discord.
         }
     } else {
         if (command.role !== null && !message.member!.roles.cache.has(command.role)) {
-            message.reply(`only those with the \`${message.guild!.roles!.cache!.get(command.role)!.name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
+            message.reply(`only those with the \`${message.guild!.roles.cache.get(command.role)!.name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
             return;
         }
     }

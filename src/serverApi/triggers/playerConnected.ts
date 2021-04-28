@@ -1,6 +1,6 @@
-import { ServerTrigger } from "../../commonTypes";
-import * as valheimServer from "../valheimServer";
-import * as wsServer from "../wsServer";
+import { ServerTrigger } from '../../commonTypes';
+import * as valheimServer from '../valheimServer';
+import * as wsServer from '../wsServer';
 
 const prefix = 'Got character ZDOID from ';
 

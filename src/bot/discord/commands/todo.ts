@@ -1,7 +1,6 @@
-import { BotCommand } from "../../../commonTypes";
+import { BotCommand } from '../../../commonTypes';
 
 const todoList = [
-    { name: 'Personality', value: 'I want all of my response messages to come from a great Viking warrior.' },
     { name: 'World Stuff', value: 'I want to be able to restore backups of the world, as well as change the world that is hosted. Low priority.' }
 ];
 

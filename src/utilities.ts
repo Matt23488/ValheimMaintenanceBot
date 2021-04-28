@@ -1,6 +1,3 @@
-import { getAppSettings } from './config';
-const config = getAppSettings();
-
 /**
  * Takes a number of milliseconds and formats it into a human-readable string.
  * @param ms Milliseconds.

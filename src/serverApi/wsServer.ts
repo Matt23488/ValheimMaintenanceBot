@@ -1,8 +1,6 @@
 import WebSocket from 'ws';
 import path from 'path';
-import { ClientMessageTypeMap, ServerMessageDynamic, MessageTransferObject } from '../commonTypes';
-
-type ErrorResponse = MessageTransferObject & { error: string };
+import { ClientMessageTypeMap, ServerMessageDynamic, ServerMessageError, ServerMessageInput, ServerMessageOutput } from '../commonTypes';
 
 let server: WebSocket.Server;
 
@@ -20,7 +18,7 @@ export function startServer() {
                 return;
             }
 
-            let json: MessageTransferObject;
+            let json: ServerMessageInput;
             try {
                 json = JSON.parse(message);
             } catch (e) {
@@ -34,22 +32,40 @@ export function startServer() {
             } catch (e) {
                 console.error(`Unknown message from wsClient: ${message}`);
                 if (json.id !== undefined) {
-                    const response: ErrorResponse = { ...json, error: e };
+                    const response: ServerMessageError = {
+                        id: json.id,
+                        type: json.type,
+                        error: e
+                    };
                     ws.send(JSON.stringify(response));
-                    return;
                 }
+                return;
             }
 
+            let result;
             try {
-                json.data = await handler!.execute(json.data);
-                ws.send(JSON.stringify(json));
+                result = await handler.execute(json.data);
             } catch (e) {
                 console.error(`Error executing ${json.type}`);
                 console.error(e);
                 if (json.id !== undefined) {
-                    const response: ErrorResponse = { ...json, error: e };
+                    const response: ServerMessageError = {
+                        id: json.id,
+                        type: json.type,
+                        error: e
+                    };
                     ws.send(JSON.stringify(response));
                 }
+                return;
+            }
+
+            if (json.id !== undefined) {
+                const output: ServerMessageOutput = {
+                    id: json.id,
+                    type: json.type,
+                    data: result
+                };
+                ws.send(JSON.stringify(output));
             }
         });
     });

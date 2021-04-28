@@ -1,4 +1,4 @@
-import { ClientMessage } from "../../commonTypes"
+import { ClientMessage } from '../../commonTypes';
 
 export const message: ClientMessage<'stdout'> = {
     execute: data => {

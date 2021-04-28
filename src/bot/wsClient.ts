@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import path from 'path';
-import { ServerMessageTypeMap, ServerMessageResponseTypeMap, ClientMessageDynamic, StringUnion, ServerMessageDataTypeMap } from '../commonTypes';
+import { ServerMessageDefinition, ClientMessageDynamic, Diff, ParameterType, ResolvedType, KeyOfTypeWithParameters, isServerMessageError, isClientReceivedMessage, UnknownMessage } from '../commonTypes';
 
 let connection: WebSocket;
 let connected = false;
@@ -8,28 +8,21 @@ let tryReconnect = true;
 
 const ignoreMessageSet = new Set<string>();
 
-const requestMap = new Map<number, (data: any) => void>();
+const requestMap = new Map<number, (data: ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>> | PromiseLike<ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>>>) => void>();
 let requestId = 0;
 
-// type ParameterType<T> = T extends () => any ? undefined : T extends (p: infer U, ...rest: any[]) => any ? U : undefined;
-// type ResolvedType<T> = T extends Promise<infer U> ? U : never;
-// const Parameterless = StringUnion('status', 'shutdown');
-// type Parameterless = typeof Parameterless.type;
-// const Parameterful = StringUnion('save');
-// type Parameterful = typeof Parameterful.type;
-type Diff<T, U> = T extends U ? never : T;
 /**
  * Sends a message to the server and waits for a response.
  * @param type The type of message.
  * @param data Any data that the server needs to process the message.
  * @returns A promise that resolves when the server processes the request and sends back the response.
  */
-export function sendRequest<T extends keyof ServerMessageDataTypeMap>(type: T, data: ServerMessageDataTypeMap[T]): Promise<ServerMessageResponseTypeMap[T]>;
-export function sendRequest<T extends Diff<keyof ServerMessageTypeMap, keyof ServerMessageDataTypeMap>>(type: T): Promise<ServerMessageResponseTypeMap[T]>;
-export function sendRequest<T extends ServerMessageTypeMap>(type: T, data?: T extends keyof ServerMessageDataTypeMap ? ServerMessageDataTypeMap[T] : never) {
+export function sendRequest<T extends KeyOfTypeWithParameters<ServerMessageDefinition>>(type: T, data: ParameterType<ServerMessageDefinition[T]>): ReturnType<ServerMessageDefinition[T]>;
+export function sendRequest<T extends Diff<keyof ServerMessageDefinition, KeyOfTypeWithParameters<ServerMessageDefinition>>>(type: T): ReturnType<ServerMessageDefinition[T]>;
+export function sendRequest<T extends keyof ServerMessageDefinition>(type: T, data?: T extends KeyOfTypeWithParameters<ServerMessageDefinition> ? ParameterType<ServerMessageDefinition[T]> : never) {
     if (!connected) return Promise.resolve(null);
 
-    return new Promise<T extends keyof ServerMessageResponseTypeMap ? ServerMessageResponseTypeMap[T] : never>(resolve => {
+    return new Promise<ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>>>(resolve => {
         const currentId = requestId++;
         requestMap.set(currentId, resolve);
         connection.send(JSON.stringify({
@@ -39,22 +32,6 @@ export function sendRequest<T extends ServerMessageTypeMap>(type: T, data?: T ex
         }));
     });
 }
-
-// export function sendRequest<T extends Parameterless>(type: T): ReturnType<ServerMessageTypeMap[T]>;
-// export function sendRequest<T extends Parameterful>(type: T, data: ParameterType<ServerMessageTypeMap[T]>): ReturnType<ServerMessageTypeMap[T]>;
-// export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?: ParameterType<ServerMessageTypeMap[T]>) {
-//     if (!connected) return Promise.resolve(null);
-
-//     return new Promise<ResolvedType<ReturnType<ServerMessageTypeMap[T]>>>(resolve => {
-//         const currentId = requestId++;
-//         requestMap.set(currentId, resolve);
-//         connection.send(JSON.stringify({
-//             id: currentId,
-//             type,
-//             data
-//         }));
-//     });
-// }
 
 /**
  * // TODO: I don't think this is used anywhere.
@@ -71,17 +48,15 @@ export function sendMessage(type: string, data: any) {
     }));
 }
 
-// Can't use a typemap here, as the messages coming in are dynamic and thus their types are unknowable at compile-time.
-type Response = { id?: number, type: string, data: any, error?: string };
 /**
  * Reads a message from the server. If the message contains an id, the `Promise` associated with the request will be resolved. Otherwise, the message is processed according to the associated module in the `messages` directory.
  * @param message The message from the server.
  */
 function receiveMessage(message: string) {
-    const response = JSON.parse(message) as Response;
-    if (response.error) throw new Error(`Error sending '${message}' to server:\n${response.error}`);
+    const response = JSON.parse(message) as UnknownMessage;
+    if (isServerMessageError(response)) throw new Error(`Error sending '${message}' to server:\n${response.error}`);
 
-    if (response.id === undefined) {
+    if (isClientReceivedMessage(response)) {
         console.log(`Received message '${response.type}' from server`);
         if (ignoreMessageSet.has(response.type)) {
             console.log('Ignoring');

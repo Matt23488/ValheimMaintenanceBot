@@ -1,4 +1,4 @@
-import { ServerTrigger } from "../../commonTypes";
+import { ServerTrigger } from '../../commonTypes';
 import * as wsServer from '../wsServer';
 
 const prefix = 'Random event set:';

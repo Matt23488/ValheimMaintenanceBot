@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --project ./tsconfig.dev.json",
-    "publish": "tsc --project ./"
+    "watch": "tsc --watch --project ./tsconfig.dev.json",
+    "publish": "tsc --project ./",
+    "debugbot": "node --inspect dist/bot",
+    "debugserver": "node --inspect dist/serverApi"
   },
   "author": "",
   "license": "ISC",

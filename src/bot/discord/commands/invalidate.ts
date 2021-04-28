@@ -5,11 +5,12 @@ import * as roles from '../roles';
 
 const commandPrefix = getAppSettings().discord.commandPrefix;
 
+// TODO: This command might be useless now. Rebooting the bot should refresh all commands anyway. Going to deactivate it for now.
 export const command: BotCommand = {
     name: 'invalidate',
     description: `In the event that a command ~~or trigger~~ has been updated, this command will cause the bot to pick up the change. Example: \`${commandPrefix}invalidate command help\` would pick up any changes to the \`${commandPrefix}help\` command.`,
     role: roles.Admin,
-    active: true,
+    active: false,
 
     execute: (message, rest) => {
         const args = rest.split(' ');

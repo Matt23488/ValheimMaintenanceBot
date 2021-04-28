@@ -1,4 +1,4 @@
-import { BotCommand } from "../../../commonTypes";
+import { BotCommand } from '../../../commonTypes';
 
 export const command: BotCommand = {
     name: 'poop',

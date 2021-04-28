@@ -1,5 +1,12 @@
 import Discord from 'discord.js';
 
+export type Diff<T, U> = T extends U ? never : T;
+export type ParameterType<T> = T extends () => any ? never : T extends (p: infer U, ...rest: any[]) => any ? U : never;
+export type ParameterTypeOrUndefined<T> = T extends () => any ? undefined : T extends (p: infer U, ...rest: any[]) => any ? U : undefined;
+export type ResolvedType<T> = T extends Promise<infer U> ? U : never;
+export type KeyOfTypeHasParameters<T, U extends keyof T> = T[U] extends () => any ? never : T[U] extends (p: any, ...rest: any[]) => any ? U : never;
+export type KeyOfTypeWithParameters<T> = ({ [U in keyof T]: KeyOfTypeHasParameters<T, U> })[keyof T];
+
 export enum ServerStatuses {
     stopped,
     starting,
@@ -27,7 +34,7 @@ export interface ClientMessageTypeMap {
     started: string;
 }
 
-export type ClientMessageDynamic = { execute: (data: any) => void };
+export type ClientMessageDynamic = { execute: (data: ClientMessageTypeMap[keyof ClientMessageTypeMap]) => void };
 export type ClientMessage<T extends keyof ClientMessageTypeMap> = { execute: (data: ClientMessageTypeMap[T]) => void };
 
 export const StringUnion = <UnionType extends string>(...values: UnionType[]) => {
@@ -51,27 +58,23 @@ export const StringUnion = <UnionType extends string>(...values: UnionType[]) =>
 export const ProcessBufferName = StringUnion('stdout', 'stderr');
 export type ProcessBufferName = typeof ProcessBufferName.type;
 
-export interface ServerMessageTypeMap {
+export interface ServerMessageDefinition {
     save: (data: { name: ProcessBufferName, outFileName?: string, author: string }) => Promise<string>;
     shutdown: () => Promise<void>;
     status: () => Promise<ServerStatusInfo>;
 }
 
-export interface ServerMessageDataTypeMap {
-    save: { name: ProcessBufferName, outFileName?: string, author: string };
-}
-
-export interface ServerMessageResponseTypeMap {
-    save: string;
-    shutdown: void;
-    status: ServerStatusInfo;
-}
-
-export type MessageTransferObject = { id?: number, type: string, data: any };
-export type ServerMessageDynamic = { prefix: keyof ServerMessageTypeMap, execute: (data: any) => Promise<any> };
-export type ServerMessage<T extends keyof ServerMessageTypeMap> = {
+export type ServerMessageInput = { id?: number, type: keyof ServerMessageDefinition, data: ParameterTypeOrUndefined<ServerMessageDefinition[keyof ServerMessageDefinition]> };
+export type ServerMessageOutput = { id: number, type: keyof ServerMessageDefinition, data: ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>> };
+export type ServerMessageError = { id: number, type: keyof ServerMessageDefinition, error: Error };
+export type ClientReceivedMessage = { type: keyof ClientMessageTypeMap, data: ClientMessageTypeMap[keyof ClientMessageTypeMap] };
+export type UnknownMessage = ServerMessageOutput | ServerMessageError | ClientReceivedMessage;
+export function isServerMessageError(response: UnknownMessage): response is ServerMessageError { return !!(response as ServerMessageError).error; }
+export function isClientReceivedMessage(response: UnknownMessage): response is ClientReceivedMessage { return typeof (response as ServerMessageOutput).id === 'undefined'; }
+export type ServerMessageDynamic = { prefix: keyof ServerMessageDefinition, execute: (data: ParameterTypeOrUndefined<ServerMessageDefinition[keyof ServerMessageDefinition]>) => Promise<ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>>> };
+export type ServerMessage<T extends keyof ServerMessageDefinition> = {
     prefix: T,
-    execute: ServerMessageTypeMap[T]
+    execute: ServerMessageDefinition[T]
 };
 
 export interface ServerTriggerTypeMap {
@@ -81,7 +84,7 @@ export interface ServerTriggerTypeMap {
     underAttack: string;
 }
 
-export type ServerTriggerDynamic = { parse: (text: string) => { canHandle: false } | { canHandle: true, data: any }, execute: (data: any) => void };
+export type ServerTriggerDynamic = { parse: (text: string) => { canHandle: false } | { canHandle: true, data: ServerTriggerTypeMap[keyof ServerTriggerTypeMap] }, execute: (data: ServerTriggerTypeMap[keyof ServerTriggerTypeMap]) => void };
 export type ServerTrigger<T extends keyof ServerTriggerTypeMap> = {
     parse: (text: string) => { canHandle: false } | { canHandle: true, data: ServerTriggerTypeMap[T] },
     execute: (data: ServerTriggerTypeMap[T]) => void
