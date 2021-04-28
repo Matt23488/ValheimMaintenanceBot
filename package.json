@@ -8,8 +8,10 @@
     "build": "tsc --project ./tsconfig.dev.json",
     "watch": "tsc --watch --project ./tsconfig.dev.json",
     "publish": "tsc --project ./",
-    "debugbot": "node --inspect dist/bot",
-    "debugserver": "node --inspect dist/serverApi"
+    "clean": "rd /s /q dist",
+    "clean-modules": "rd /s /q node_modules",
+    "debug-bot": "node --inspect dist/bot",
+    "debug-server": "node --inspect dist/serverApi"
   },
   "author": "",
   "license": "ISC",
