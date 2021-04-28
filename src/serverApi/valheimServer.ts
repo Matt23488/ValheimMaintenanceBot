@@ -7,7 +7,7 @@ import StringBuffer from '../stringBuffer';
 import * as triggerLoader from './triggerLoader';
 import * as wsServer from './wsServer';
 import { getServerIpAddress } from '../ip';
-import { ServerStatuses } from '../commonTypes';
+import { ProcessBufferName, ServerStatuses } from '../commonTypes';
 
 let config = getAppSettings();
 
@@ -118,8 +118,7 @@ export function stop() {
 export const getServerUptime = () => readStopwatch(stopwatch);
 export const getServerActiveUptime = () => readStopwatch(activeStopwatch);
 
-export type BufferName = 'stdout' | 'stderr';
-export function getBuffer(name: BufferName) {
+export function getBuffer(name: ProcessBufferName) {
     switch (name) {
         case 'stdout': return stdoutBuffer;
         case 'stderr': return stderrBuffer;

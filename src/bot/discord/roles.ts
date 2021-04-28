@@ -3,7 +3,7 @@ import { getAppSettings } from '../../config';
 
 export const Admin = getAppSettings().discord.adminRole;
 
-export function hasRole(message: Discord.Message, role: string) {
+export function hasRole(message: Discord.Message, role: string | null) {
     // If no role is provided, the user is authorized.
     if (!role) return true;
 

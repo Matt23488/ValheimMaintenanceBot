@@ -1,8 +1,9 @@
 import Discord from 'discord.js';
+import { BotCommand } from '../../commonTypes';
 import { getAppSettings } from '../../config';
 
 type CommandInfo = { name: string, rest: string };
-type CommandModule = { name: string, description: string, role: string, active: boolean, execute: (message: Discord.Message, rest: string) => Promise<void> };
+// type CommandModule = { name: string, description: string, role: string, active: boolean, execute: (message: Discord.Message, rest: string) => Promise<void> };
 
 /**
  * Executes a bot command.
@@ -41,9 +42,9 @@ export async function executeCommand(commandInfo: CommandInfo, message: Discord.
  * @param commandName The name of the command.
  * @returns The command module, or `null` if the command was not found.
  */
-function getCommand(commandName: string): CommandModule | null {
+function getCommand(commandName: string): BotCommand | null {
     try {
-        return require(`./commands/${commandName}`);
+        return require(`./commands/${commandName}`).command;
     } catch (e) {
         return null;
     }

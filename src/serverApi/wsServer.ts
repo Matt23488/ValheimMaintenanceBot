@@ -1,10 +1,8 @@
 import WebSocket from 'ws';
 import path from 'path';
-import { ClientMessageTypeMap } from '../commonTypes';
+import { ClientMessageTypeMap, ServerMessageDynamic, MessageTransferObject } from '../commonTypes';
 
-type ServerMessage = { id?: number, type: string, data: any };
-type ErrorResponse = ServerMessage & { error: string };
-type MessageHandler = { execute: (data: any) => Promise<any> };
+type ErrorResponse = MessageTransferObject & { error: string };
 
 let server: WebSocket.Server;
 
@@ -22,7 +20,7 @@ export function startServer() {
                 return;
             }
 
-            let json: ServerMessage;
+            let json: MessageTransferObject;
             try {
                 json = JSON.parse(message);
             } catch (e) {
@@ -30,9 +28,9 @@ export function startServer() {
                 return;
             }
 
-            let handler: MessageHandler;
+            let handler: ServerMessageDynamic;
             try {
-                handler = require(path.join(__dirname, 'messages', json.type));
+                handler = require(path.join(__dirname, 'messages', json.type)).message;
             } catch (e) {
                 console.error(`Unknown message from wsClient: ${message}`);
                 if (json.id !== undefined) {

@@ -1,23 +1,25 @@
-import Discord from 'discord.js';
+import { BotCommand, ClientMessageDynamic } from '../../../commonTypes';
 import * as roles from '../roles';
 
-export const name = 'trigger';
-export const description = 'Tests a trigger.';
-export const role = roles.Admin;
-export const active = true;
+export const command: BotCommand = {
+    name: 'trigger',
+    description: 'Tests a trigger.',
+    role: roles.Admin,
+    active: true,
 
-export async function execute(message: Discord.Message, rest: string) {
-    const firstSpace = rest.indexOf(' ');
-    const triggerType = rest.slice(0, firstSpace);
-    const data = JSON.parse(rest.slice(firstSpace + 1).trim());
+    execute: async (message, rest) => {
+        const firstSpace = rest.indexOf(' ');
+        const triggerType = rest.slice(0, firstSpace);
+        const data = JSON.parse(rest.slice(firstSpace + 1).trim());
 
-    message.channel.send(`TESTING TRIGGER \`${triggerType}\``);
+        message.channel.send(`TESTING TRIGGER \`${triggerType}\``);
 
-    try {
-        const trigger = require(`../../messages/${triggerType}`);
-        trigger.execute(data);
+        try {
+            const trigger = require(`../../messages/${triggerType}`).message as ClientMessageDynamic;
+            trigger.execute(data);
+        }
+        catch (e) {
+            message.channel.send('There was a problem testing the trigger.');
+        }
     }
-    catch (e) {
-        message.channel.send('There was a problem testing the trigger.');
-    }
-}
+};

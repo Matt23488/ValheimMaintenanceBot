@@ -1,10 +1,12 @@
-import Discord from 'discord.js';
+import { BotCommand } from "../../../commonTypes";
 
-export const name = 'poop';
-export const description = 'Have the bot insult you.';
-export const role = null;
-export const active = false;
+export const command: BotCommand = {
+    name: 'poop',
+    description: 'Have the bot insult you.',
+    role: null,
+    active: false,
 
-export async function execute(message: Discord.Message, rest: string) {
-    await message.reply('you\'re 12.');
-}
+    execute: async (message, rest) => {
+        await message.reply('you\'re 12.');
+    }
+};

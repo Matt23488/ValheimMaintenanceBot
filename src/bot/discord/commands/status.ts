@@ -1,18 +1,11 @@
 import Discord from 'discord.js';
 import { getAppSettings } from '../../../config';
-import { ServerStatuses } from '../../../commonTypes';
+import { BotCommand, ServerStatuses } from '../../../commonTypes';
 import * as wsClient from '../../wsClient';
 
-export const name = 'status';
-export const description = 'Displays general information about the Valheim server, such as the IP Address and who is playing.';
-export const role = null;
-export const active = true;
+export type StatusCommand = BotCommand & { sendStatusEmbed: (channel: Discord.TextChannel) => Promise<void> };
 
-export function execute(message: Discord.Message, rest: string) {
-    return sendStatusEmbed(message.channel as Discord.TextChannel);
-}
-
-export async function sendStatusEmbed(channel: Discord.TextChannel) {
+async function sendStatusEmbed(channel: Discord.TextChannel) {
     const config = getAppSettings();
     if (!wsClient.isConnected()) {
         channel.send(new Discord.MessageEmbed()
@@ -55,3 +48,16 @@ export async function sendStatusEmbed(channel: Discord.TextChannel) {
 
     channel.send(embed);
 }
+
+export const command: StatusCommand = {
+    name: 'status',
+    description: 'Displays general information about the Valheim server, such as the IP Address and who is playing.',
+    role: null,
+    active: true,
+
+    execute: (message, rest) => {
+        return sendStatusEmbed(message.channel as Discord.TextChannel);
+    },
+
+    sendStatusEmbed
+};

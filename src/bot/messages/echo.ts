@@ -1,6 +1,9 @@
+import { ClientMessage } from '../../commonTypes';
 import * as discordBot from '../discord/bot';
 
-export function execute(data: string) {
-    discordBot.getDefaultChannel().send(data);
-    discordBot.speak(data);
-}
+export const message: ClientMessage<'echo'> = {
+    execute: data => {
+        discordBot.getDefaultChannel().send(data);
+        discordBot.speak(data);
+    }
+};

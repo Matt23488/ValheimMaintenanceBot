@@ -1,10 +1,12 @@
-import Discord from 'discord.js';
+import { BotCommand } from "../../../commonTypes";
 
-export const name = 'ping';
-export const description = 'Have the bot reply "pong" to you. Mainly used to test that the bot is responsive.';
-export const role = null;
-export const active = true;
+export const command: BotCommand = {
+    name: 'ping',
+    description: 'Have the bot reply "pong" to you. Mainly used to test that the bot is responsive.',
+    role: null,
+    active: true,
 
-export async function execute(message: Discord.Message, rest: string) {
-    await message.reply('pong');
-}
+    execute: async (message, rest) => {
+        await message.reply('pong');
+    }
+};

@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import path from 'path';
-import { ServerMessageTypeMap, ServerMessageResponseTypeMap } from '../commonTypes';
+import { ServerMessageTypeMap, ServerMessageResponseTypeMap, ClientMessageDynamic, StringUnion, ServerMessageDataTypeMap } from '../commonTypes';
 
 let connection: WebSocket;
 let connected = false;
@@ -11,13 +11,22 @@ const ignoreMessageSet = new Set<string>();
 const requestMap = new Map<number, (data: any) => void>();
 let requestId = 0;
 
+// type ParameterType<T> = T extends () => any ? undefined : T extends (p: infer U, ...rest: any[]) => any ? U : undefined;
+// type ResolvedType<T> = T extends Promise<infer U> ? U : never;
+// const Parameterless = StringUnion('status', 'shutdown');
+// type Parameterless = typeof Parameterless.type;
+// const Parameterful = StringUnion('save');
+// type Parameterful = typeof Parameterful.type;
+type Diff<T, U> = T extends U ? never : T;
 /**
  * Sends a message to the server and waits for a response.
  * @param type The type of message.
  * @param data Any data that the server needs to process the message.
  * @returns A promise that resolves when the server processes the request and sends back the response.
  */
-export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?: ServerMessageTypeMap[T]) {
+export function sendRequest<T extends keyof ServerMessageDataTypeMap>(type: T, data: ServerMessageDataTypeMap[T]): Promise<ServerMessageResponseTypeMap[T]>;
+export function sendRequest<T extends Diff<keyof ServerMessageTypeMap, keyof ServerMessageDataTypeMap>>(type: T): Promise<ServerMessageResponseTypeMap[T]>;
+export function sendRequest<T extends ServerMessageTypeMap>(type: T, data?: T extends keyof ServerMessageDataTypeMap ? ServerMessageDataTypeMap[T] : never) {
     if (!connected) return Promise.resolve(null);
 
     return new Promise<T extends keyof ServerMessageResponseTypeMap ? ServerMessageResponseTypeMap[T] : never>(resolve => {
@@ -30,6 +39,22 @@ export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?
         }));
     });
 }
+
+// export function sendRequest<T extends Parameterless>(type: T): ReturnType<ServerMessageTypeMap[T]>;
+// export function sendRequest<T extends Parameterful>(type: T, data: ParameterType<ServerMessageTypeMap[T]>): ReturnType<ServerMessageTypeMap[T]>;
+// export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?: ParameterType<ServerMessageTypeMap[T]>) {
+//     if (!connected) return Promise.resolve(null);
+
+//     return new Promise<ResolvedType<ReturnType<ServerMessageTypeMap[T]>>>(resolve => {
+//         const currentId = requestId++;
+//         requestMap.set(currentId, resolve);
+//         connection.send(JSON.stringify({
+//             id: currentId,
+//             type,
+//             data
+//         }));
+//     });
+// }
 
 /**
  * // TODO: I don't think this is used anywhere.
@@ -67,7 +92,7 @@ function receiveMessage(message: string) {
         if (onMessageCallbacks.has(response.type)) onMessageCallbacks.get(response.type)!.forEach(c => c());
 
         try {
-            const handler = require(path.join(__dirname, 'messages', response.type));
+            const handler = require(path.join(__dirname, 'messages', response.type)).message as ClientMessageDynamic;
             handler.execute(response.data);
         } catch (e) {
             console.log(`Unknown message from wsServer: ${message}`);
