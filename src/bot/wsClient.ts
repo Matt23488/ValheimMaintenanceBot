@@ -34,21 +34,6 @@ export function sendRequest<T extends keyof ServerMessageDefinition>(type: T, da
 }
 
 /**
- * // TODO: I don't think this is used anywhere.
- * Sends a message to the server that does not need a response.
- * @param type The type of message.
- * @param data Any data that the server needs to process the message.
- */
-export function sendMessage(type: string, data: any) {
-    if (!connected) return;
-
-    connection.send(JSON.stringify({
-        type,
-        data
-    }));
-}
-
-/**
  * Reads a message from the server. If the message contains an id, the `Promise` associated with the request will be resolved. Otherwise, the message is processed according to the associated module in the `messages` directory.
  * @param message The message from the server.
  */

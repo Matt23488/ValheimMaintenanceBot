@@ -51,10 +51,9 @@ export function start() {
             if (statusInfo && statusInfo.connectedPlayers.length === 0) leaveVoice();
         });
         
-        // botClient.channels.cache.get(config.defaultChannel).send('Odin has granted me life again.');
         botClient.users.fetch(config.discord.parentalUnit).then(parentalUnit => {
             parentalUnit.createDM().then(dm => {
-                dm.send('I live');
+                dm.send(`I live at ${getDefaultChannel()} on ${getDefaultChannel().guild}`);
             });
         });
         wsClient.connect();
