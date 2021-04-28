@@ -12,8 +12,7 @@ export const command: BotCommand = {
 
     execute: async (message, rest) => {
         if (wsClient.isConnected()) {
-            const serverInfo = await wsClient.sendRequest('status');
-            message.channel.send(`The server is already running at \`${serverInfo!.ip}\`.`);
+            status.command.execute(message, '');
             return;
         }
 
