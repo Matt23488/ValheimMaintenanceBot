@@ -18,7 +18,7 @@ async function sendStatusEmbed(channel: Discord.TextChannel) {
         return;
     }
 
-    const statusInfo = (await wsClient.sendRequest('status'))!;
+    const statusInfo = await wsClient.sendRequest('status');
     const embed = new Discord.MessageEmbed()
         .setTitle(`${statusInfo.name} Server Status`)
         .setThumbnail('https://gamelaunchercreator.com/wp-content/uploads/2021/03/valheim-logo.png')

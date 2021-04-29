@@ -16,11 +16,12 @@ let requestId = 0;
  * @param type The type of message.
  * @param data Any data that the server needs to process the message.
  * @returns A promise that resolves when the server processes the request and sends back the response.
+ * @throws If the wsClient is not connected.
  */
 export function sendRequest<T extends KeyOfTypeWithParameters<ServerMessageTypeMap>>(type: T, data: ParameterType<ServerMessageTypeMap[T]>): ReturnType<ServerMessageTypeMap[T]>;
 export function sendRequest<T extends Diff<keyof ServerMessageTypeMap, KeyOfTypeWithParameters<ServerMessageTypeMap>>>(type: T): ReturnType<ServerMessageTypeMap[T]>;
 export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?: T extends KeyOfTypeWithParameters<ServerMessageTypeMap> ? ParameterType<ServerMessageTypeMap[T]> : never) {
-    if (!connected) return Promise.resolve(null);
+    if (!connected) throw new Error('Cannot send request to server, it\'s not running.');
 
     return new Promise<ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>>(resolve => {
         const currentId = requestId++;

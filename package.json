@@ -11,7 +11,9 @@
     "clean": "rd /s /q dist",
     "clean-modules": "rd /s /q node_modules",
     "debug-bot": "node --inspect dist/bot",
-    "debug-server": "node --inspect dist/serverApi"
+    "debug-server": "node --inspect dist/serverApi",
+    "start-bot": "node dist/bot",
+    "start-server": "node dist/serverApi"
   },
   "author": "",
   "license": "ISC",

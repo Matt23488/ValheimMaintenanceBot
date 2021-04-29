@@ -23,7 +23,7 @@ export type ResolvedType<T> = T extends Promise<infer U> ? U : never;
 /**
  * A Filter that tells if the type of the given member (`U`) of `T` is a function with at least one parameter. Meant to be used only with `KeyOfTypeWithParameters<T>`.
  */
-export type KeyOfTypeHasParameters<T, U extends keyof T> = T[U] extends () => any ? never : T[U] extends (p: any, ...rest: any[]) => any ? U : never;
+type KeyOfTypeHasParameters<T, U extends keyof T> = T[U] extends () => any ? never : T[U] extends (p: any, ...rest: any[]) => any ? U : never;
 
 /**
  * Filters out keys of `T` that don't resolve to a type which is a function taking at least one parameters.
