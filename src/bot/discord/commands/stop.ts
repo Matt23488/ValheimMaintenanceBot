@@ -3,6 +3,7 @@ import { BotCommand, ServerStatuses } from '../../../commonTypes';
 import * as wsClient from '../../wsClient';
 import * as roles from '../roles';
 import * as status from './status';
+import { sleep } from '../../../utilities';
 
 export const command: BotCommand = {
     name: 'stop',
@@ -26,9 +27,8 @@ export const command: BotCommand = {
         await message.channel.send('Stopping server...');
         message.channel.startTyping();
         await wsClient.sendRequest('shutdown');
-        setTimeout(() => {
-            message.channel.stopTyping();
-            status.command.execute(message, '');
-        }, 1000);
+        await sleep(1000);
+        message.channel.stopTyping();
+        status.command.execute(message, '');
     }
 };
