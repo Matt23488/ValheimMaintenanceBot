@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
 import { BotCommand } from '../../commonTypes';
-import { getAppSettings } from '../../config';
+import { getSettings } from '../../config';
 
 type CommandInfo = { name: string, rest: string };
 
@@ -13,7 +13,7 @@ export async function executeCommand(commandInfo: CommandInfo, message: Discord.
     const command = getCommand(commandInfo.name);
     if (!command || !command.active) return;
 
-    const config = getAppSettings();
+    const config = getSettings('appsettings');
     if (message.channel.type === 'dm') {
         if (message.author.id !== config.discord.parentalUnit) {
             message.reply(`only my parental unit can command me in dms.`);
@@ -55,7 +55,7 @@ function getCommand(commandName: string): BotCommand | null {
  * @returns An object containing the command name and parameters.
  */
 export function parseMessage(messageText: string): CommandInfo | null {
-    const config = getAppSettings();
+    const config = getSettings('appsettings');
     if (messageText.indexOf(config.discord.commandPrefix) !== 0) return null;
 
     const firstSpace = messageText.indexOf(' ');

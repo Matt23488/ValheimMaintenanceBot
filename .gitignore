@@ -1,8 +1,8 @@
 node_modules/
+appsettings.json
 appsecrets.json
 token.txt
 logs/
 users.json
 backups/
 dist/
-data/

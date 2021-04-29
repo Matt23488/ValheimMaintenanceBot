@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { getAppSettings } from './config';
-let config = getAppSettings();
+import { getSettings } from './config';
+let config = getSettings('appsettings');
 
 type CustomMessages = { playerConnected?: string, playerDied?: string, playerDisconnected?: string };
 type UserLike = { id: string, characters: string[], customMessages: CustomMessages };

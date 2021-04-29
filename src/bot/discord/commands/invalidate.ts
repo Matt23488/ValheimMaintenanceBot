@@ -1,9 +1,9 @@
 import path from 'path';
 import { BotCommand } from '../../../commonTypes';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import * as roles from '../roles';
 
-const commandPrefix = getAppSettings().discord.commandPrefix;
+const commandPrefix = getSettings('appsettings').discord.commandPrefix;
 
 // TODO: This command might be useless now. Rebooting the bot should refresh all commands anyway. Going to deactivate it for now.
 export const command: BotCommand = {
@@ -14,7 +14,7 @@ export const command: BotCommand = {
 
     execute: (message, rest) => {
         const args = rest.split(' ');
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
 
         let objPath = '';
         let prefix = '';

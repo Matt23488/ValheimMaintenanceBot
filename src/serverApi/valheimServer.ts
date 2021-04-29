@@ -2,14 +2,14 @@ import fs from 'fs';
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import _ from 'lodash';
 import Stopwatch from '../stopwatch';
-import { getAppSettings } from '../config';
+import { getSettings } from '../config';
 import StringBuffer from '../stringBuffer';
 import * as triggerLoader from './triggerLoader';
 import * as wsServer from './wsServer';
 import { getServerIpAddress } from '../ip';
 import { ProcessBufferName, ServerStatuses } from '../commonTypes';
 
-let config = getAppSettings();
+let config = getSettings('appsettings');
 
 const batchFileText = fs.readFileSync(config.valheim.serverWorkingDirectory + config.valheim.serverBatchFile).toString();
 const steamAppIdRefText = 'SteamAppId=';
@@ -51,7 +51,7 @@ export function getStatus() {
 
 export function start() {
     if (getStatus() !== ServerStatuses.stopped) return;
-    config = getAppSettings();
+    config = getSettings('appsettings');
 
     serverProc = spawn(
         config.valheim.serverExecutable,
@@ -100,7 +100,7 @@ export function start() {
 }
 
 export function stop() {
-    config = getAppSettings();
+    config = getSettings('appsettings');
     return new Promise<void>(resolve => {
         if (getStatus() === ServerStatuses.stopped) {
             resolve();

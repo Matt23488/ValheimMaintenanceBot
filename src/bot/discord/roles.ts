@@ -1,14 +1,14 @@
 import Discord from 'discord.js';
-import { getAppSettings } from '../../config';
+import { getSettings } from '../../config';
 
-export const Admin = getAppSettings().discord.adminRole;
+export const Admin = getSettings('appsettings').discord.adminRole;
 
 export function hasRole(message: Discord.Message, role: string | null) {
     // If no role is provided, the user is authorized.
     if (!role) return true;
 
     // If the message author is the bot owner, the user is authorized.
-    const config = getAppSettings();
+    const config = getSettings('appsettings');
     if (message.author.id === config.discord.parentalUnit) return true;
 
     // If the channel is not a text channel, the user is not authorized.

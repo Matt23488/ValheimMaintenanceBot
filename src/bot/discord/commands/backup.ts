@@ -1,7 +1,7 @@
 import * as roles from '../roles';
 import fs from 'fs';
 import path from 'path';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import { BotCommand } from '../../../commonTypes';
 
 export const command: BotCommand = {
@@ -11,7 +11,7 @@ export const command: BotCommand = {
     active: true,
 
     execute: (message, rest) => {
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         const params = rest.split(' ');
         switch (params[0]) {
             case '':

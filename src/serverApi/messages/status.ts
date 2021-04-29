@@ -1,5 +1,5 @@
 import { ServerMessage } from '../../commonTypes';
-import { getAppSettings } from '../../config';
+import { getSettings } from '../../config';
 import { getServerIpAddress } from '../../ip';
 import { formatMilliseconds } from '../../utilities';
 import * as valheimServer from '../valheimServer';
@@ -7,7 +7,7 @@ import * as valheimServer from '../valheimServer';
 export const message: ServerMessage<'status'> = {
     prefix: 'status',
     execute: () => {
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         return Promise.resolve({
             status: valheimServer.getStatus(),
             name: config.valheim.name,

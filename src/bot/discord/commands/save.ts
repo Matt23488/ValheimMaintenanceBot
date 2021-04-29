@@ -1,9 +1,9 @@
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import * as roles from '../roles';
 import * as wsClient from '../../wsClient';
 import { BotCommand, ProcessBufferName } from '../../../commonTypes';
 
-const commandPrefix = getAppSettings().discord.commandPrefix;
+const commandPrefix = getSettings('appsettings').discord.commandPrefix;
 
 export const command: BotCommand = {
     name: 'save',
@@ -34,7 +34,7 @@ export const command: BotCommand = {
 
 
         if (result === null) {
-            const config = getAppSettings();
+            const config = getSettings('appsettings');
             message.channel.send(`\`${params[0]}\` is not a valid parameter of ${config.discord.commandPrefix}save.`);
             return;
         }

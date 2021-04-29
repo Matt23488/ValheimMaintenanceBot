@@ -1,12 +1,12 @@
 import Discord from 'discord.js';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import { BotCommand, ServerStatuses } from '../../../commonTypes';
 import * as wsClient from '../../wsClient';
 
 export type StatusCommand = BotCommand & { sendStatusEmbed: (channel: Discord.TextChannel) => Promise<void> };
 
 async function sendStatusEmbed(channel: Discord.TextChannel) {
-    const config = getAppSettings();
+    const config = getSettings('appsettings');
     if (!wsClient.isConnected()) {
         channel.send(new Discord.MessageEmbed()
             .setTitle(`${config.valheim.name} Server Status`)

@@ -1,7 +1,7 @@
 import path from 'path';
 import * as roles from '../roles';
 import { spawn } from 'child_process';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import * as discordBot from '../bot';
 import * as wsClient from '../../wsClient';
 import { BotCommand, ServerStatuses } from '../../../commonTypes';
@@ -9,7 +9,7 @@ import * as start from './start';
 
 export const command: BotCommand = {
     name: 'reboot',
-    description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${getAppSettings().valheim.name}.\n  * \`vm\` - Reboots the virtual machine.`,
+    description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${getSettings('appsettings').valheim.name}.\n  * \`vm\` - Reboots the virtual machine.`,
     role: roles.Admin,
     active: true,
 

@@ -1,4 +1,4 @@
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import { BotCommand, ServerStatuses } from '../../../commonTypes';
 import * as wsClient from '../../wsClient';
 import * as roles from '../roles';
@@ -11,7 +11,7 @@ export const command: BotCommand = {
     active: true,
 
     execute: async (message, rest) => {
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         if (!wsClient.isConnected()) {
             message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
             return;

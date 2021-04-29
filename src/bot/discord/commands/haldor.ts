@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { BotCommand } from '../../../commonTypes';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 
 type Location = { x: number, y: number, z: number, distFromOrigin: number };
 export const command: BotCommand = {
@@ -11,7 +11,7 @@ export const command: BotCommand = {
     active: true,
 
     execute: (message, rest) => {
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         const worldName = rest.length > 0 ? rest : config.valheim.world;
         const worldBytes = fs.readFileSync(path.join(process.env['USERPROFILE']!, 'AppData/LocalLow/IronGate/Valheim/worlds', `${worldName}.db`));
         const searchBuffer = Buffer.from('56656E646F725F426C61636B466F72657374', 'hex');

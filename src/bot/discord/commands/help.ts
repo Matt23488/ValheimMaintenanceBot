@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { BotCommand } from '../../../commonTypes';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import * as roles from '../roles';
 
 export const command: BotCommand = {
@@ -13,7 +13,7 @@ export const command: BotCommand = {
     execute: (message, rest) => {
         const commands = fs.readdirSync(__dirname).filter(f => f.endsWith('.js')).map(f => require(path.join(__dirname, f)).command as BotCommand);
 
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         message.channel.send({
             embed: {
                 color: 0x0099ff,

@@ -1,10 +1,10 @@
 import { BotCommand } from '../../../commonTypes';
-import { getAppSettings } from '../../../config';
+import { getSettings } from '../../../config';
 import { getUsers, addCharacter } from '../../../Users';
 
 export const command: BotCommand = {
     name: 'player',
-    description: `Associate your in-game character to your Discord user, for more personalized messages. If your character's name is _Hamburger_ then you would just type \`${getAppSettings().discord.commandPrefix}player Hamburger\``,
+    description: `Associate your in-game character to your Discord user, for more personalized messages. If your character's name is _Hamburger_ then you would just type \`${getSettings('appsettings').discord.commandPrefix}player Hamburger\``,
     role: null,
     active: true,
 

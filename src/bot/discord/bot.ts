@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import { getAppSettings, getAppSecrets } from '../../config';
+import { getSettings } from '../../config';
 import * as commandManager from './commandManager';
 import * as wsClient from '../wsClient';
 import { nPercentChance } from '../../utilities';
@@ -27,7 +27,7 @@ export function start() {
     botClient = new Discord.Client();
 
     botClient.once('ready', () => {
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         console.log(`Logged in as ${botClient.user!.tag}!`);
         voice = botClient.channels.cache.get(config.discord.defaultVoiceChannel) as Discord.VoiceChannel;
         wsClient.onConnected(async () => {
@@ -60,7 +60,7 @@ export function start() {
     });
     
     botClient.on('message', async msg => {
-        const config = getAppSettings();
+        const config = getSettings('appsettings');
         const validChannel = msg.channel.type === 'dm' || msg.channel.id === config.discord.defaultTextChannel;
         if (!validChannel || msg.author.bot) return;
 
@@ -75,7 +75,7 @@ export function start() {
         }
     });
     
-    botClient.login(getAppSecrets().appToken);
+    botClient.login(getSettings('appsettings').discord.appToken);
 }
 
 
@@ -84,7 +84,7 @@ export function start() {
  * @returns {Discord.TextChannel} The default channel the bot announces things in.
  */
 export function getDefaultChannel() {
-    const config = getAppSettings();
+    const config = getSettings('appsettings');
     return botClient.channels.cache.get(config.discord.defaultTextChannel) as Discord.TextChannel;
 }
 
