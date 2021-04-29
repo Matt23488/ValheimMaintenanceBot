@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import path from 'path';
-import { ServerMessageDefinition, ClientMessageDynamic, Diff, ParameterType, ResolvedType, KeyOfTypeWithParameters, isServerMessageError, isClientReceivedMessage, UnknownMessage } from '../commonTypes';
+import { ServerMessageTypeMap, ClientMessageDynamic, Diff, ParameterType, ResolvedType, KeyOfTypeWithParameters, isServerMessageError, isClientReceivedMessage, UnknownMessage } from '../commonTypes';
 
 let connection: WebSocket;
 let connected = false;
@@ -8,7 +8,7 @@ let tryReconnect = true;
 
 const ignoreMessageSet = new Set<string>();
 
-const requestMap = new Map<number, (data: ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>> | PromiseLike<ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>>>) => void>();
+const requestMap = new Map<number, (data: ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>> | PromiseLike<ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>>) => void>();
 let requestId = 0;
 
 /**
@@ -17,12 +17,12 @@ let requestId = 0;
  * @param data Any data that the server needs to process the message.
  * @returns A promise that resolves when the server processes the request and sends back the response.
  */
-export function sendRequest<T extends KeyOfTypeWithParameters<ServerMessageDefinition>>(type: T, data: ParameterType<ServerMessageDefinition[T]>): ReturnType<ServerMessageDefinition[T]>;
-export function sendRequest<T extends Diff<keyof ServerMessageDefinition, KeyOfTypeWithParameters<ServerMessageDefinition>>>(type: T): ReturnType<ServerMessageDefinition[T]>;
-export function sendRequest<T extends keyof ServerMessageDefinition>(type: T, data?: T extends KeyOfTypeWithParameters<ServerMessageDefinition> ? ParameterType<ServerMessageDefinition[T]> : never) {
+export function sendRequest<T extends KeyOfTypeWithParameters<ServerMessageTypeMap>>(type: T, data: ParameterType<ServerMessageTypeMap[T]>): ReturnType<ServerMessageTypeMap[T]>;
+export function sendRequest<T extends Diff<keyof ServerMessageTypeMap, KeyOfTypeWithParameters<ServerMessageTypeMap>>>(type: T): ReturnType<ServerMessageTypeMap[T]>;
+export function sendRequest<T extends keyof ServerMessageTypeMap>(type: T, data?: T extends KeyOfTypeWithParameters<ServerMessageTypeMap> ? ParameterType<ServerMessageTypeMap[T]> : never) {
     if (!connected) return Promise.resolve(null);
 
-    return new Promise<ResolvedType<ReturnType<ServerMessageDefinition[keyof ServerMessageDefinition]>>>(resolve => {
+    return new Promise<ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>>(resolve => {
         const currentId = requestId++;
         requestMap.set(currentId, resolve);
         connection.send(JSON.stringify({

@@ -6,10 +6,18 @@ type DiscordSettings = { commandPrefix: string, defaultTextChannel: string, defa
 type AppSettings = { valheim: ValheimSettings, discord: DiscordSettings };
 type AppSecrets = { appToken: string };
 
+/**
+ * Returns the settings from `appsettings.json`.
+ * @returns An object containing the settings from `appsettings.json`.
+ */
 export function getAppSettings() {
     return JSON.parse(fs.readFileSync('data/appsettings.json').toString()) as AppSettings;
 }
 
+/**
+ * Returns the settings from `appsecrets.json`.
+ * @returns An object containing the settings from `appsecrets.json`.
+ */
 export function getAppSecrets() {
     return JSON.parse(fs.readFileSync('data/appsecrets.json').toString()) as AppSecrets;
 }
