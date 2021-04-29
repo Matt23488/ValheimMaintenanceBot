@@ -22,8 +22,13 @@ export const command: BotCommand = {
             message.channel.send(`The server is not running. Use \`${config.discord.commandPrefix}start\` to start the server.`);
             return;
         }
-        message.channel.send('Stopping server...');
+
+        await message.channel.send('Stopping server...');
+        message.channel.startTyping();
         await wsClient.sendRequest('shutdown');
-        setTimeout(() => status.command.execute(message, ''), 1000);
+        setTimeout(() => {
+            message.channel.stopTyping();
+            status.command.execute(message, '');
+        }, 1000);
     }
 };
