@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import _ from 'lodash';
 import Stopwatch from '../stopwatch';
@@ -11,7 +12,7 @@ import { ProcessBufferName, ServerStatuses } from '../commonTypes';
 
 let config = getSettings('appsettings');
 
-const batchFileText = fs.readFileSync(config.valheim.serverWorkingDirectory + config.valheim.serverBatchFile).toString();
+const batchFileText = fs.readFileSync(path.join(config.valheim.serverWorkingDirectory, config.valheim.serverBatchFile)).toString();
 const steamAppIdRefText = 'SteamAppId=';
 const steamAppIdRef = batchFileText.indexOf(steamAppIdRefText);
 const newLine = batchFileText.indexOf('\r\n', steamAppIdRef);

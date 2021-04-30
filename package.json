@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --project ./tsconfig.dev.json",
     "watch": "tsc --watch --project ./tsconfig.dev.json",
-    "publish": "tsc --project ./",
+    "publish": "npm run clean && tsc --project ./",
     "clean": "rd /s /q dist",
     "clean-modules": "rd /s /q node_modules",
     "debug-bot": "node --inspect dist/bot",
