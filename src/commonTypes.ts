@@ -42,15 +42,15 @@ export enum ServerStatuses {
 /**
  * Contains information about the status of the Valheim Server.
  */
-export type ServerStatusInfo = {
-    status: ServerStatuses,
-    name: string,
-    ip: string,
-    password: string,
-    connectedPlayers: { name: string, uptime: string }[],
-    uptime: string,
-    activeUptime: string
-};
+export interface ServerStatusInfo {
+    status: ServerStatuses;
+    name: string;
+    ip: string;
+    password: string;
+    connectedPlayers: { name: string, uptime: string }[];
+    uptime: string;
+    activeUptime: string;
+}
 
 /**
  * Represents the kinds of messages that the server can send to the bot, along with the type of the data passed with the message.
@@ -71,13 +71,17 @@ export interface ClientMessageTypeMap {
  * Represents a module of the bot that can handle a server message. A more general version that is
  * used by the code that invokes the handler.
  */
-export type ClientMessageDynamic = { execute: (data: ClientMessageTypeMap[keyof ClientMessageTypeMap]) => void };
+export interface ClientMessageDynamic {
+    execute: (data: ClientMessageTypeMap[keyof ClientMessageTypeMap]) => void;
+}
 
 /**
  * Represents a module of the bot that can handle a server message. A specific version that is
  * used by the modules themselves to get strong typing.
  */
-export type ClientMessage<T extends keyof ClientMessageTypeMap> = { execute: (data: ClientMessageTypeMap[T]) => void };
+export interface ClientMessage<T extends keyof ClientMessageTypeMap> {
+    execute: (data: ClientMessageTypeMap[T]) => void;
+}
 
 /**
  * Takes any number of static string values and constructs type information and operations.
@@ -138,37 +142,37 @@ export interface ServerMessageTypeMap {
 /**
  * Represents the structure of the bot -> server message sent via ws.
  */
-export type ServerMessageInput = {
-    id?: number,
-    type: keyof ServerMessageTypeMap,
-    data: ParameterTypeOrUndefined<ServerMessageTypeMap[keyof ServerMessageTypeMap]>
-};
+export interface ServerMessageInput {
+    id?: number;
+    type: keyof ServerMessageTypeMap;
+    data: ParameterTypeOrUndefined<ServerMessageTypeMap[keyof ServerMessageTypeMap]>;
+}
 
 /**
  * Represents the structure of the server -> bot response sent via ws.
  */
-export type ServerMessageOutput = {
-    id: number,
-    type: keyof ServerMessageTypeMap,
-    data: ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>
-};
+export interface ServerMessageOutput {
+    id: number;
+    type: keyof ServerMessageTypeMap;
+    data: ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>;
+}
 
 /**
  * Represents the structure of the server -> bot response if there was an error trying to process the message.
  */
-export type ServerMessageError = {
-    id: number,
-    type: keyof ServerMessageTypeMap,
-    error: Error
-};
+export interface ServerMessageError {
+    id: number;
+    type: keyof ServerMessageTypeMap;
+    error: Error;
+}
 
 /**
  * Represents the structure of unsolicited messages that the server sends to the bot via ws.
  */
-export type ClientReceivedMessage = {
-    type: keyof ClientMessageTypeMap,
-    data: ClientMessageTypeMap[keyof ClientMessageTypeMap]
-};
+export interface ClientReceivedMessage {
+    type: keyof ClientMessageTypeMap;
+    data: ClientMessageTypeMap[keyof ClientMessageTypeMap];
+}
 
 /**
  * Represents the different kinds of messages the bot can receive from the server via ws.
@@ -197,19 +201,19 @@ export function isClientReceivedMessage(response: UnknownMessage): response is C
  * Represents a module of the server that can handle a message from the bot. A more general version that is
  * used by the code that invokes the handler.
  */
-export type ServerMessageDynamic = {
-    prefix: keyof ServerMessageTypeMap,
-    execute: (data: ParameterTypeOrUndefined<ServerMessageTypeMap[keyof ServerMessageTypeMap]>) => Promise<ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>>
-};
+export interface ServerMessageDynamic {
+    prefix: keyof ServerMessageTypeMap;
+    execute: (data: ParameterTypeOrUndefined<ServerMessageTypeMap[keyof ServerMessageTypeMap]>) => Promise<ResolvedType<ReturnType<ServerMessageTypeMap[keyof ServerMessageTypeMap]>>>;
+}
 
 /**
  * Represents a module of the server that can handle a message from the bot. A specific version that is
  * used by the modules themselves to get strong typing.
  */
-export type ServerMessage<T extends keyof ServerMessageTypeMap> = {
-    prefix: T,
-    execute: ServerMessageTypeMap[T]
-};
+export interface ServerMessage<T extends keyof ServerMessageTypeMap> {
+    prefix: T;
+    execute: ServerMessageTypeMap[T];
+}
 
 /**
  * Represents the type information associated with the various triggers that the `stdout` from the Valheim server executable drives.
@@ -227,27 +231,27 @@ export interface ServerTriggerTypeMap {
  * Represents a module of the server that can handle a trigger from the Valheim server executable. A more general version that is
  * used by the code that invokes the handler.
  */
-export type ServerTriggerDynamic = {
-    parse: (text: string) => { canHandle: false } | { canHandle: true, data: ServerTriggerTypeMap[keyof ServerTriggerTypeMap] },
-    execute: (data: ServerTriggerTypeMap[keyof ServerTriggerTypeMap]) => void
-};
+export interface ServerTriggerDynamic {
+    parse: (text: string) => { canHandle: false } | { canHandle: true, data: ServerTriggerTypeMap[keyof ServerTriggerTypeMap] };
+    execute: (data: ServerTriggerTypeMap[keyof ServerTriggerTypeMap]) => void;
+}
 
 /**
  * Represents a module of the server that can handle a trigger from the Valheim server executable. A specific version that is
  * used by the modules themselves to get strong typing.
  */
-export type ServerTrigger<T extends keyof ServerTriggerTypeMap> = {
-    parse: (text: string) => { canHandle: false } | { canHandle: true, data: ServerTriggerTypeMap[T] },
-    execute: (data: ServerTriggerTypeMap[T]) => void
-};
+export interface ServerTrigger<T extends keyof ServerTriggerTypeMap> {
+    parse: (text: string) => { canHandle: false } | { canHandle: true, data: ServerTriggerTypeMap[T] };
+    execute: (data: ServerTriggerTypeMap[T]) => void;
+}
 
 /**
  * Represents a module of the bot that can handle commands via Discord.
  */
-export type BotCommand = {
-    name: string,
-    description: string,
-    role: string | null,
-    active: boolean,
-    execute: (message: Discord.Message, rest: string) => Promise<void>
-};
+export interface BotCommand {
+    name: string;
+    description: string;
+    role: string | null;
+    active: boolean;
+    execute: (message: Discord.Message, rest: string) => Promise<void>;
+}
