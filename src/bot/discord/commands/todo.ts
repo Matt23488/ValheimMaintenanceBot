@@ -7,7 +7,7 @@ const todoList = [
 export const command: BotCommand = {
     name: 'todo',
     description: 'Lists upcoming changes.',
-    role: null,
+    admin: false,
     active: true,
 
     execute: (message, rest) => {

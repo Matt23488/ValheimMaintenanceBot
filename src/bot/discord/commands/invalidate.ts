@@ -9,7 +9,7 @@ const commandPrefix = getSettings('appsettings').discord.commandPrefix;
 export const command: BotCommand = {
     name: 'invalidate',
     description: `In the event that a command ~~or trigger~~ has been updated, this command will cause the bot to pick up the change. Example: \`${commandPrefix}invalidate command help\` would pick up any changes to the \`${commandPrefix}help\` command.`,
-    role: roles.Admin,
+    admin: true,
     active: false,
 
     execute: (message, rest) => {

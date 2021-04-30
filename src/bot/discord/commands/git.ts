@@ -6,7 +6,7 @@ import { BotCommand } from '../../../commonTypes';
 export const command: BotCommand = {
     name: 'git',
     description: 'Execute git commands. Currently supports:\n * `pull` - Executes a `git pull` command.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: (message, rest) => {

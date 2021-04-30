@@ -251,7 +251,7 @@ export interface ServerTrigger<T extends keyof ServerTriggerTypeMap> {
 export interface BotCommand {
     name: string;
     description: string;
-    role: string | null;
+    admin: boolean;
     active: boolean;
     execute: (message: Discord.Message, rest: string) => Promise<void>;
 }

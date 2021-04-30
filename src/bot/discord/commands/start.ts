@@ -7,7 +7,7 @@ import * as status from './status';
 export const command: BotCommand = {
     name: 'start',
     description: 'Starts the Valheim server if it\'s not already running.',
-    role: null,
+    admin: false,
     active: true,
 
     execute: async (message, rest) => {

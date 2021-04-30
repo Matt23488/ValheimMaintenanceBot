@@ -4,7 +4,7 @@ import * as roles from '../roles';
 export const command: BotCommand = {
     name: 'trigger',
     description: 'Tests a trigger.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: async (message, rest) => {

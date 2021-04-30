@@ -3,7 +3,7 @@ import { BotCommand } from '../../../commonTypes';
 export const command: BotCommand = {
     name: 'poop',
     description: 'Have the bot insult you.',
-    role: null,
+    admin: false,
     active: false,
 
     execute: async (message, rest) => {

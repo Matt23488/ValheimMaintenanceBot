@@ -5,7 +5,7 @@ import { BotCommand } from '../../../commonTypes';
 export const command: BotCommand = {
     name: 'kill',
     description: 'Shuts down the bot.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: async (message, rest) => {

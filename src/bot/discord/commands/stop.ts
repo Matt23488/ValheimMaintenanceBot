@@ -8,7 +8,7 @@ import { sleep } from '../../../utilities';
 export const command: BotCommand = {
     name: 'stop',
     description: 'Saves and shuts down the Valheim server if it\'s running.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: async (message, rest) => {

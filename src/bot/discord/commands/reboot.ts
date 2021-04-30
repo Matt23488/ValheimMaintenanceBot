@@ -10,7 +10,7 @@ import * as start from './start';
 export const command: BotCommand = {
     name: 'reboot',
     description: `Reboots something. Currently supports:\n  * \`bot\` - Reboots me.\n  * \`valheim\` - Reboots ${getSettings('appsettings').valheim.name}.\n  * \`vm\` - Reboots the virtual machine.`,
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: async (message, rest) => {

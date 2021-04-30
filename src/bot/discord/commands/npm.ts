@@ -6,7 +6,7 @@ import { BotCommand } from '../../../commonTypes';
 export const command: BotCommand = {
     name: 'npm',
     description: 'Execute npm commands.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: (message, rest) => {

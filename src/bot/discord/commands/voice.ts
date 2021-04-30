@@ -5,7 +5,7 @@ import { BotCommand } from '../../../commonTypes';
 export const command: BotCommand = {
     name: 'voice',
     description: 'Tells you if the bot will join voice or not, or set if it can or not.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: (message, rest) => {

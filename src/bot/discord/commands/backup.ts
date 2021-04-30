@@ -7,7 +7,7 @@ import { BotCommand } from '../../../commonTypes';
 export const command: BotCommand = {
     name: 'backup',
     description: 'Backs up the current (or specified world), or lists backups.',
-    role: roles.Admin,
+    admin: true,
     active: true,
 
     execute: (message, rest) => {

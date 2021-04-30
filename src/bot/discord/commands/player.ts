@@ -5,7 +5,7 @@ import { getUsers, addCharacter } from '../../../Users';
 export const command: BotCommand = {
     name: 'player',
     description: `Associate your in-game character to your Discord user, for more personalized messages. If your character's name is _Hamburger_ then you would just type \`${getSettings('appsettings').discord.commandPrefix}player Hamburger\``,
-    role: null,
+    admin: false,
     active: true,
 
     execute: (message, rest) => {

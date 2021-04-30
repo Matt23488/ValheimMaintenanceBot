@@ -7,7 +7,7 @@ type Location = { x: number, y: number, z: number, distFromOrigin: number };
 export const command: BotCommand = {
     name: 'haldor',
     description: 'Tells you where Haldor is, if he has been found. Otherwise shows the ten possible locations. Once you find him once, he will always appear in that location.',
-    role: null,
+    admin: false,
     active: true,
 
     execute: (message, rest) => {

@@ -52,7 +52,7 @@ async function sendStatusEmbed(channel: Discord.TextChannel) {
 export const command: StatusCommand = {
     name: 'status',
     description: 'Displays general information about the Valheim server, such as the IP Address and who is playing.',
-    role: null,
+    admin: false,
     active: true,
 
     execute: (message, rest) => {

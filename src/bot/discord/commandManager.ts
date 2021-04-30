@@ -1,6 +1,7 @@
 import Discord from 'discord.js';
 import { BotCommand } from '../../commonTypes';
 import { getSettings } from '../../config';
+import * as roles from './roles';
 
 type CommandInfo = { name: string, rest: string };
 
@@ -20,8 +21,8 @@ export async function executeCommand(commandInfo: CommandInfo, message: Discord.
             return;
         }
     } else {
-        if (command.role !== null && !message.member!.roles.cache.has(command.role)) {
-            message.reply(`only those with the \`${message.guild!.roles.cache.get(command.role)!.name}\` role can use the \'${config.discord.commandPrefix}${commandInfo}\' command.`);
+        if (command.admin && !message.member!.roles.cache.has(roles.Admin)) {
+            message.reply(`only those with the \`${message.guild!.roles.cache.get(roles.Admin)!.name}\` role can use the \'${config.discord.commandPrefix}${commandInfo.name}\' command.`);
             return;
         }
     }
