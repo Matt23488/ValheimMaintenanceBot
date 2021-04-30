@@ -136,7 +136,6 @@ export function findPlayer(id: string) {
 }
 
 export function removePlayer(id: string) {
-    connectedPlayers.find(p => p.id === id)?.stopwatch.stop();
     connectedPlayers = connectedPlayers.filter(p => p.id !== id);
     if (connectedPlayers.length === 0) activeStopwatch.stop();
 }
