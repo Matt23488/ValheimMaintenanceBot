@@ -8,8 +8,8 @@ export const trigger: ServerTrigger<'underAttack'> = {
         const prefixIndex = text.indexOf(prefix);
         if (prefixIndex === -1) return { canHandle: false };
     
-        const data = text.slice(prefixIndex + prefix.length, text.indexOf('\n')).trim();
-        wsServer.sendMessage('echo', `\`\`\`\nDEBUG\ntext: ${text}\nprefixIndex: ${prefixIndex}\ndata: ${data}\`\`\``);
+        const data = text.slice(prefixIndex + prefix.length, text.indexOf('\n', prefixIndex + prefix.length + 1)).trim();
+        // wsServer.sendMessage('echo', `\`\`\`\nDEBUG\ntext: ${text}\nprefixIndex: ${prefixIndex}\ndata: ${data}\`\`\``);
         return { canHandle: true, data };
     },
 
