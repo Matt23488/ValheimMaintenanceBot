@@ -74,6 +74,15 @@ export function start() {
             try { await commandManager.executeCommand(commandInfo, msg); } catch (e) { console.error(e); }
         }
     });
+
+    botClient.on('voiceStateUpdate', (oldState, newState) => {
+        if (!voiceEnabled || !voiceConnection || oldState.member?.user.bot) return;
+
+        const config = getSettings('appsettings');
+        if (newState.channelID === config.discord.defaultVoiceChannel) {
+            speak(`Hello there, ${newState.member?.user.username}!`);
+        }
+    });
     
     botClient.login(getSettings('appsettings').discord.appToken);
 }
