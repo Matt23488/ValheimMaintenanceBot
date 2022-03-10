@@ -4,5 +4,6 @@ appsecrets.json
 token.txt
 logs/
 users.json
+clips.json
 backups/
 dist/
